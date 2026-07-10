@@ -8,9 +8,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Lumen Tools - Focused browser utilities",
+  title: "Lumen Tools - Sharp browser utilities",
   description:
-    "Lumen Tools is a home for focused browser utilities for students, makers, and analysts.",
+    "Lumen Tools builds focused browser utilities for students, makers, and analysts who need fast, specific workflows.",
 };
 
 export default function RootLayout({
