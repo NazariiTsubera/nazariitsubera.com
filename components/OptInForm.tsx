@@ -6,7 +6,13 @@ const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 type Status = "idle" | "error" | "success";
 
-export default function OptInForm({ tone = "dark" }: { tone?: "dark" | "light" }) {
+export default function OptInForm({
+  cta = "Start a conversation",
+  hint = "Tell me your business. I'll reply personally — no sales team, no jargon.",
+}: {
+  cta?: string;
+  hint?: string;
+}) {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<Status>("idle");
 
@@ -25,24 +31,27 @@ export default function OptInForm({ tone = "dark" }: { tone?: "dark" | "light" }
 
   if (status === "success") {
     return (
-      <div className={`optInSuccess optInSuccess--${tone}`} role="status">
-        <span className="optInSuccessMark" aria-hidden="true">
+      <div
+        role="status"
+        className="flex items-center gap-3 rounded-[10px] border border-line-strong bg-panel px-[18px] py-4 text-[0.95rem] leading-relaxed text-ink shadow-soft"
+      >
+        <span className="grid h-7 w-7 flex-none place-items-center rounded-[6px] bg-vivid-line font-mono text-white">
           +
         </span>
-        <p>You&apos;re on the list. We&apos;ll be in touch before launch.</p>
+        <p>Got it. I&apos;ll be in touch personally within a day or two.</p>
       </div>
     );
   }
 
   return (
-    <form className={`optInForm optInForm--${tone}`} onSubmit={handleSubmit} noValidate>
-      <div className="optInField">
+    <form onSubmit={handleSubmit} noValidate className="w-full">
+      <div className="flex flex-col gap-2 sm:flex-row">
         <input
           type="email"
           name="email"
           inputMode="email"
           autoComplete="email"
-          placeholder="you@company.com"
+          placeholder="you@yourcompany.com"
           aria-label="Email address"
           aria-invalid={status === "error"}
           value={email}
@@ -50,15 +59,18 @@ export default function OptInForm({ tone = "dark" }: { tone?: "dark" | "light" }
             setEmail(event.target.value);
             if (status === "error") setStatus("idle");
           }}
+          className="field"
         />
-        <button type="submit">Get early access</button>
+        <button type="submit" className="btn-gradient flex-none px-6 py-3">
+          {cta}
+        </button>
       </div>
       {status === "error" ? (
-        <p className="optInError" role="alert">
+        <p role="alert" className="mt-2.5 font-mono text-[0.72rem] text-magenta">
           Enter a valid email address.
         </p>
       ) : (
-        <p className="optInHint">No spam. One note when we open the doors.</p>
+        <p className="mt-2.5 font-mono text-[0.72rem] text-muted-soft">{hint}</p>
       )}
     </form>
   );

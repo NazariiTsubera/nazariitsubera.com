@@ -19,9 +19,9 @@ const sourceSerif = Source_Serif_4({
 });
 
 export const metadata: Metadata = {
-  title: "Lumen Tools — Focused browser utilities",
+  title: "Lumen — AI & automation, done for you",
   description:
-    "Small, sharp browser tools that turn specific, annoying workflows into fast results. Join the early access list.",
+    "I take the problems slowing your business down and solve them with AI, automation, and custom software. You stay focused on the business — I handle the technology.",
 };
 
 export default function RootLayout({
