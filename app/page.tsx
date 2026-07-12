@@ -1,7 +1,7 @@
 import Brand from "@/components/Brand";
 import GradientCanvas from "@/components/GradientCanvas";
+import { InquiryProvider, InquiryTrigger } from "@/components/InquiryModal";
 import Marquee from "@/components/Marquee";
-import OptInForm from "@/components/OptInForm";
 import ScrollFX from "@/components/ScrollFX";
 
 const services = [
@@ -57,6 +57,7 @@ const navLinks = [
 
 export default function Home() {
   return (
+    <InquiryProvider>
     <div className="relative overflow-x-hidden">
       {/* NAV */}
       <header
@@ -74,12 +75,11 @@ export default function Home() {
               {label}
             </a>
           ))}
-          <a
-            href="#start"
+          <InquiryTrigger
             className="inkbtn hidden whitespace-nowrap rounded-[9px] border border-ink px-[18px] py-[11px] font-mono text-[13px] tracking-[0.02em] sm:inline-flex"
           >
-            Start a conversation
-          </a>
+            Get Started
+          </InquiryTrigger>
         </nav>
       </header>
 
@@ -127,13 +127,13 @@ export default function Home() {
               automation, AI, and custom software. You stay focused on the
               business — I handle the technology.
             </p>
-            <div id="start" className="max-w-[480px]">
-              <OptInForm
-                tone="light"
-                layout="row"
-                successNote="Watch for a short, personal note within a day — no sales team, no pitch."
-                hint="Tell me your business. I'll reply personally — no sales team, no jargon."
-              />
+            <div id="start" className="flex flex-wrap items-center gap-x-5 gap-y-3">
+              <InquiryTrigger className="gradbtn inline-flex h-14 items-center rounded-[11px] px-7 font-mono text-[13px] tracking-[0.025em] text-white">
+                Get Started
+              </InquiryTrigger>
+              <span className="max-w-[33ch] font-mono text-[11px] leading-[1.55] text-mono-soft">
+                Tell me what&apos;s slowing you down. I&apos;ll reply personally.
+              </span>
             </div>
           </div>
         </section>
@@ -306,12 +306,13 @@ export default function Home() {
                 possible — in plain language, at no cost.
               </p>
             </div>
-            <div className="reveal">
-              <OptInForm
-                tone="dark"
-                layout="stack"
-                successNote="I'll be in touch within a day."
-              />
+            <div className="reveal md:justify-self-end">
+              <InquiryTrigger className="gradbtn inline-flex h-14 items-center rounded-[11px] px-8 font-mono text-[13px] tracking-[0.025em] text-white shadow-grad">
+                Get Started
+              </InquiryTrigger>
+              <p className="mt-4 max-w-[34ch] font-mono text-[11px] leading-[1.6] text-on-dark/50">
+                No sales team, no automated pitch — just a personal reply from me.
+              </p>
             </div>
           </div>
         </section>
@@ -336,5 +337,6 @@ export default function Home() {
 
       <ScrollFX />
     </div>
+    </InquiryProvider>
   );
 }
