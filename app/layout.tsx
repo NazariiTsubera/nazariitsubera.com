@@ -1,27 +1,25 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Source_Serif_4 } from "next/font/google";
+import { Newsreader, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 
-const geist = Geist({
+const newsreader = Newsreader({
   subsets: ["latin"],
-  variable: "--font-geist",
-});
-
-const geistMono = Geist_Mono({
-  subsets: ["latin"],
-  variable: "--font-geist-mono",
-});
-
-const sourceSerif = Source_Serif_4({
-  subsets: ["latin"],
-  variable: "--font-serif",
+  variable: "--font-newsreader",
   style: ["normal", "italic"],
+  display: "swap",
+});
+
+const plexMono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  variable: "--font-plex-mono",
+  weight: ["400", "500", "600"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Lumen — AI & automation, done for you",
+  title: "Nazarii Tsubera — AI, automation & custom software",
   description:
-    "I take the problems slowing your business down and solve them with AI, automation, and custom software. You stay focused on the business — I handle the technology.",
+    "Independent technology consultant. I take the problems slowing your business down and solve them with automation, AI, and custom software. You stay focused on the business — I handle the technology.",
 };
 
 export default function RootLayout({
@@ -31,9 +29,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geist.variable} ${geistMono.variable} ${sourceSerif.variable}`}
-      >
+      <body className={`${newsreader.variable} ${plexMono.variable}`}>
         {children}
       </body>
     </html>
