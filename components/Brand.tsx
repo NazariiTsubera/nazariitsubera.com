@@ -8,29 +8,33 @@ export default function Brand({
   className?: string;
 }) {
   const dark = tone === "dark";
-  const mark =
-    size === "sm" ? "h-6 w-6 rounded-[7px]" : "h-7 w-7 rounded-[8px]";
-  const markText = size === "sm" ? "text-[9.5px]" : "text-[11px]";
-  const name = size === "sm" ? "text-[19px]" : "text-[23px]";
+  const sm = size === "sm";
+  const gap = sm ? "gap-[11px]" : "gap-3";
+  const markSize = sm ? "text-[25px]" : "text-[30px]";
+  const dividerH = sm ? "h-[17px]" : "h-[20px]";
+  const nameSize = sm ? "text-[18px]" : "text-[20px]";
+  const dot = dark ? "text-flame" : "text-magenta-ink";
+  const divider = dark ? "bg-on-dark/[0.22]" : "bg-ink/[0.18]";
   return (
     <a
       href="#top"
       aria-label="Nazarii Tsubera home"
-      className={`inline-flex items-center gap-[11px] ${
+      className={`inline-flex items-baseline ${gap} ${
         dark ? "text-on-dark" : "text-ink"
       } ${className}`}
     >
       <span
-        aria-hidden="true"
-        className={`inline-flex items-center justify-center bg-grad-mark shadow-mark ${mark}`}
+        className={`font-serif font-normal leading-none tracking-[-0.03em] ${markSize}`}
       >
-        <span
-          className={`font-mono font-semibold tracking-[-0.02em] text-cream ${markText}`}
-        >
-          NT
-        </span>
+        nt<span className={dot}>.</span>
       </span>
-      <span className={`font-serif font-medium tracking-[-0.02em] ${name}`}>
+      <span
+        aria-hidden="true"
+        className={`w-px self-center ${dividerH} ${divider}`}
+      />
+      <span
+        className={`whitespace-nowrap font-serif font-medium tracking-[-0.02em] ${nameSize}`}
+      >
         Nazarii Tsubera
       </span>
     </a>

@@ -63,20 +63,20 @@ export default function Home() {
         className="sticky top-0 z-40 border-b border-ink/[0.07] backdrop-blur-[12px]"
         style={{ background: "color-mix(in srgb, #f1eee6 78%, transparent)" }}
       >
-        <nav className="mx-auto flex max-w-frame items-center gap-[34px] px-6 py-[18px] md:px-10">
+        <nav className="mx-auto flex max-w-frame items-center gap-x-6 px-6 py-[18px] md:px-10 lg:gap-x-[34px]">
           <Brand className="mr-auto" />
           {navLinks.map(([label, href]) => (
             <a
               key={href}
               href={href}
-              className="navlink hidden font-mono text-[13px] tracking-[0.02em] text-body-2 sm:inline"
+              className="navlink hidden font-mono text-[13px] tracking-[0.02em] text-body-2 lg:inline"
             >
               {label}
             </a>
           ))}
           <a
             href="#start"
-            className="inkbtn rounded-[9px] border border-ink px-[18px] py-[11px] font-mono text-[13px] tracking-[0.02em]"
+            className="inkbtn hidden whitespace-nowrap rounded-[9px] border border-ink px-[18px] py-[11px] font-mono text-[13px] tracking-[0.02em] sm:inline-flex"
           >
             Start a conversation
           </a>
