@@ -40,6 +40,10 @@ Plans: `docs/superpowers/plans/`. Decisions: `docs/decisions/`.
 - A `Job` row in Postgres is created before the BullMQ enqueue and is what the console reads.
   Redis only holds work in flight.
 - Sign-up is disabled. The single operator account exists only because the seed script made it.
+- The pipeline (`packages/core/src/pipeline`) runs the design's steps in order on the durable
+  job row and skips any step whose artifact already exists, so a regenerate only redoes what
+  changed. Derived images are content addressed by the asset's sha256.
+- Every derived image has all metadata stripped, GPS included.
 - Domain modules follow `service + repository`: route handlers parse, authenticate, call a
   service, return. Services own business rules and transactions. Repositories own queries.
 - Zod schemas live next to their domain; types are inferred from them. No duplicate DTOs.
@@ -53,9 +57,11 @@ Plans: `docs/superpowers/plans/`. Decisions: `docs/decisions/`.
   rest lazy, responsive to 360px with no horizontal scroll. The serving layer sends
   `Content-Security-Policy: script-src 'none'`.
 - Production pages are authored by the model per vendor from the design brief
-  (`packages/core/src/design`) and must pass the gate (`packages/core/src/gate`): HTML lint,
-  visible-text guard, headless Chromium with axe in light and dark. Up to two repairs, then the
-  template renders the same content as the fallback.
+  (`packages/core/src/ai/design.ts`) and must pass the gate (`packages/core/src/gate`): parse5
+  lint, the fabrication guard over visible text, and headless Chromium with axe at 360, 768, and
+  1280 in both colour schemes. Up to two repairs, then the template renders the same content as
+  the fallback. The gate governs what the page *loads*, not where it links: outbound links to
+  checkout, maps, and Instagram are expected, and operator-entered prices are facts.
 - The template (`packages/core/src/template`) and its curated themes (`packages/core/src/themes`)
   are the floor: deterministic, snapshot-tested, every theme WCAG AA by test, fixed section order
   with empty sections omitted.

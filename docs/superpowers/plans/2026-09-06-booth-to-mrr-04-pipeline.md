@@ -96,3 +96,21 @@
 ### Task 8: Docs and verification
 
 - [ ] AGENTS.md pipeline rules, env additions, design deviations, full verification. Commit `docs: document the generation pipeline`.
+
+
+## Deviations and findings during execution
+
+- **No provider credentials exist in this environment.** Everything below is verified against the
+  fakes and the real local tooling (sharp, Chromium, axe). The Anthropic content and design
+  adapters, the hosted background-removal adapter, and the Deepgram transcription adapter are
+  written but have never been run against a live API.
+- The first gate implementation took **713 seconds** per page because `page.setContent` waited on
+  image and font URLs that only resolve on the live site. Fulfilling those requests locally and
+  reusing one page per colour scheme brought it to **1.3 seconds**.
+- The gate initially rejected its own template output twice, and both were bugs in the rules
+  rather than the page: outbound `href` links are navigation, not loads, so the allowlist now
+  governs only loading attributes and `<link>` rels that actually fetch; and prices the operator
+  typed are facts, so they are removed from the text before the fabrication scan.
+- `estimateEagerAssetBytes` approximates first-load weight from the page's own declarations,
+  because the gate has no access to the image host. Acceptance criterion 3 needs a real
+  measurement against a published site before it can be claimed.

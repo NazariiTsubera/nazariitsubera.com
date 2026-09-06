@@ -1,5 +1,4 @@
 import { authorPage, generateContent, repairPage, type ContentInput, type ImagePart } from "../ai";
-import type { ContentJson } from "../contracts/content";
 import type { RenderAsset } from "../contracts/render";
 import { type Asset, type Prisma, prisma } from "../db";
 import { env } from "../env";
