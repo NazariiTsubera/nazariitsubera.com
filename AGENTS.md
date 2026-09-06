@@ -1,22 +1,70 @@
-# Lumen Tools Agent Guide
+# nazariitsubera.com Working Guide
 
-This project is a Next.js, TypeScript, and Tailwind landing page.
+## Purpose
+One repository holds the personal consulting site and the Booth to MRR engine: an operator
+console that turns a recorded booth conversation plus photos into a live vendor website on a
+subdomain, a seven-day preview, and (backlogged) a Stripe purchase path that makes it permanent.
 
-## Scope Rules
+Design: `docs/superpowers/specs/2026-09-05-booth-to-mrr-engine-design.md`.
+Plans: `docs/superpowers/plans/`. Decisions: `docs/decisions/`.
 
-- Work only inside `/home/hermes/projects/lumen-tools` for Lumen Tools tasks.
-- Follow the root workspace guide at `/home/hermes/AGENTS.md` for project resolution, Linear intake, and safety rules.
-- Keep changes focused on the requested page, component, style, or content.
+## Layout
+- `apps/web`: Next.js App Router. Marketing pages, `/console`, API route handlers, vendor-site
+  serving by hostname. Port 3000.
+- `apps/worker`: Node process run with `tsx`. BullMQ processors. Arrives in Plan 3.
+- `packages/core` (`@nazariitsubera/core`): every domain module, shipped as TypeScript source with
+  one `exports` entry per module. No build step.
 
 ## Commands
+- `pnpm install`, `pnpm dev`, `pnpm build`
+- `pnpm lint`, `pnpm typecheck`, `pnpm test`
+- `pnpm --filter @nazariitsubera/core render:fixture [--theme <id>]` renders the demo vendor to
+  `packages/core/out/`; serve it with the `template-preview` entry in `.claude/launch.json`.
 
-- Install dependencies: `npm install`
-- Start development server: `npm run dev`
-- Build: `npm run build`
-- Lint: `npm run lint`
+## Architecture rules
+- Dependency direction is `apps -> core`, never the reverse, never app to app. ESLint enforces it.
+- Browser code imports only `@nazariitsubera/core/contracts`. Every other core module is server-only.
+- Only `packages/core/src/template` renders React to a string.
+- Domain modules follow `service + repository`: route handlers parse, authenticate, call a
+  service, return. Services own business rules and transactions. Repositories own queries.
+- Zod schemas live next to their domain; types are inferred from them. No duplicate DTOs.
+- Every table carries `vendorId`. Site versions are immutable; publish is a pointer swap.
+- External providers sit behind adapters with a real and a fake implementation.
+- Dependencies are added by the first task that needs them, never up front. Prefer a small
+  in-repo module over a library when the module is a few dozen lines.
 
-## Verification
+## Vendor-site rules
+- Static HTML with inlined CSS, zero JavaScript, `srcset` on every image, hero eager and the
+  rest lazy, responsive to 360px with no horizontal scroll. The serving layer sends
+  `Content-Security-Policy: script-src 'none'`.
+- Production pages are authored by the model per vendor from the design brief
+  (`packages/core/src/design`) and must pass the gate (`packages/core/src/gate`): HTML lint,
+  visible-text guard, headless Chromium with axe in light and dark. Up to two repairs, then the
+  template renders the same content as the fallback.
+- The template (`packages/core/src/template`) and its curated themes (`packages/core/src/themes`)
+  are the floor: deterministic, snapshot-tested, every theme WCAG AA by test, fixed section order
+  with empty sections omitted.
+- The preview banner and the robots noindex tag are injected at publish by `finalizePage`, never
+  written by the template or the author.
+- Content limits: tagline 60, headline 48, sub 110, product name 32, blurb 90, CTA 20. Facts come
+  only from the content JSON; the content guard runs on the visible text of every page.
 
-- Run `npm run lint` for code/style changes.
-- Run `npm run build` before handing off deployable UI changes.
-- For visual changes, inspect the page in a browser or with screenshots when a dev server is available.
+## Naming
+Kebab-case files. `*.service.ts`, `*.repository.ts`, `*.schema.ts`, `*.test.ts(x)`. React
+components in PascalCase exports. No barrel exports beyond a module's `index.ts`.
+
+## Workflow
+- Test first: write the failing test, make it pass, commit. Commit at every task boundary.
+- Unit lane: `pnpm test` (vitest, node environment for core). Fast, hermetic.
+- Integration (ephemeral Postgres and Redis via docker compose) and e2e (Playwright) lanes
+  arrive with Plan 2 and Plan 3.
+- Slim, readable code. Small files with one responsibility.
+
+## Decision logging
+When an architecture, schema, API, auth, billing, pipeline, or template convention materially
+changes, add an ADR under `docs/decisions/` following the existing `ADR-NNNN-title.md` pattern.
+
+## Deployment
+Railway. `web` builds with `pnpm install --frozen-lockfile && pnpm --filter web build` and
+starts with `pnpm --filter web start`. Custom domains `nazariitsubera.com` and
+`*.nazariitsubera.com` are attached to `web`. DNS is on Cloudflare, proxied, SSL mode Full.
