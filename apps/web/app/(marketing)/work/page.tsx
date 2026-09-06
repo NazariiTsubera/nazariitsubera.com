@@ -54,7 +54,7 @@ export default function WorkPage() {
                   <span className="n text-[clamp(22px,4.5vw,24px)] leading-[1.15] tracking-[-0.02em] text-ink">{project.title}</span>
                   <p className="text-body">{project.summary}</p>
                   {project.stack ? <span className="font-mono text-[13px] text-muted">{project.stack}</span> : null}
-                  <span className="l mt-auto pt-2 text-ink">
+                  <span className="go mt-auto pt-2 text-ink">
                     Read <span className="arw">&rarr;</span>
                   </span>
                 </Link>

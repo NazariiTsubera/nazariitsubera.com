@@ -94,7 +94,7 @@ export default function BusinessPage() {
               If you sell at San Antonio markets, this is the one thing I offer at a fixed, published price.
             </p>
           </div>
-          <span className="l flex-none text-ink">
+          <span className="go flex-none text-ink">
             See how it works <span className="arw">&rarr;</span>
           </span>
         </Link>

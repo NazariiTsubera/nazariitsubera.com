@@ -52,7 +52,7 @@ export function WorkGrid({ projects }: { projects: Project[] }) {
             {/* The tag wraps to its own line rather than being clipped: "Global Virtual
                 Opportunities" does not fit beside a title on a 320px screen. */}
             <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
-              <span className="n text-[19px] transition-colors group-hover:text-accent">{project.title}</span>
+              <span className="n text-[20px] transition-colors group-hover:text-accent">{project.title}</span>
               <span className="l text-muted">{project.tag}</span>
             </div>
             <p className="mt-2 text-body">{project.summary}</p>

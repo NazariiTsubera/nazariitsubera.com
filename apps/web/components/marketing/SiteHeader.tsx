@@ -52,7 +52,7 @@ export function SiteHeader() {
               key={item.href}
               href={item.href}
               aria-current={pathname === item.href ? "page" : undefined}
-              className={`l navlink tap whitespace-nowrap ${pathname === item.href ? "text-accent" : "text-body"}`}
+              className={`go navlink tap whitespace-nowrap ${pathname === item.href ? "text-accent" : "text-body"}`}
             >
               {item.label}
             </Link>
@@ -92,7 +92,7 @@ export function SiteHeader() {
                 href={item.href}
                 onClick={close}
                 aria-current={pathname === item.href ? "page" : undefined}
-                className={`l flex min-h-[54px] items-center border-b border-ink/[.10] text-[12.5px] ${
+                className={`go flex min-h-[54px] items-center border-b border-ink/[.10] text-[17px] ${
                   pathname === item.href ? "text-accent" : "text-ink"
                 }`}
               >

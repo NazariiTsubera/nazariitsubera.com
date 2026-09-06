@@ -30,7 +30,7 @@ export default function HomePage() {
       <Section>
         <div className="rv mb-3.5 flex flex-wrap items-baseline justify-between gap-x-[18px] gap-y-2">
           <H2 id="work">Selected work</H2>
-          <Link href={LINKS.work} className="l navlink tap text-accent">
+          <Link href={LINKS.work} className="go navlink tap text-accent">
             All work <span className="arw">&rarr;</span>
           </Link>
         </div>

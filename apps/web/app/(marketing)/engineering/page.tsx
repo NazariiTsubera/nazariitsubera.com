@@ -83,7 +83,7 @@ export default function EngineeringPage() {
             </article>
           ))}
           <p className="pt-6">
-            <Link href={LINKS.work} className="l navlink tap text-accent">
+            <Link href={LINKS.work} className="go navlink tap text-accent">
               All work, with the detail <span className="arw">&rarr;</span>
             </Link>
           </p>

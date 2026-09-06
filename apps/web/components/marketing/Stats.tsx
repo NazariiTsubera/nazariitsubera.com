@@ -9,7 +9,9 @@ const STATS = [
 export function Stats() {
   return (
     <Band tone="dark">
-      <div className="l rv mb-7 text-dark-label">Built for owners, not IT departments</div>
+      <h2 className="n rv mb-8 max-w-[22ch] text-[clamp(24px,2.8vw,32px)] leading-[1.15] tracking-[-0.02em] text-on-dark">
+        Built for owners, not IT departments.
+      </h2>
       <div className={GRID.cards3}>
         {STATS.map((stat) => (
           <div key={stat.figure} className="rv border-t border-white/25 pt-5">

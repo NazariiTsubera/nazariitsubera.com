@@ -1,14 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { GRID, H2, Label, Section } from "./Section";
+import { GRID, H2, Section } from "./Section";
 import { LINKS } from "./links";
 
 export function AboutTeaser() {
   return (
     <Section className={GRID.even}>
       <div className="rv">
-        <Label className="mb-5">Who you&rsquo;re dealing with</Label>
         <H2 measure={20} className="mb-[18px]">
           One person, start to finish.
         </H2>
@@ -31,7 +30,7 @@ export function AboutTeaser() {
           build and run the platforms behind MarkoMax and LoveFund. I&rsquo;m also a computer science student at UTSA,
           class of 2028.
         </p>
-        <Link href={LINKS.about} className="l navlink tap inline-block pt-2 text-accent">
+        <Link href={LINKS.about} className="go navlink tap inline-block pt-2 text-accent">
           More about me <span className="arw">&rarr;</span>
         </Link>
       </div>

@@ -48,10 +48,10 @@ export default function ContactPage() {
             ))}
           </dl>
           <div className="mt-7 flex flex-wrap gap-x-[22px] gap-y-4">
-            <a href={LINKS.linkedin} target="_blank" rel="noopener" className="l navlink tap inline-flex items-center gap-2 text-body">
+            <a href={LINKS.linkedin} target="_blank" rel="noopener" className="go navlink tap inline-flex items-center gap-2 text-body">
               <LinkedInIcon /> LinkedIn
             </a>
-            <a href={LINKS.github} target="_blank" rel="noopener" className="l navlink tap inline-flex items-center gap-2 text-body">
+            <a href={LINKS.github} target="_blank" rel="noopener" className="go navlink tap inline-flex items-center gap-2 text-body">
               <GitHubIcon /> GitHub
             </a>
           </div>

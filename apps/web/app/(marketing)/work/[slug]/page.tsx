@@ -65,11 +65,11 @@ export default async function WorkArticlePage({ params }: Params) {
         <div className="mt-7 flex flex-wrap items-baseline gap-x-8 gap-y-4">
           {project.stack ? <span className="font-mono text-[13px] text-muted">{project.stack}</span> : null}
           {external ? (
-            <a href={project.href} target="_blank" rel="noopener" className="l navlink tap text-accent">
+            <a href={project.href} target="_blank" rel="noopener" className="go navlink tap text-accent">
               Visit {external.hostname} <span className="arw">&rarr;</span>
             </a>
           ) : project.href ? (
-            <Link href={project.href} className="l navlink tap text-accent">
+            <Link href={project.href} className="go navlink tap text-accent">
               See the offer <span className="arw">&rarr;</span>
             </Link>
           ) : null}

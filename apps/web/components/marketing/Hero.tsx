@@ -13,7 +13,7 @@ export function Hero() {
         <H1 measure={19} className="mb-6">
           I automate the work your business still does by hand.
         </H1>
-        <p className="mb-[18px] max-w-[46ch] text-lg leading-[1.65] text-body">
+        <p className="mb-[18px] max-w-[46ch] text-[19px] leading-[1.6] text-body">
           Invoices that send themselves. Schedules that fill themselves. Reports that arrive without anyone building them.
         </p>
         <p className="mb-8 max-w-[46ch] text-body">
@@ -30,15 +30,15 @@ export function Hero() {
         </div>
         {/* gap-y-6 keeps the 44px touch targets of two wrapped rows from overlapping. */}
         <div className="mt-7 flex flex-wrap items-baseline gap-x-[22px] gap-y-6">
-          <a href={LINKS.github} target="_blank" rel="noopener" className="l navlink tap inline-flex items-center gap-2 text-body">
+          <a href={LINKS.github} target="_blank" rel="noopener" className="go navlink tap inline-flex items-center gap-2 text-body">
             <GitHubIcon />
             GitHub
           </a>
-          <a href={LINKS.linkedin} target="_blank" rel="noopener" className="l navlink tap inline-flex items-center gap-2 text-body">
+          <a href={LINKS.linkedin} target="_blank" rel="noopener" className="go navlink tap inline-flex items-center gap-2 text-body">
             <LinkedInIcon />
             LinkedIn
           </a>
-          <Link href={LINKS.engineering} className="l navlink tap text-accent">
+          <Link href={LINKS.engineering} className="go navlink tap text-accent">
             R&eacute;sum&eacute; &amp; engineering
           </Link>
         </div>

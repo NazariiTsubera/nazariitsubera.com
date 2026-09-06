@@ -97,7 +97,7 @@ export function H2({
   return (
     <h2
       id={id}
-      className={`n text-[clamp(25px,2.8vw,33px)] leading-[1.15] tracking-[-0.022em] ${measure ? "measure" : ""} ${className}`}
+      className={`n text-[clamp(27px,3.2vw,40px)] leading-[1.12] tracking-[-0.022em] ${measure ? "measure" : ""} ${className}`}
       style={measure ? ({ "--measure": `${measure}ch` } as React.CSSProperties) : undefined}
     >
       {children}
@@ -109,7 +109,7 @@ export function H2({
 export function H1({ measure = 20, className = "", children }: { measure?: number; className?: string; children: ReactNode }) {
   return (
     <h1
-      className={`n measure text-[clamp(32px,4.8vw,54px)] leading-[1.06] tracking-[-0.026em] ${className}`}
+      className={`n measure text-[clamp(34px,5.2vw,60px)] leading-[1.05] tracking-[-0.026em] ${className}`}
       style={{ "--measure": `${measure}ch` } as React.CSSProperties}
     >
       {children}
@@ -137,7 +137,7 @@ export function PageIntro({
       <H1 measure={measure} className="mb-6">
         {title}
       </H1>
-      {children ? <div className="max-w-[58ch] space-y-4 text-lg leading-[1.65] text-body">{children}</div> : null}
+      {children ? <div className="max-w-[58ch] space-y-4 text-[19px] leading-[1.6] text-body">{children}</div> : null}
       {actions ? <div className="actions mt-8">{actions}</div> : null}
     </header>
   );

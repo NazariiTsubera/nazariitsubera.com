@@ -36,9 +36,9 @@ export function Paths() {
           >
             <span className="chip mb-2">{path.icon}</span>
             <span className="l text-accent">{path.label}</span>
-            <span className="n text-[clamp(23px,4.5vw,26px)] leading-[1.14] tracking-[-0.02em]">{path.title}</span>
+            <span className="n text-[clamp(24px,4.5vw,27px)] leading-[1.14] tracking-[-0.02em]">{path.title}</span>
             <p className="text-body">{path.body}</p>
-            <span className="l mt-auto pt-2 text-ink">
+            <span className="go mt-auto pt-2 text-ink">
               {path.cta} <span className="arw">&rarr;</span>
             </span>
           </Link>
