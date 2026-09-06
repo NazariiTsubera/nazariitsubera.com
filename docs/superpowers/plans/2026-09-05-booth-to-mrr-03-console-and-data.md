@@ -96,3 +96,16 @@ Pages: list (vendor, status, market, captured date, preview link, opened, expire
 ### Task 7: Docs and verification
 
 - [ ] AGENTS.md commands and module list; README local setup with the seed step; design deviations. Full verification: lint, typecheck, unit, integration, build. Commit `docs: document the console and worker`.
+
+
+## Deviations recorded during execution
+
+- Route folders may not start with an underscore (Next treats those as private), so local media
+  is served from `/media/[...key]` and fonts from `/fonts`.
+- `prisma migrate dev` waits on an interactive TTY prompt; `db:migrate` sets `CI=1`.
+- Better Auth 1.7 has no `auth.api.createUser` when sign-up is disabled. The seed script uses
+  `ctx.internalAdapter.createUser(user, { method: "email-password" })` plus `createAccount`.
+- `better-auth` and `zod` are direct dependencies of `apps/web` as well as core, because the app
+  imports their Next and React entrypoints directly.
+- The browser pane refused to open the app origin, so the console flow is verified by
+  `scripts/console-smoke.sh` over real HTTP rather than by clicking.

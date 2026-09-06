@@ -11,16 +11,19 @@ Plans: `docs/superpowers/plans/`. Decisions: `docs/decisions/`.
 ## Layout
 - `apps/web`: Next.js App Router. Marketing pages, `/console`, API route handlers, vendor-site
   serving by hostname. Port 3000.
-- `apps/worker`: Node process run with `tsx`. BullMQ processors. Arrives in Plan 3.
+- `apps/worker`: Node process run with `tsx`. BullMQ processors and the repeatable expiry sweep.
 - `packages/core` (`@nazariitsubera/core`): every domain module, shipped as TypeScript source with
   one `exports` entry per module. No build step.
 
 ## Commands
 - `docker compose up -d` starts local Postgres and Redis
-- `pnpm install`, `pnpm dev`, `pnpm build`
+- `pnpm install`, `pnpm dev` (web + worker), `pnpm dev:web`, `pnpm dev:worker`, `pnpm build`
 - `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm test:integration`
 - `pnpm --filter @nazariitsubera/core db:migrate -- --name <name>` creates a migration
+- `pnpm --filter @nazariitsubera/core seed:operator` creates the one console account
+- `pnpm --filter @nazariitsubera/core seed:markets` loads the San Antonio markets
 - `pnpm --filter @nazariitsubera/core publish:fixture` puts the demo vendor live locally
+- `bash scripts/console-smoke.sh` exercises the console end to end over HTTP
 - `pnpm --filter @nazariitsubera/core render:fixture [--theme <id>]` renders the demo vendor to
   `packages/core/out/`; serve it with the `template-preview` entry in `.claude/launch.json`.
 
@@ -30,6 +33,13 @@ Plans: `docs/superpowers/plans/`. Decisions: `docs/decisions/`.
 - Only `packages/core/src/template` renders React to a string.
 - Vendor hostnames are routed by `apps/web/proxy.ts` into `app/sites/[slug]`, which calls
   `serveSite`. Route folders must not start with an underscore: Next treats those as private.
+- Uploads are presigned: the browser hashes the file, asks for a PUT url, and sends the bytes
+  straight to storage. Request bodies never carry file bytes.
+- `PROVIDERS_MODE=fake` (the default outside production) selects local disk and stub providers,
+  so the whole console runs with no cloud credentials.
+- A `Job` row in Postgres is created before the BullMQ enqueue and is what the console reads.
+  Redis only holds work in flight.
+- Sign-up is disabled. The single operator account exists only because the seed script made it.
 - Domain modules follow `service + repository`: route handlers parse, authenticate, call a
   service, return. Services own business rules and transactions. Repositories own queries.
 - Zod schemas live next to their domain; types are inferred from them. No duplicate DTOs.
@@ -75,5 +85,10 @@ start `pnpm --filter web start`, pre-deploy `pnpm --filter @nazariitsubera/core 
 Custom domains `nazariitsubera.com` and `*.nazariitsubera.com` are attached to it. DNS is on
 Cloudflare, proxied, SSL mode Full.
 
-Required variables: `DATABASE_URL` (reference `${{Postgres.DATABASE_URL}}`), `SITE_ROOT_DOMAIN`,
-`NEXT_PUBLIC_APP_URL`, `OPERATOR_NAME`, `OPERATOR_PHONE`, `PREVIEW_DAYS`.
+The `worker` service runs from the same repo with start `pnpm --filter worker start` and no
+public networking.
+
+Required variables on both services: `DATABASE_URL` (reference `${{Postgres.DATABASE_URL}}`),
+`REDIS_URL` (`${{Redis.REDIS_URL}}`), `BETTER_AUTH_SECRET`, `BETTER_AUTH_URL`,
+`SITE_ROOT_DOMAIN`, `NEXT_PUBLIC_APP_URL`, `OPERATOR_NAME`, `OPERATOR_PHONE`, `PREVIEW_DAYS`,
+`PROVIDERS_MODE=real`, `ASSETS_PUBLIC_URL`, and the `R2_*` credentials.

@@ -11,8 +11,14 @@ Personal consulting site and the Booth to MRR vendor-website engine, in one pnpm
 ```sh
 docker compose up -d
 pnpm install
+cp .env.example .env          # then set BETTER_AUTH_SECRET, OPERATOR_EMAIL, OPERATOR_PASSWORD
+pnpm --filter @nazariitsubera/core db:migrate:deploy
+pnpm --filter @nazariitsubera/core seed:operator
+pnpm --filter @nazariitsubera/core seed:markets
 pnpm dev
 ```
+
+The console is at http://localhost:3000/console.
 
 Open http://localhost:3000.
 
