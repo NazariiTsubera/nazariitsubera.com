@@ -30,6 +30,12 @@ enum AuthoredBy {
 
 enum EventType {
   vendor_created
+  capture_uploaded
+  asset_uploaded
+  generation_started
+  generation_succeeded
+  generation_failed
+  sms_link_tapped
   preview_published
   preview_opened
   preview_extended
@@ -37,6 +43,18 @@ enum EventType {
   unpublished
   marked_won
   marked_lost
+}
+
+model Market {
+  id           String   @id @default(uuid())
+  slug         String   @unique
+  name         String
+  city         String
+  address      String?
+  mapsUrl      String?
+  scheduleNote String?
+  createdAt    DateTime @default(now())
+  vendors      Vendor[]
 }
 
 model Vendor {
@@ -47,6 +65,9 @@ model Vendor {
   contactName        String?
   phone              String
   instagramHandle    String?
+  marketId           String?
+  market             Market?       @relation(fields: [marketId], references: [id])
+  bestSellerNote     String?
   slug               String        @unique
   status             VendorStatus  @default(captured)
   tier               VendorTier    @default(none)
@@ -65,6 +86,66 @@ model Vendor {
   notes              String?
   versions           SiteVersion[] @relation("VendorVersions")
   events             Event[]
+  captures           Capture[]
+  assets             Asset[]
+}
+
+enum TranscriptStatus {
+  none
+  pending
+  done
+  failed
+}
+
+enum AssetKind {
+  product
+  scene
+  person
+}
+
+enum AssetStatus {
+  uploaded
+  processed
+  failed
+}
+
+model Capture {
+  id               String           @id @default(uuid())
+  vendorId         String
+  vendor           Vendor           @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+  audioKey         String
+  audioMime        String
+  audioBytes       Int
+  audioSha256      String
+  durationSec      Int?
+  transcript       String?
+  transcriptStatus TranscriptStatus @default(none)
+  operatorPrompt   String?
+  createdAt        DateTime         @default(now())
+
+  @@unique([vendorId, audioSha256])
+}
+
+model Asset {
+  id          String      @id @default(uuid())
+  vendorId    String
+  vendor      Vendor      @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+  originalKey String
+  contentType String
+  bytes       Int
+  sha256      String
+  kind        AssetKind   @default(product)
+  orderIndex  Int         @default(0)
+  isHero      Boolean     @default(false)
+  alt         String?
+  cutoutKey   String?
+  derived     Json?
+  status      AssetStatus @default(uploaded)
+  error       String?
+  createdAt   DateTime    @default(now())
+
+  @@unique([vendorId, sha256])
+  @@index([vendorId, orderIndex])
 }
 
 model SiteVersion {

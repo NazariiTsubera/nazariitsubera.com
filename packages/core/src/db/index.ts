@@ -1,7 +1,16 @@
 import { PrismaClient } from "@prisma/client";
 
-export { Prisma, AuthoredBy, EventType, VendorStatus, VendorTier } from "@prisma/client";
-export type { Event, SiteVersion, Vendor } from "@prisma/client";
+export {
+  AssetKind,
+  AssetStatus,
+  AuthoredBy,
+  EventType,
+  Prisma,
+  TranscriptStatus,
+  VendorStatus,
+  VendorTier,
+} from "@prisma/client";
+export type { Asset, Capture, Event, Market, SiteVersion, Vendor } from "@prisma/client";
 
 const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
 

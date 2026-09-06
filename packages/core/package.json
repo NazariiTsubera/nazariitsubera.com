@@ -13,7 +13,11 @@
     "./hosting": "./src/hosting/index.ts",
     "./sites": "./src/sites/index.ts",
     "./storage": "./src/storage/index.ts",
-    "./auth": "./src/auth/index.ts"
+    "./auth": "./src/auth/index.ts",
+    "./markets": "./src/markets/index.ts",
+    "./vendors": "./src/vendors/index.ts",
+    "./assets": "./src/assets/index.ts",
+    "./captures": "./src/captures/index.ts"
   },
   "scripts": {
     "typecheck": "tsc --noEmit -p tsconfig.json",
@@ -26,7 +30,8 @@
     "db:studio": "node --env-file-if-exists=../../.env node_modules/prisma/build/index.js studio",
     "test:integration": "node --env-file-if-exists=../../.env node_modules/vitest/vitest.mjs run --config vitest.integration.config.ts",
     "publish:fixture": "node --env-file-if-exists=../../.env --import tsx scripts/publish-fixture.ts",
-    "seed:operator": "node --env-file-if-exists=../../.env --import tsx scripts/seed-operator.ts"
+    "seed:operator": "node --env-file-if-exists=../../.env --import tsx scripts/seed-operator.ts",
+    "seed:markets": "node --env-file-if-exists=../../.env --import tsx scripts/seed-markets.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.900.0",
