@@ -1,25 +1,32 @@
-# Lumen Tools
+# nazariitsubera.com
 
-A Next.js, TypeScript, and Tailwind landing page inspired by the structure of
-Synthiq, with new branding and original copy.
+Personal consulting site and the Booth to MRR vendor-website engine, in one pnpm workspace.
 
-## Tech Stack
-
-- Next.js App Router
-- TypeScript
-- Tailwind CSS
+- `apps/web`: Next.js app. Marketing pages, operator console, API routes, vendor-site serving.
+- `apps/worker`: background worker (arrives in Plan 3).
+- `packages/core`: `@nazariitsubera/core`, every domain module, consumed as TypeScript source.
 
 ## Run locally
 
 ```sh
-npm install
-npm run dev
+pnpm install
+pnpm dev
 ```
 
-Open `http://localhost:3000`.
+Open http://localhost:3000.
 
-## Build
+## Checks
 
 ```sh
-npm run build
+pnpm lint
+pnpm typecheck
+pnpm test
+pnpm build
 ```
+
+## Docs
+
+- Design: `docs/superpowers/specs/2026-09-05-booth-to-mrr-engine-design.md`
+- Plans: `docs/superpowers/plans/`
+- Decisions: `docs/decisions/`
+- Working guide for agents: `AGENTS.md`
