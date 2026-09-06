@@ -24,7 +24,8 @@ async function main(): Promise<void> {
     return;
   }
 
-  const user = await ctx.internalAdapter.createUser({ email, name, emailVerified: true });
+  // createUser takes (user, source); "seed" is recorded as the origin of this account.
+  const user = await ctx.internalAdapter.createUser({ email, name, emailVerified: true }, "seed");
   await ctx.internalAdapter.createAccount({
     userId: user.id,
     providerId: "credential",
