@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 
 import { CtaBand } from "@/components/marketing/CtaBand";
-import { H2, Label, PageIntro, Section } from "@/components/marketing/Section";
+import { GRID, H2, Label, PageIntro, Section } from "@/components/marketing/Section";
 import { LINKS } from "@/components/marketing/links";
 
 export const metadata: Metadata = {
@@ -31,7 +31,7 @@ export default function AboutPage() {
         </p>
       </PageIntro>
 
-      <Section className="grid grid-cols-[repeat(auto-fit,minmax(260px,1fr))] items-start gap-[clamp(24px,4vw,52px)]">
+      <Section className={GRID.even}>
         <div className="rv">
           <Image
             src="/portrait.png"
@@ -40,7 +40,7 @@ export default function AboutPage() {
             height={1254}
             sizes="(min-width: 640px) 340px, 100vw"
             priority
-            className="h-auto w-full max-w-[340px]"
+            className="h-auto w-full max-w-[260px] sm:max-w-[340px]"
           />
         </div>
         <div className="rv space-y-4">
@@ -62,14 +62,14 @@ export default function AboutPage() {
         </div>
       </Section>
 
-      <Section className="grid grid-cols-1 items-start gap-[clamp(24px,4vw,52px)] min-[860px]:grid-cols-[minmax(240px,1fr)_minmax(0,1.9fr)]">
+      <Section className={GRID.side}>
         <div className="rv">
           <Label className="mb-5">At a glance</Label>
-          <H2 className="max-w-[14ch]">The short version.</H2>
+          <H2 measure={14}>The short version.</H2>
         </div>
         <dl className="rv min-w-0">
           {FACTS.map(([term, detail]) => (
-            <div key={term} className="grid grid-cols-[minmax(96px,138px)_1fr] gap-x-5 border-t border-ink/[.14] py-3.5">
+            <div key={term} className="grid grid-cols-1 gap-y-1 border-t border-ink/[.14] py-3.5 sm:grid-cols-[minmax(96px,150px)_1fr] sm:gap-x-5 sm:gap-y-0">
               <dt className="l text-muted">{term}</dt>
               <dd className="m-0 text-body">{detail}</dd>
             </div>

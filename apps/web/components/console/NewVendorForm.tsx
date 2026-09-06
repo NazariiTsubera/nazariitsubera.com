@@ -41,26 +41,24 @@ export function NewVendorForm({ markets, consentText }: { markets: Market[]; con
     }
   }
 
-  const field = "min-h-12 w-full rounded-lg border border-ink/20 bg-white px-3 text-base";
-
   return (
     <main className="p-4">
       <form onSubmit={onSubmit} className="flex flex-col gap-4 pb-24">
-        <label className="flex flex-col gap-1 text-sm">
+        <label className="ui-label">
           Business name
-          <input name="businessName" required autoFocus className={field} />
+          <input name="businessName" required autoFocus className="ui-field" />
         </label>
-        <label className="flex flex-col gap-1 text-sm">
+        <label className="ui-label">
           Phone
-          <input name="phone" type="tel" inputMode="tel" required placeholder="(210) 555-0123" className={field} />
+          <input name="phone" type="tel" inputMode="tel" required placeholder="(210) 555-0123" className="ui-field" />
         </label>
-        <label className="flex flex-col gap-1 text-sm">
+        <label className="ui-label">
           Contact name
-          <input name="contactName" className={field} />
+          <input name="contactName" className="ui-field" />
         </label>
-        <label className="flex flex-col gap-1 text-sm">
+        <label className="ui-label">
           Market
-          <select value={marketId} onChange={(e) => setMarketId(e.target.value)} className={field}>
+          <select value={marketId} onChange={(e) => setMarketId(e.target.value)} className="ui-field">
             <option value="">Not at a market</option>
             {markets.map((market) => (
               <option key={market.id} value={market.id}>
@@ -69,33 +67,29 @@ export function NewVendorForm({ markets, consentText }: { markets: Market[]; con
             ))}
           </select>
         </label>
-        <label className="flex flex-col gap-1 text-sm">
+        <label className="ui-label">
           Instagram
-          <input name="instagramHandle" placeholder="@handle" className={field} />
+          <input name="instagramHandle" placeholder="@handle" className="ui-field" />
         </label>
-        <label className="flex flex-col gap-1 text-sm">
+        <label className="ui-label">
           Best seller
-          <input name="bestSellerNote" placeholder="Which is your best seller?" className={field} />
+          <input name="bestSellerNote" placeholder="Which is your best seller?" className="ui-field" />
         </label>
 
-        <label className="flex items-start gap-3 rounded-lg border border-ink/20 bg-white p-3 text-sm">
+        <label className="ui-card flex items-start gap-3 text-sm">
           <input
             type="checkbox"
             checked={consent}
             onChange={(e) => setConsent(e.target.checked)}
-            className="mt-1 size-5 shrink-0"
+            className="mt-0.5 size-6 shrink-0"
             required
           />
           <span>{consentText}</span>
         </label>
 
-        {error ? <p className="text-sm text-magenta-ink">{error}</p> : null}
+        {error ? <p className="ui-error">{error}</p> : null}
 
-        <button
-          type="submit"
-          disabled={pending || !consent}
-          className="min-h-14 rounded-lg bg-ink px-4 text-base font-medium text-on-dark disabled:opacity-50"
-        >
+        <button type="submit" disabled={pending || !consent} className="ui-btn ui-btn-lg ui-btn-primary">
           {pending ? "Saving…" : "Start capture"}
         </button>
       </form>

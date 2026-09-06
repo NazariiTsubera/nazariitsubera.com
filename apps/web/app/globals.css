@@ -5,6 +5,28 @@
 @layer base {
   :root {
     color-scheme: light;
+
+    /* One spacing scale for the whole site. Every shell, section and band reads these, so the
+       page keeps a single rhythm instead of each component inventing its own clamp. */
+    --gutter: clamp(20px, 5vw, 48px);
+    --section-y: clamp(44px, 4.5vw, 58px);
+    --band-y: clamp(52px, 6vw, 76px);
+    --page-top: clamp(36px, 5vw, 66px);
+    --page-bottom: clamp(36px, 5vw, 60px);
+    --header-h: 60px;
+    --rule: rgba(22, 26, 26, 0.14);
+    --rule-strong: rgba(22, 26, 26, 0.18);
+  }
+
+  @media (min-width: 768px) {
+    :root {
+      --header-h: 76px;
+    }
+  }
+
+  html {
+    /* Anchors must clear the sticky header. */
+    scroll-padding-top: calc(var(--header-h) + 16px);
   }
 
   body {
@@ -23,6 +45,26 @@
     display: block;
     max-width: 100%;
   }
+
+  /* Keyboard focus is visible everywhere; pointer focus stays quiet. */
+  :focus-visible {
+    outline: 2px solid #1a5490;
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .armed .rv,
+    .armed .rv.in {
+      opacity: 1;
+      transform: none;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
 }
 
 @layer components {
@@ -34,6 +76,34 @@
     @apply font-mono uppercase;
     font-size: 11.5px;
     letter-spacing: 0.14em;
+  }
+
+  /* A `ch` measure is a wide-screen nicety: it exists so a heading fits the narrow column of a
+     two-up section. Below that width there is no narrow column, and the measure only wraps the
+     heading into a ribbon beside empty space, so it applies from the same breakpoint the
+     two-column layouts do. */
+  .measure {
+    max-width: none;
+  }
+  @media (min-width: 860px) {
+    .measure {
+      max-width: var(--measure);
+    }
+  }
+
+  /* Grows the touch target of a small inline link to 44px without moving anything around it. */
+  .tap {
+    position: relative;
+  }
+  .tap::before {
+    content: "";
+    position: absolute;
+    left: -8px;
+    right: -8px;
+    top: 50%;
+    height: 100%;
+    min-height: 44px;
+    transform: translateY(-50%);
   }
 
   /* Scroll reveal. `.armed` is added only once JS is running, so content is never stuck hidden. */
@@ -51,6 +121,30 @@
     transform: none;
   }
 
+  /* The sticky bar. Its hairline appears only once the page has moved, so at rest the first
+     section's own top rule is the only line on screen. */
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(243, 244, 243, 0.92);
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    border-bottom: 1px solid transparent;
+    transition:
+      border-color 0.3s ease,
+      box-shadow 0.3s ease;
+  }
+  .site-header[data-scrolled="true"] {
+    border-bottom-color: var(--rule);
+    box-shadow: 0 14px 34px -30px rgba(22, 26, 26, 0.75);
+  }
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .site-header {
+      @apply bg-paper;
+    }
+  }
+
   .navlink {
     position: relative;
     transition: color 0.3s ease;
@@ -66,12 +160,6 @@
     transform: scaleX(0);
     transform-origin: left;
     transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
-  }
-  .navlink:hover::after {
-    transform: scaleX(1);
-  }
-  .navlink:hover {
-    @apply text-accent;
   }
 
   .arw {
@@ -98,71 +186,61 @@
     transform-origin: left;
     transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1);
   }
-  .path:hover::before {
-    transform: scaleX(1);
-  }
-  .path:hover {
-    background: #e9ebe9;
-    border-color: rgba(22, 26, 26, 0.34);
-  }
-  .path:hover .arw {
-    transform: translateX(10px);
-  }
 
   .shot {
     transition:
       transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1),
       box-shadow 0.35s ease;
   }
-  .shot:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 22px 44px -26px rgba(22, 26, 26, 0.45);
-  }
 
-  .cta {
-    @apply inline-flex h-14 items-center gap-2.5 whitespace-nowrap border border-accent bg-accent px-7 font-mono text-[13px] text-[#f7f8f8];
+  /* One button scale. `cta` is the primary, `cta-ghost` its outline twin, `inkbtn` the compact
+     one. They share a box so a row of them never comes out ragged. */
+  .cta,
+  .cta-ghost,
+  .inkbtn {
+    @apply inline-flex items-center justify-center gap-2.5 border text-center font-mono;
     letter-spacing: 0.025em;
     transition:
       background 0.3s ease,
+      color 0.3s ease,
+      border-color 0.3s ease,
       transform 0.3s ease,
       box-shadow 0.3s ease;
   }
-  .cta:hover {
-    @apply bg-accent-deep text-[#f7f8f8];
-    transform: translateY(-1px);
-    box-shadow: 0 12px 30px rgba(26, 84, 144, 0.28);
+  .cta,
+  .cta-ghost {
+    @apply min-h-[52px] px-6 py-3 text-[13px] sm:min-h-14 sm:px-7;
+  }
+  .inkbtn {
+    @apply min-h-11 px-[18px] py-2 text-[13px];
+  }
+
+  .cta {
+    @apply border-accent bg-accent text-[#f7f8f8];
   }
   .cta:active {
     transform: translateY(0);
     box-shadow: none;
   }
-  .cta:hover .arw {
-    transform: translateX(5px);
-  }
-
-  .cta-ghost {
-    @apply inline-flex h-14 items-center gap-2.5 whitespace-nowrap border border-ink bg-transparent px-7 font-mono text-[13px] text-ink;
-    letter-spacing: 0.025em;
-    transition:
-      background 0.3s ease,
-      color 0.3s ease,
-      transform 0.3s ease;
-  }
-  .cta-ghost:hover {
-    @apply bg-ink text-paper;
-    transform: translateY(-1px);
-  }
-
+  .cta-ghost,
   .inkbtn {
-    @apply inline-flex items-center whitespace-nowrap border border-ink px-[18px] py-[11px] font-mono text-[13px] text-ink;
-    letter-spacing: 0.02em;
-    transition:
-      background 0.3s ease,
-      color 0.3s ease,
-      border-color 0.3s ease;
+    @apply border-ink bg-transparent text-ink;
   }
-  .inkbtn:hover {
-    @apply bg-ink text-paper;
+
+  /* A row of buttons: full width and stacked on a phone, inline once there is room for both. */
+  .actions {
+    @apply flex flex-col items-stretch gap-3;
+  }
+  .actions > * {
+    @apply w-full;
+  }
+  @media (min-width: 480px) {
+    .actions {
+      @apply flex-row flex-wrap items-center gap-x-4 gap-y-3;
+    }
+    .actions > * {
+      @apply w-auto;
+    }
   }
 
   /* Full-bleed band inside the centred column. The root must have overflow-x: clip. */
@@ -171,38 +249,159 @@
     clip-path: inset(0 -100vmax);
   }
 
-  /* Service rows. */
+  /* Service rows. Two columns on a phone (the trailing arrow drops under the text), three once
+     there is room to hang it off the end. */
   .svc {
     position: relative;
     display: grid;
-    grid-template-columns: auto 1fr auto;
-    gap: 6px 22px;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 6px 16px;
     align-items: baseline;
-    padding: 24px 0;
-    border-top: 1px solid rgba(22, 26, 26, 0.16);
+    padding: 20px 0;
+    border-top: 1px solid var(--rule-strong);
     transition:
       padding-left 0.45s cubic-bezier(0.2, 0.7, 0.2, 1),
       background 0.45s ease;
   }
-  .svc:hover {
-    padding-left: 16px;
-    background: rgba(26, 84, 144, 0.05);
-  }
-  .svc:hover .arw {
-    transform: translateX(10px);
+  .svc-go {
+    grid-column: 2;
+    justify-self: end;
   }
   .svc-i {
     transition: color 0.45s ease;
   }
-  .svc:hover .svc-i {
-    @apply text-accent;
+  @media (min-width: 700px) {
+    .svc {
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      gap: 6px 22px;
+      padding: 24px 0;
+    }
+    .svc-go {
+      grid-column: auto;
+      align-self: center;
+    }
   }
 
   .flink {
     transition: color 0.25s ease;
   }
-  .flink:hover {
-    color: #ffffff;
+
+  /* Hover effects only where there is a real pointer: on a touch screen they stick after a tap
+     and make every card look half-pressed. */
+  @media (hover: hover) and (pointer: fine) {
+    .navlink:hover::after {
+      transform: scaleX(1);
+    }
+    .navlink:hover {
+      @apply text-accent;
+    }
+    .path:hover::before {
+      transform: scaleX(1);
+    }
+    .path:hover {
+      background: #e9ebe9;
+      border-color: rgba(22, 26, 26, 0.34);
+    }
+    .path:hover .arw {
+      transform: translateX(10px);
+    }
+    .shot:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 22px 44px -26px rgba(22, 26, 26, 0.45);
+    }
+    .cta:hover {
+      @apply bg-accent-deep text-[#f7f8f8];
+      transform: translateY(-1px);
+      box-shadow: 0 12px 30px rgba(26, 84, 144, 0.28);
+    }
+    .cta:hover .arw {
+      transform: translateX(5px);
+    }
+    .cta-ghost:hover,
+    .inkbtn:hover {
+      @apply bg-ink text-paper;
+    }
+    .cta-ghost:hover {
+      transform: translateY(-1px);
+    }
+    .svc:hover {
+      padding-left: 16px;
+      background: rgba(26, 84, 144, 0.05);
+    }
+    .svc:hover .arw {
+      transform: translateX(10px);
+    }
+    .svc:hover .svc-i {
+      @apply text-accent;
+    }
+    .flink:hover {
+      color: #ffffff;
+    }
+  }
+
+  /* Touch feedback, since there is no hover to give it. */
+  @media (hover: none) {
+    .path:active,
+    .svc:active {
+      background: rgba(26, 84, 144, 0.06);
+    }
+    .cta:active {
+      @apply bg-accent-deep;
+    }
+  }
+}
+
+@layer components {
+  /* The operator console. Touch-first, and deliberately one control scale, one radius and one
+     field so a panel added later cannot drift away from the rest. */
+  .ui-h2 {
+    @apply font-serif text-xl tracking-[-0.01em];
+  }
+  .ui-btn {
+    @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-lg px-4 text-center text-sm font-medium;
+    transition:
+      background 0.2s ease,
+      opacity 0.2s ease;
+  }
+  .ui-btn-lg {
+    @apply min-h-14 text-base;
+  }
+  .ui-btn-sm {
+    @apply min-h-10 gap-1 rounded-md px-2 text-xs font-normal;
+  }
+  .ui-btn-primary {
+    @apply bg-ink text-on-dark;
+  }
+  .ui-btn-quiet {
+    @apply bg-ink/10 text-ink;
+  }
+  .ui-btn-accent {
+    @apply bg-accent text-white;
+  }
+  .ui-btn-danger {
+    @apply bg-magenta-ink text-white;
+  }
+  .ui-btn:disabled {
+    @apply opacity-50;
+  }
+  .ui-field {
+    @apply min-h-12 w-full rounded-lg border border-ink/20 bg-white px-3 py-2.5 text-base outline-none;
+    transition: border-color 0.2s ease;
+  }
+  .ui-field:focus {
+    @apply border-accent;
+  }
+  .ui-label {
+    @apply flex flex-col gap-1.5 text-sm text-body;
+  }
+  .ui-card {
+    @apply rounded-lg border border-ink/15 bg-white p-3;
+  }
+  .ui-note {
+    @apply text-sm text-mono;
+  }
+  .ui-error {
+    @apply text-sm text-magenta-ink;
   }
 }
 
@@ -282,11 +481,11 @@
   }
   .article hr {
     border: 0;
-    border-top: 1px solid rgba(22, 26, 26, 0.14);
+    border-top: 1px solid var(--rule);
     margin: 2.5em 0;
   }
   .article img {
-    border: 1px solid rgba(22, 26, 26, 0.16);
+    border: 1px solid var(--rule-strong);
   }
   .article figcaption {
     @apply l text-muted;

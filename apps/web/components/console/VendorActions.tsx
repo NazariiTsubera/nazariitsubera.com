@@ -50,23 +50,22 @@ export function VendorActions({ vendorId, status, previewUrl, previewToken, smsB
   }
 
   const tokenUrl = previewUrl ? `${previewUrl}/?p=${previewToken}` : null;
-  const button = "min-h-12 rounded-lg px-4 text-sm font-medium";
 
   return (
     <section className="flex flex-col gap-3">
-      <h2 className="font-serif text-xl">Site</h2>
+      <h2 className="ui-h2">Site</h2>
 
       <button
         type="button"
         onClick={() => act({ action: "generate", vendorId }, "generate")}
         disabled={pending !== null}
-        className={`${button} bg-ink text-on-dark disabled:opacity-50`}
+        className="ui-btn ui-btn-lg ui-btn-primary"
       >
         {pending === "generate" ? "Starting…" : hasPublished ? "Regenerate site" : "Generate site"}
       </button>
 
       {job?.status ? (
-        <p className="text-sm text-mono">
+        <p className="ui-note">
           Job {job.status}
           {job.steps?.length ? ` · ${job.steps.map((s) => `${s.name}:${s.status}`).join(", ")}` : ""}
           {job.error ? ` · ${job.error}` : ""}
@@ -74,12 +73,12 @@ export function VendorActions({ vendorId, status, previewUrl, previewToken, smsB
       ) : null}
 
       {tokenUrl ? (
-        <div className="flex flex-col gap-2 rounded-lg border border-ink/15 bg-white p-3">
-          <a href={tokenUrl} target="_blank" rel="noreferrer" className="break-all text-sm underline">
+        <div className="ui-card flex flex-col gap-2">
+          <a href={tokenUrl} target="_blank" rel="noreferrer" className="break-all py-1 text-sm underline">
             {previewUrl}
           </a>
           <div className="flex gap-2">
-            <a href={`sms:${phone}?&body=${encodeURIComponent(smsBody)}`} className={`${button} flex-1 bg-eyebrow text-center leading-[3rem] text-white`}>
+            <a href={`sms:${phone}?&body=${encodeURIComponent(smsBody)}`} className="ui-btn ui-btn-accent flex-1">
               Text vendor
             </a>
             <button
@@ -89,7 +88,7 @@ export function VendorActions({ vendorId, status, previewUrl, previewToken, smsB
                 setCopied(true);
                 setTimeout(() => setCopied(false), 1500);
               }}
-              className={`${button} flex-1 bg-ink/10`}
+              className="ui-btn ui-btn-quiet flex-1"
             >
               {copied ? "Copied" : "Copy link"}
             </button>
@@ -98,27 +97,27 @@ export function VendorActions({ vendorId, status, previewUrl, previewToken, smsB
       ) : null}
 
       <div className="grid grid-cols-2 gap-2">
-        <button type="button" onClick={() => act({ action: "extend", vendorId }, "extend")} className={`${button} bg-ink/10`}>
+        <button type="button" onClick={() => act({ action: "extend", vendorId }, "extend")} className="ui-btn ui-btn-quiet">
           Extend preview
         </button>
-        <button type="button" onClick={() => act({ action: "republish", vendorId }, "republish")} className={`${button} bg-ink/10`}>
+        <button type="button" onClick={() => act({ action: "republish", vendorId }, "republish")} className="ui-btn ui-btn-quiet">
           Republish
         </button>
-        <button type="button" onClick={() => act({ action: "won", vendorId, tier: "storefront" }, "won")} className={`${button} bg-ink/10`}>
+        <button type="button" onClick={() => act({ action: "won", vendorId, tier: "storefront" }, "won")} className="ui-btn ui-btn-quiet">
           Mark won
         </button>
-        <button type="button" onClick={() => act({ action: "lost", vendorId }, "lost")} className={`${button} bg-ink/10`}>
+        <button type="button" onClick={() => act({ action: "lost", vendorId }, "lost")} className="ui-btn ui-btn-quiet">
           Mark lost
         </button>
         {hasPublished ? (
-          <button type="button" onClick={() => act({ action: "unpublish", vendorId }, "unpublish")} className={`${button} col-span-2 bg-ink/10`}>
+          <button type="button" onClick={() => act({ action: "unpublish", vendorId }, "unpublish")} className="ui-btn ui-btn-quiet col-span-2">
             Unpublish
           </button>
         ) : null}
       </div>
 
-      <p className="text-xs text-faint">Status: {status}</p>
-      {error ? <p className="text-sm text-magenta-ink">{error}</p> : null}
+      <p className="font-mono text-xs uppercase tracking-wide text-faint">Status: {status}</p>
+      {error ? <p className="ui-error">{error}</p> : null}
     </section>
   );
 }

@@ -46,9 +46,9 @@ export default async function VendorPage({ params }: Params) {
 
   return (
     <main className="flex flex-col gap-8 p-4 pb-24">
-      <header>
+      <header className="flex flex-col gap-1">
         <h1 className="font-serif text-2xl leading-tight">{vendor.businessName}</h1>
-        <p className="text-sm text-mono">
+        <p className="ui-note">
           {vendor.phone}
           {vendor.market ? ` · ${vendor.market.name}` : ""}
         </p>

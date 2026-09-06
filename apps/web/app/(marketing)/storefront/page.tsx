@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { prisma } from "@nazariitsubera/core/db";
 import { env } from "@nazariitsubera/core/env";
 
-import { Band, H2, Label, PageIntro, Section } from "@/components/marketing/Section";
+import { Band, GRID, H2, Label, PageIntro, Section } from "@/components/marketing/Section";
 import { LINKS } from "@/components/marketing/links";
 
 export const dynamic = "force-dynamic";
@@ -56,7 +56,7 @@ export default async function StorefrontPage() {
         </p>
       </PageIntro>
 
-      <Band tone="dark" className="grid grid-cols-[repeat(auto-fit,minmax(260px,1fr))] items-start gap-[clamp(24px,4vw,52px)]">
+      <Band tone="dark" className={GRID.even}>
         <div className="rv">
           <div className="l mb-5 text-dark-label">The price</div>
           <p className="n text-[clamp(28px,4vw,44px)] leading-[1.06] tracking-[-0.026em]">$299 to set up, then $59 a month.</p>
@@ -75,9 +75,11 @@ export default async function StorefrontPage() {
       </Band>
 
       <Section>
-        <Label className="rv mb-[22px]">How it works</Label>
-        <H2 className="rv mb-[34px] max-w-[24ch]">Ten minutes at your booth.</H2>
-        <ol className="grid grid-cols-[repeat(auto-fit,minmax(230px,1fr))] gap-[clamp(20px,3vw,34px)]">
+        <Label className="rv mb-5">How it works</Label>
+        <H2 measure={24} className="rv mb-[34px]">
+          Ten minutes at your booth.
+        </H2>
+        <ol className={GRID.cards3}>
           {STEPS.map((step) => (
             <li key={step.n} className="rv border-t-2 border-accent pt-4">
               <div className="l mb-3 text-accent">{step.n}</div>
@@ -91,14 +93,14 @@ export default async function StorefrontPage() {
       {portfolio.length > 0 ? (
         <Section>
           <H2 className="rv mb-7">Vendors I have built for</H2>
-          <ul className="grid grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-[clamp(18px,2.5vw,26px)]">
+          <ul className={GRID.cards2}>
             {portfolio.map((vendor) => (
               <li key={vendor.id} className="rv">
                 <a
                   href={`https://${vendor.slug}.${rootDomain}`}
                   target="_blank"
                   rel="noreferrer"
-                  className="path flex flex-col gap-1.5 border border-ink/[.18] px-[26px] py-6"
+                  className="path flex flex-col gap-1.5 border border-ink/[.18] px-[clamp(20px,5vw,26px)] py-6"
                 >
                   <span className="n text-[21px] tracking-[-0.02em]">{vendor.businessName}</span>
                   {vendor.market ? <span className="text-body">{vendor.market.name}</span> : null}
@@ -112,18 +114,20 @@ export default async function StorefrontPage() {
         </Section>
       ) : null}
 
-      <Band className="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] items-end gap-[clamp(24px,4vw,52px)] !py-[clamp(44px,6vw,76px)]">
+      <Band className={`${GRID.even} wide:items-end`}>
         <div className="rv">
           <Label className="mb-5">Find me at the market</Label>
-          <h2 className="n mb-5 max-w-[16ch] text-[clamp(28px,4vw,44px)] leading-[1.06] tracking-[-0.026em]">
+          <h2 className="n measure mb-5 text-[clamp(28px,4vw,44px)] leading-[1.06] tracking-[-0.026em] [--measure:16ch]">
             I work San Antonio markets on weekends.
           </h2>
           <p className="max-w-[44ch] text-body">If you would rather not wait, text me and I will come to you.</p>
         </div>
-        <div className="rv flex flex-col items-start gap-3.5">
-          <a href={`tel:${OPERATOR_PHONE}`} className="cta">
-            Call or text {OPERATOR_NAME} <span className="arw">&rarr;</span>
-          </a>
+        <div className="rv flex flex-col gap-3.5">
+          <div className="actions">
+            <a href={`tel:${OPERATOR_PHONE}`} className="cta">
+              Call or text {OPERATOR_NAME} <span className="arw">&rarr;</span>
+            </a>
+          </div>
           <span className="l text-muted">{OPERATOR_PHONE}</span>
         </div>
       </Band>

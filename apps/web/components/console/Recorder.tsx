@@ -94,20 +94,18 @@ export function Recorder({ vendorId, captureId, prompt }: Props) {
 
   return (
     <section className="flex flex-col gap-3">
-      <h2 className="font-serif text-xl">Conversation</h2>
+      <h2 className="ui-h2">Conversation</h2>
       <button
         type="button"
         onClick={recording ? stop : start}
-        className={`min-h-14 rounded-lg px-4 text-base font-medium ${
-          recording ? "bg-magenta-ink text-white" : "bg-ink text-on-dark"
-        }`}
+        className={`ui-btn ui-btn-lg ${recording ? "ui-btn-danger" : "ui-btn-primary"}`}
       >
         {recording ? `Stop recording · ${mmss}` : currentCaptureId ? "Record again" : "Start recording"}
       </button>
-      {status ? <p className="text-sm text-mono">{status}</p> : null}
-      {error ? <p className="text-sm text-magenta-ink">{error}</p> : null}
+      {status ? <p className="ui-note">{status}</p> : null}
+      {error ? <p className="ui-error">{error}</p> : null}
 
-      <label className="flex flex-col gap-1 text-sm">
+      <label className="ui-label">
         Notes for the design
         <textarea
           value={operatorPrompt}
@@ -115,7 +113,7 @@ export function Recorder({ vendorId, captureId, prompt }: Props) {
           onBlur={savePrompt}
           rows={3}
           placeholder="Anything the recording missed, or how it should feel."
-          className="w-full rounded-lg border border-ink/20 bg-white p-3 text-base"
+          className="ui-field"
         />
       </label>
     </section>

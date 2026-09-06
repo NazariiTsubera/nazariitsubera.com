@@ -1,6 +1,6 @@
 import { FAQ } from "@/content/faq";
 
-import { H2, Label, Section } from "./Section";
+import { GRID, H2, Label, Section } from "./Section";
 
 export function Faq() {
   const schema = {
@@ -14,18 +14,24 @@ export function Faq() {
   };
 
   return (
-    <Section id="faq" className="grid grid-cols-1 items-start gap-[clamp(24px,4vw,52px)] min-[860px]:grid-cols-[minmax(240px,1fr)_minmax(0,1.9fr)]">
+    <Section id="faq" className={GRID.side}>
       <div className="rv">
         <Label className="mb-5">Questions</Label>
-        <H2 className="max-w-[14ch]">The things people ask first.</H2>
+        <H2 measure={14}>The things people ask first.</H2>
       </div>
       <div className="rv min-w-0 border-t border-ink/[.16]">
         {FAQ.map((item) => (
           <details key={item.q} className="group border-b border-ink/[.16]">
-            <summary className="flex cursor-pointer list-none items-baseline justify-between gap-6 py-5 [&::-webkit-details-marker]:hidden">
-              <span className="n text-[21px] leading-[1.25] tracking-[-0.02em]">{item.q}</span>
-              <span className="l flex-none text-accent group-open:hidden">Open</span>
-              <span className="l hidden flex-none text-muted group-open:inline">Close</span>
+            <summary className="flex cursor-pointer list-none items-start justify-between gap-5 py-5 [&::-webkit-details-marker]:hidden">
+              <span className="n text-[19px] leading-[1.3] tracking-[-0.02em] sm:text-[21px] sm:leading-[1.25]">{item.q}</span>
+              {/* One glyph that turns from a plus into a cross, rather than two labels swapping. */}
+              <span
+                aria-hidden
+                className="relative mt-1.5 block size-[18px] flex-none text-accent transition-transform duration-300 ease-soft group-open:rotate-45 group-open:text-muted"
+              >
+                <span className="absolute left-0 top-1/2 h-px w-full -translate-y-1/2 bg-current" />
+                <span className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-current" />
+              </span>
             </summary>
             <p className="max-w-[60ch] pb-6 text-body">{item.a}</p>
           </details>

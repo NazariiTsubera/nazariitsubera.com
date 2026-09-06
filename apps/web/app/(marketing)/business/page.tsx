@@ -4,7 +4,7 @@ import Link from "next/link";
 import { CtaBand } from "@/components/marketing/CtaBand";
 import { Faq } from "@/components/marketing/Faq";
 import { Process } from "@/components/marketing/Process";
-import { H2, Label, PageIntro, Section } from "@/components/marketing/Section";
+import { GRID, H2, Label, PageIntro, Section } from "@/components/marketing/Section";
 import { LINKS, SITE_URL } from "@/components/marketing/links";
 import { SERVICES } from "@/content/services";
 
@@ -55,11 +55,13 @@ export default function BusinessPage() {
         <Section
           key={item.id}
           id={item.id}
-          className="grid grid-cols-1 items-start gap-[clamp(24px,4vw,52px)] min-[860px]:grid-cols-[minmax(240px,1fr)_minmax(0,1.9fr)]"
+          className={GRID.side}
         >
           <div className="rv">
             <Label className="mb-5">{item.n}</Label>
-            <H2 className="mb-4 max-w-[16ch]">{item.title}</H2>
+            <H2 measure={16} className="mb-4">
+              {item.title}
+            </H2>
             <p className="font-mono text-[13px] text-muted">{item.tags}</p>
           </div>
           <div className="rv min-w-0">
@@ -81,16 +83,18 @@ export default function BusinessPage() {
       <Section className="rv">
         <Link
           href={LINKS.storefront}
-          className="path flex flex-wrap items-center justify-between gap-x-8 gap-y-4 border border-ink/[.18] px-[30px] py-8"
+          className="path flex flex-col gap-5 border border-ink/[.18] px-[clamp(20px,5vw,30px)] py-8 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-x-8"
         >
           <div>
             <span className="l mb-3 block text-accent">Market vendors</span>
-            <span className="n block text-[26px] leading-[1.14] tracking-[-0.02em]">A real website for your booth, live the same day.</span>
+            <span className="n block text-[clamp(23px,4.5vw,26px)] leading-[1.14] tracking-[-0.02em]">
+              A real website for your booth, live the same day.
+            </span>
             <p className="mt-3 max-w-[52ch] text-body">
               If you sell at San Antonio markets, this is the one thing I offer at a fixed, published price.
             </p>
           </div>
-          <span className="l text-ink">
+          <span className="l flex-none text-ink">
             See how it works <span className="arw">&rarr;</span>
           </span>
         </Link>

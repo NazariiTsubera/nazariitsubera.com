@@ -31,40 +31,33 @@ const COLUMNS = [
   },
 ];
 
+/** Every row is a 44px touch target; the label and the rule are the same on all three columns. */
+const ROW = "flink flex min-h-11 items-center border-b border-white/[.14] py-2 text-[15px] leading-snug text-foot-link";
+
 export function SiteFooter() {
   return (
-    <footer className="mt-[clamp(34px,4.5vw,56px)] bg-accent-deep text-foot-fg">
-      <div className="mx-auto max-w-frame px-[clamp(20px,5vw,48px)] pb-10 pt-[clamp(44px,6vw,70px)]">
-        <div className="grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-[clamp(22px,3vw,40px)]">
+    <footer className="mt-section bg-accent-deep text-foot-fg">
+      <div className="mx-auto max-w-frame px-gutter pb-10 pt-band">
+        <div className="grid grid-cols-1 gap-x-[clamp(22px,3vw,40px)] gap-y-9 sm:grid-cols-2 wide:grid-cols-4">
           <div>
-            <div className="n text-[26px] tracking-[-0.03em]">
+            <div className="n text-[26px] leading-none tracking-[-0.03em]">
               nt<span className="text-foot-label">.</span>
             </div>
-            <p className="mt-3 max-w-[30ch] text-[15px] leading-normal text-foot-link">
+            <p className="mt-4 max-w-[34ch] text-[15px] leading-normal text-foot-link">
               Backend and infrastructure engineer in San Antonio. I build production software and help local businesses
               replace the work they still do by hand.
             </p>
           </div>
           {COLUMNS.map((column) => (
             <div key={column.heading}>
-              <div className="l mb-2.5 text-foot-label">{column.heading}</div>
+              <div className="l mb-2 text-foot-label">{column.heading}</div>
               {column.items.map((item) =>
                 item.external ? (
-                  <a
-                    key={item.href}
-                    href={item.href}
-                    target="_blank"
-                    rel="noopener"
-                    className="flink block border-b border-white/[.14] py-[9px] text-[15px] leading-normal text-foot-link"
-                  >
+                  <a key={item.href} href={item.href} target="_blank" rel="noopener" className={ROW}>
                     {item.label}
                   </a>
                 ) : (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className="flink block border-b border-white/[.14] py-[9px] text-[15px] leading-normal text-foot-link"
-                  >
+                  <Link key={item.href} href={item.href} className={ROW}>
                     {item.label}
                   </Link>
                 ),

@@ -5,9 +5,6 @@ import { useState } from "react";
 
 import { post } from "./api";
 
-const BUTTON = "min-h-12 rounded-lg px-4 text-sm font-medium";
-const FIELD = "w-full rounded-lg border border-ink/20 bg-white p-3 text-base";
-
 function useAction(vendorId: string) {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
@@ -39,27 +36,27 @@ export function RegeneratePanel({ vendorId, hasPublished }: { vendorId: string; 
 
   return (
     <section className="flex flex-col gap-3">
-      <h2 className="font-serif text-xl">Change the site</h2>
+      <h2 className="ui-h2">Change the site</h2>
       <div className="grid grid-cols-2 gap-2">
-        <button type="button" onClick={() => run({ action: "regenerate_content" }, "content")} className={`${BUTTON} bg-ink/10`}>
+        <button type="button" onClick={() => run({ action: "regenerate_content" }, "content")} className="ui-btn ui-btn-quiet">
           {pending === "content" ? "Working…" : "New copy"}
         </button>
-        <button type="button" onClick={() => run({ action: "regenerate_design" }, "design")} className={`${BUTTON} bg-ink/10`}>
+        <button type="button" onClick={() => run({ action: "regenerate_design" }, "design")} className="ui-btn ui-btn-quiet">
           {pending === "design" ? "Working…" : "New design"}
         </button>
-        <button type="button" onClick={() => run({ action: "reprocess_assets" }, "assets")} className={`${BUTTON} col-span-2 bg-ink/10`}>
+        <button type="button" onClick={() => run({ action: "reprocess_assets" }, "assets")} className="ui-btn ui-btn-quiet col-span-2">
           {pending === "assets" ? "Working…" : "Reprocess photos"}
         </button>
       </div>
 
-      <label className="flex flex-col gap-1 text-sm">
+      <label className="ui-label">
         Ask for one change
         <textarea
           value={instruction}
           onChange={(e) => setInstruction(e.target.value)}
           rows={2}
           placeholder="Make the hero darker. Put the bowls first."
-          className={FIELD}
+          className="ui-field"
         />
       </label>
       <button
@@ -68,11 +65,11 @@ export function RegeneratePanel({ vendorId, hasPublished }: { vendorId: string; 
         onClick={async () => {
           if (await run({ action: "edit_design", instruction: instruction.trim() }, "edit")) setInstruction("");
         }}
-        className={`${BUTTON} bg-ink text-on-dark disabled:opacity-50`}
+        className="ui-btn ui-btn-primary"
       >
         {pending === "edit" ? "Sending…" : "Apply change"}
       </button>
-      {error ? <p className="text-sm text-magenta-ink">{error}</p> : null}
+      {error ? <p className="ui-error">{error}</p> : null}
     </section>
   );
 }
@@ -95,9 +92,9 @@ export function SettingsPanel({
 
   return (
     <section className="flex flex-col gap-3">
-      <h2 className="font-serif text-xl">Settings</h2>
+      <h2 className="ui-h2">Settings</h2>
 
-      <label className="flex flex-col gap-1 text-sm">
+      <label className="ui-label">
         Design notes
         <textarea
           value={notes}
@@ -105,16 +102,16 @@ export function SettingsPanel({
           onBlur={() => run({ action: "notes", designNotes: notes.trim() || null }, "notes")}
           rows={2}
           placeholder="How this vendor should feel."
-          className={FIELD}
+          className="ui-field"
         />
       </label>
 
-      <label className="flex flex-col gap-1 text-sm">
+      <label className="ui-label">
         Fallback theme
         <select
           defaultValue={themeOverride ?? ""}
           onChange={(e) => run({ action: "theme", themeId: e.target.value || null }, "theme")}
-          className="min-h-12 w-full rounded-lg border border-ink/20 bg-white px-3 text-base"
+          className="ui-field"
         >
           <option value="">Chosen from the tone</option>
           {themeIds.map((id) => (
@@ -125,18 +122,18 @@ export function SettingsPanel({
         </select>
       </label>
 
-      <label className="flex items-center gap-3 text-sm">
+      <label className="flex min-h-11 items-center gap-3 text-sm text-body">
         <input
           type="checkbox"
           defaultChecked={showInPortfolio}
           onChange={(e) => run({ action: "portfolio", show: e.target.checked }, "portfolio")}
-          className="size-5"
+          className="size-6"
         />
         Show on the storefront portfolio
       </label>
 
-      {pending ? <p className="text-sm text-mono">Saving…</p> : null}
-      {error ? <p className="text-sm text-magenta-ink">{error}</p> : null}
+      {pending ? <p className="ui-note">Saving…</p> : null}
+      {error ? <p className="ui-error">{error}</p> : null}
     </section>
   );
 }
@@ -151,7 +148,7 @@ export function ContentEditor({ vendorId, content }: { vendorId: string; content
 
   return (
     <section className="flex flex-col gap-3">
-      <button type="button" onClick={() => setOpen(!open)} className="text-left font-serif text-xl">
+      <button type="button" onClick={() => setOpen(!open)} aria-expanded={open} className="ui-h2 flex min-h-11 items-center gap-2 text-left">
         Content {open ? "▾" : "▸"}
       </button>
       {open ? (
@@ -164,7 +161,7 @@ export function ContentEditor({ vendorId, content }: { vendorId: string; content
             }}
             rows={16}
             spellCheck={false}
-            className={`${FIELD} font-mono text-xs`}
+            className="ui-field font-mono text-xs"
           />
           <button
             type="button"
@@ -176,12 +173,12 @@ export function ContentEditor({ vendorId, content }: { vendorId: string; content
                 setParseError("That is not valid JSON.");
               }
             }}
-            className={`${BUTTON} bg-ink text-on-dark disabled:opacity-50`}
+            className="ui-btn ui-btn-primary"
           >
             {pending === "content" ? "Saving…" : "Save and republish"}
           </button>
-          {parseError ? <p className="text-sm text-magenta-ink">{parseError}</p> : null}
-          {error ? <p className="text-sm text-magenta-ink">{error}</p> : null}
+          {parseError ? <p className="ui-error">{parseError}</p> : null}
+          {error ? <p className="ui-error">{error}</p> : null}
         </>
       ) : null}
     </section>

@@ -22,7 +22,7 @@ export function Timeline({ events }: { events: TimelineEvent[] }) {
 
   return (
     <section className="flex flex-col gap-3">
-      <h2 className="font-serif text-xl">History</h2>
+      <h2 className="ui-h2">History</h2>
       <ol className="flex flex-col gap-2 text-sm">
         {events.map((event) => {
           const meta = event.meta as Record<string, unknown> | null;

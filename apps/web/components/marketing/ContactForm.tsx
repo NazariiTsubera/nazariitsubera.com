@@ -11,8 +11,11 @@ type State =
   | { kind: "sent" }
   | { kind: "error"; message?: string; errors?: Partial<Record<Field, string>> };
 
-const FIELD = "w-full border border-ink/[.28] bg-paper px-3.5 py-3 text-ink outline-none transition-colors focus:border-accent";
+/** 16px keeps iOS from zooming the page when a field takes focus. */
+const FIELD =
+  "w-full min-h-[52px] border border-ink/[.28] bg-paper px-3.5 py-3 text-base text-ink outline-none transition-colors focus:border-accent";
 const LABEL = "l mb-2 block text-muted";
+const ERROR = "mt-1.5 text-sm text-magenta-ink";
 
 /** Posts to /api/leads (the HubSpot intake). Direct email stays visible next to it on the page. */
 export function ContactForm() {
@@ -44,7 +47,7 @@ export function ContactForm() {
 
   if (state.kind === "sent") {
     return (
-      <div className="border border-accent/30 bg-accent/5 px-7 py-8">
+      <div className="border border-accent/30 bg-accent/5 px-[clamp(20px,5vw,28px)] py-8">
         <h2 className="n mb-2 text-2xl tracking-[-0.02em]">Thank you.</h2>
         <p className="max-w-[44ch] text-body">
           Your message is on its way. I read every one myself and usually reply within a day.
@@ -53,7 +56,7 @@ export function ContactForm() {
     );
   }
 
-  const errors = state.kind === "error" ? state.errors ?? {} : {};
+  const errors = state.kind === "error" ? (state.errors ?? {}) : {};
 
   return (
     <form onSubmit={submit} noValidate className="flex flex-col gap-5">
@@ -63,14 +66,23 @@ export function ContactForm() {
             Your name
           </label>
           <input id="name" name="name" autoComplete="name" required maxLength={120} className={FIELD} />
-          {errors.name ? <p className="mt-1.5 text-sm text-magenta-ink">{errors.name}</p> : null}
+          {errors.name ? <p className={ERROR}>{errors.name}</p> : null}
         </div>
         <div>
           <label htmlFor="email" className={LABEL}>
             Email
           </label>
-          <input id="email" name="email" type="email" autoComplete="email" required maxLength={254} className={FIELD} />
-          {errors.email ? <p className="mt-1.5 text-sm text-magenta-ink">{errors.email}</p> : null}
+          <input
+            id="email"
+            name="email"
+            type="email"
+            inputMode="email"
+            autoComplete="email"
+            required
+            maxLength={254}
+            className={FIELD}
+          />
+          {errors.email ? <p className={ERROR}>{errors.email}</p> : null}
         </div>
       </div>
       <div>
@@ -78,27 +90,27 @@ export function ContactForm() {
           Business <span className="normal-case tracking-normal">(optional)</span>
         </label>
         <input id="company" name="company" autoComplete="organization" maxLength={120} className={FIELD} />
-        {errors.company ? <p className="mt-1.5 text-sm text-magenta-ink">{errors.company}</p> : null}
+        {errors.company ? <p className={ERROR}>{errors.company}</p> : null}
       </div>
       <div>
         <label htmlFor="helpRequest" className={LABEL}>
           What is done by hand that shouldn’t be?
         </label>
         <textarea id="helpRequest" name="helpRequest" required rows={6} maxLength={2000} className={`${FIELD} resize-y`} />
-        {errors.helpRequest ? <p className="mt-1.5 text-sm text-magenta-ink">{errors.helpRequest}</p> : null}
+        {errors.helpRequest ? <p className={ERROR}>{errors.helpRequest}</p> : null}
       </div>
       {/* Honeypot: real people never see or fill this. */}
       <div className="hidden" aria-hidden="true">
         <label htmlFor="website">Website</label>
         <input id="website" name="website" tabIndex={-1} autoComplete="off" />
       </div>
-      <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
+      <div className="actions mt-1 xs:!items-center">
         <button type="submit" disabled={state.kind === "sending"} className="cta disabled:opacity-60">
           {state.kind === "sending" ? "Sending…" : "Send"} <span className="arw">&rarr;</span>
         </button>
         <span className="l text-muted">
           Or email{" "}
-          <a href={LINKS.email} className="text-accent">
+          <a href={LINKS.email} className="navlink tap text-accent">
             {LINKS.emailText}
           </a>
         </span>
