@@ -21,7 +21,7 @@ const service = {
   name: "Nazarii Tsubera — automation and custom software",
   url: `${SITE_URL}${LINKS.business}`,
   telephone: "+1-210-980-6600",
-  email: "nazartsubera@gmail.com",
+  email: "hello@nazariitsubera.com",
   areaServed: { "@type": "City", name: "San Antonio" },
   founder: { "@type": "Person", name: "Nazarii Tsubera" },
   serviceType: ["Business process automation", "Custom software development", "Applied AI"],

@@ -49,7 +49,7 @@ const person = {
   name: "Nazarii Tsubera",
   url: "https://nazariitsubera.com/",
   jobTitle: "Backend and infrastructure engineer",
-  email: "nazartsubera@gmail.com",
+  email: "hello@nazariitsubera.com",
   telephone: "+1-210-980-6600",
   address: { "@type": "PostalAddress", addressLocality: "San Antonio", addressRegion: "TX", addressCountry: "US" },
   sameAs: ["https://github.com/NazariiTsubera", "https://www.linkedin.com/in/nazarii-tsubera-b4198b240/"],
