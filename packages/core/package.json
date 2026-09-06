@@ -18,7 +18,12 @@
     "./vendors": "./src/vendors/index.ts",
     "./assets": "./src/assets/index.ts",
     "./captures": "./src/captures/index.ts",
-    "./jobs": "./src/jobs/index.ts"
+    "./jobs": "./src/jobs/index.ts",
+    "./images": "./src/images/index.ts",
+    "./transcription": "./src/transcription/index.ts",
+    "./ai": "./src/ai/index.ts",
+    "./gate": "./src/gate/index.ts",
+    "./pipeline": "./src/pipeline/index.ts"
   },
   "scripts": {
     "typecheck": "tsc --noEmit -p tsconfig.json",
@@ -35,6 +40,7 @@
     "seed:markets": "node --env-file-if-exists=../../.env --import tsx scripts/seed-markets.ts"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.124.0",
     "@aws-sdk/client-s3": "^3.900.0",
     "@aws-sdk/s3-request-presigner": "^3.900.0",
     "@fontsource-variable/bricolage-grotesque": "^5.3.0",
@@ -51,14 +57,19 @@
     "better-auth": "^1.7.0",
     "bullmq": "^6.3.0",
     "ioredis": "^6.0.0",
+    "parse5": "^8.0.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "sharp": "^0.35.0",
     "zod": "^4.0.0"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
     "@types/node": "^22.13.0",
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.0",
+    "playwright": "^1.63.0",
+    "playwright-core": "^1.63.0",
     "prisma": "^6.19.0",
     "tsx": "^4.22.0",
     "typescript": "^5.7.0",

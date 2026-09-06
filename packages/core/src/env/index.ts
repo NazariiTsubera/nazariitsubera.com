@@ -17,6 +17,14 @@ const schema = z.object({
   R2_ACCESS_KEY_ID: z.string().default(""),
   R2_SECRET_ACCESS_KEY: z.string().default(""),
   R2_BUCKET: z.string().default(""),
+
+  // Pipeline providers. All optional: with PROVIDERS_MODE=fake the pipeline runs offline.
+  ANTHROPIC_API_KEY: z.string().default(""),
+  ANTHROPIC_MODEL: z.string().default("claude-opus-5"),
+  BG_REMOVAL_URL: z.string().default(""),
+  BG_REMOVAL_KEY: z.string().default(""),
+  TRANSCRIPTION_URL: z.string().default("https://api.deepgram.com/v1/listen?smart_format=true"),
+  TRANSCRIPTION_KEY: z.string().default(""),
 });
 
 export type Env = z.infer<typeof schema>;
