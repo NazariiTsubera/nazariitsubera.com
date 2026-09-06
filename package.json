@@ -17,7 +17,8 @@
     "test:integration": "bash scripts/integration-test.sh",
     "dev:web": "pnpm --filter web dev",
     "dev:worker": "pnpm --filter worker dev",
-    "worker": "pnpm --filter worker start"
+    "worker": "pnpm --filter worker start",
+    "smoke:marketing": "node scripts/marketing-smoke.mjs"
   },
   "devDependencies": {
     "concurrently": "^10.0.0",
