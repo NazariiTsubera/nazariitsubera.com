@@ -12,7 +12,8 @@
     "./db": "./src/db/index.ts",
     "./hosting": "./src/hosting/index.ts",
     "./sites": "./src/sites/index.ts",
-    "./storage": "./src/storage/index.ts"
+    "./storage": "./src/storage/index.ts",
+    "./auth": "./src/auth/index.ts"
   },
   "scripts": {
     "typecheck": "tsc --noEmit -p tsconfig.json",
@@ -24,7 +25,8 @@
     "db:migrate:deploy": "prisma migrate deploy",
     "db:studio": "node --env-file-if-exists=../../.env node_modules/prisma/build/index.js studio",
     "test:integration": "node --env-file-if-exists=../../.env node_modules/vitest/vitest.mjs run --config vitest.integration.config.ts",
-    "publish:fixture": "node --env-file-if-exists=../../.env --import tsx scripts/publish-fixture.ts"
+    "publish:fixture": "node --env-file-if-exists=../../.env --import tsx scripts/publish-fixture.ts",
+    "seed:operator": "node --env-file-if-exists=../../.env --import tsx scripts/seed-operator.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.900.0",
@@ -40,6 +42,7 @@
     "@fontsource-variable/space-grotesk": "^5.3.0",
     "@fontsource-variable/work-sans": "^5.3.0",
     "@prisma/client": "^6.19.0",
+    "better-auth": "^1.7.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "zod": "^4.0.0"
