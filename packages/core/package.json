@@ -37,7 +37,8 @@
     "test:integration": "node --env-file-if-exists=../../.env node_modules/vitest/vitest.mjs run --config vitest.integration.config.ts",
     "publish:fixture": "node --env-file-if-exists=../../.env --import tsx scripts/publish-fixture.ts",
     "seed:operator": "node --env-file-if-exists=../../.env --import tsx scripts/seed-operator.ts",
-    "seed:markets": "node --env-file-if-exists=../../.env --import tsx scripts/seed-markets.ts"
+    "seed:markets": "node --env-file-if-exists=../../.env --import tsx scripts/seed-markets.ts",
+    "demo:seed": "node --env-file-if-exists=../../.env --import tsx scripts/demo-seed.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.124.0",
