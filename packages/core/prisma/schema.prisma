@@ -1,0 +1,96 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum VendorStatus {
+  captured
+  generating
+  preview_live
+  expired
+  won
+  lost
+  churned
+}
+
+enum VendorTier {
+  none
+  free
+  storefront
+}
+
+enum AuthoredBy {
+  model
+  template
+}
+
+enum EventType {
+  vendor_created
+  preview_published
+  preview_opened
+  preview_extended
+  preview_expired
+  unpublished
+  marked_won
+  marked_lost
+}
+
+model Vendor {
+  id                 String        @id @default(uuid())
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+  businessName       String
+  contactName        String?
+  phone              String
+  instagramHandle    String?
+  slug               String        @unique
+  status             VendorStatus  @default(captured)
+  tier               VendorTier    @default(none)
+  photoConsent       Boolean       @default(false)
+  consentText        String?
+  consentAt          DateTime?
+  previewToken       String        @unique @default(uuid())
+  previewExpiresAt   DateTime?
+  previewOpenedAt    DateTime?
+  publishedVersionId String?       @unique
+  publishedVersion   SiteVersion?  @relation("PublishedVersion", fields: [publishedVersionId], references: [id])
+  themeOverride      String?
+  designNotes        String?
+  customDomain       String?       @unique
+  showInPortfolio    Boolean       @default(false)
+  notes              String?
+  versions           SiteVersion[] @relation("VendorVersions")
+  events             Event[]
+}
+
+model SiteVersion {
+  id           String     @id @default(uuid())
+  vendorId     String
+  vendor       Vendor     @relation("VendorVersions", fields: [vendorId], references: [id], onDelete: Cascade)
+  version      Int
+  contentJson  Json
+  authoredBy   AuthoredBy
+  themeId      String?
+  html         String
+  renderFlags  Json
+  gateReport   Json?
+  createdAt    DateTime   @default(now())
+  publishedFor Vendor?    @relation("PublishedVersion")
+
+  @@unique([vendorId, version])
+}
+
+model Event {
+  id        String    @id @default(uuid())
+  vendorId  String?
+  vendor    Vendor?   @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+  type      EventType
+  meta      Json      @default("{}")
+  createdAt DateTime  @default(now())
+
+  @@index([vendorId, createdAt])
+}

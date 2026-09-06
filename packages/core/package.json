@@ -6,12 +6,24 @@
   "exports": {
     "./contracts": "./src/contracts/index.ts",
     "./themes": "./src/themes/index.ts",
-    "./template": "./src/template/index.ts"
+    "./template": "./src/template/index.ts",
+    "./env": "./src/env/index.ts",
+    "./logger": "./src/logger/index.ts",
+    "./db": "./src/db/index.ts",
+    "./hosting": "./src/hosting/index.ts",
+    "./sites": "./src/sites/index.ts"
   },
   "scripts": {
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "test": "vitest run",
-    "render:fixture": "tsx scripts/render-fixture.ts"
+    "render:fixture": "tsx scripts/render-fixture.ts",
+    "postinstall": "prisma generate",
+    "db:generate": "prisma generate",
+    "db:migrate": "CI=1 node --env-file-if-exists=../../.env node_modules/prisma/build/index.js migrate dev",
+    "db:migrate:deploy": "prisma migrate deploy",
+    "db:studio": "node --env-file-if-exists=../../.env node_modules/prisma/build/index.js studio",
+    "test:integration": "node --env-file-if-exists=../../.env node_modules/vitest/vitest.mjs run --config vitest.integration.config.ts",
+    "publish:fixture": "node --env-file-if-exists=../../.env --import tsx scripts/publish-fixture.ts"
   },
   "dependencies": {
     "@fontsource-variable/bricolage-grotesque": "^5.3.0",
@@ -24,6 +36,7 @@
     "@fontsource-variable/source-sans-3": "^5.3.0",
     "@fontsource-variable/space-grotesk": "^5.3.0",
     "@fontsource-variable/work-sans": "^5.3.0",
+    "@prisma/client": "^6.19.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "zod": "^4.0.0"
@@ -32,6 +45,7 @@
     "@types/node": "^22.13.0",
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.0",
+    "prisma": "^6.19.0",
     "tsx": "^4.22.0",
     "typescript": "^5.7.0",
     "vitest": "^4.1.8"
