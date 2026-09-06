@@ -7,3 +7,4 @@ out/
 *.tsbuildinfo
 .idea/
 apps/web/public/fonts/
+.storage/

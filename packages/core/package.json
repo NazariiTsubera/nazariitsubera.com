@@ -11,7 +11,8 @@
     "./logger": "./src/logger/index.ts",
     "./db": "./src/db/index.ts",
     "./hosting": "./src/hosting/index.ts",
-    "./sites": "./src/sites/index.ts"
+    "./sites": "./src/sites/index.ts",
+    "./storage": "./src/storage/index.ts"
   },
   "scripts": {
     "typecheck": "tsc --noEmit -p tsconfig.json",
@@ -26,6 +27,8 @@
     "publish:fixture": "node --env-file-if-exists=../../.env --import tsx scripts/publish-fixture.ts"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.900.0",
+    "@aws-sdk/s3-request-presigner": "^3.900.0",
     "@fontsource-variable/bricolage-grotesque": "^5.3.0",
     "@fontsource-variable/fraunces": "^5.3.0",
     "@fontsource-variable/inter": "^5.3.0",
