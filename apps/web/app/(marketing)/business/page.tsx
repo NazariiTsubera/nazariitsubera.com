@@ -9,10 +9,11 @@ import { LINKS, SITE_URL } from "@/components/marketing/links";
 import { SERVICES } from "@/content/services";
 
 export const metadata: Metadata = {
-  title: "Automation and custom software for San Antonio businesses",
+  title: "Automation for San Antonio businesses",
   description:
-    "I automate the work your business still does by hand: invoicing, scheduling, reminders, reporting, and the tools you keep improvising. Fixed-price projects, plain language, one point of contact in San Antonio.",
+    "I automate the work your business still does by hand: invoicing, scheduling, reminders, reporting and the tools you keep improvising. Fixed price, plain language.",
   alternates: { canonical: LINKS.business },
+  openGraph: { type: "website", url: LINKS.business },
 };
 
 const service = {
@@ -91,7 +92,7 @@ export default function BusinessPage() {
               A real website for your booth, live the same day.
             </span>
             <p className="mt-3 max-w-[52ch] text-body">
-              If you sell at San Antonio markets, this is the one thing I offer at a fixed, published price.
+              If you sell at San Antonio markets, this is the fastest way to get a real website: I come to you.
             </p>
           </div>
           <span className="go flex-none text-ink">

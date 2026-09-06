@@ -10,8 +10,9 @@ import { EDUCATION, EXPERIENCE, SIDE_PROJECTS, SKILLS } from "@/content/resume";
 export const metadata: Metadata = {
   title: "Engineering & résumé",
   description:
-    "Backend and infrastructure engineer at Global Virtual Opportunities: distributed systems, media pipelines, test infrastructure and the Linux and CI plumbing underneath them. Résumé, experience, projects and skills.",
+    "Backend and infrastructure engineer: distributed systems, media pipelines, test infrastructure and the Linux and CI plumbing underneath. Résumé and experience.",
   alternates: { canonical: LINKS.engineering },
+  openGraph: { type: "website", url: LINKS.engineering },
 };
 
 export default function EngineeringPage() {

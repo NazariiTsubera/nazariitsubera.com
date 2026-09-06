@@ -1,0 +1,41 @@
+Every week there is a louder claim about what AI could be doing for your business. Some of it is true. A lot of it is expensive, and some of it is dangerous. I build with these tools for a living, including [a system that answers seventy thousand social messages a day](/work/social-auto-reply), and the useful question is not "should we use AI" but "which tasks is it actually good at". Here is the test I apply.
+
+## The test
+
+A task is a good fit for a language model when three things are true.
+
+**It drafts, it does not decide.** The model produces something a person can glance at and approve, correct or discard. Drafting a reply is a good fit. Deciding whether to refund a customer is not.
+
+**There is volume.** The model earns its keep by doing something a hundred times a day that used to take a minute each. A task you do twice a week does not need it.
+
+**A wrong answer gets caught.** Either a person reviews the output before it matters, or the mistake is cheap and visible. If a wrong answer would go straight to a customer as fact, or into an invoice, the task fails the test.
+
+## Where it earns its keep
+
+- **Reply drafts.** Routine customer messages, answered in your voice from your past replies, waiting for a click to send. The person still sends it, but they read and approve rather than compose.
+- **Triage.** A full inbox sorted into what needs you today, what can wait, and what is spam, with a one-line summary of each. The sorting is fast and the cost of a misfiled message is a delay, not a disaster.
+- **Summaries.** A forty-page contract, a stack of reviews or an hour of call recordings reduced to the points that matter. You still read the original when it counts. You just know where to look.
+- **First drafts of anything.** Product descriptions from your photos and notes, the outline of a proposal, a job advert. The model gets you from a blank page to a rough draft, and the rough draft is the expensive part.
+
+## Where it does not
+
+- **Anything numeric.** Invoices, quotes, tax, payroll. Language models are not calculators and will produce a confident wrong number.
+- **Anything legal or medical.** The cost of a wrong answer is too high and the model cannot know your situation.
+- **Anything that has to be exactly right the first time**, with no one checking. If nobody reviews it before it reaches a customer, do not let a model write it.
+- **Anything with a rule.** If the task can be written as "when this, do that", ordinary automation will do it more cheaply, more reliably and more predictably. Use the model for the parts that do not fit a rule.
+
+## Keep a person in the loop
+
+The systems that work in practice have a person somewhere in the loop, and the design decides where. For low-stakes, high-volume tasks, the person reviews a sample and adjusts the instructions. For anything customer-facing, the person approves each output until there is evidence it can be trusted, and the system tells you when it is unsure rather than guessing.
+
+## Two things to ask before you start
+
+**What are you sending, and where?** Customer data goes to whichever provider runs the model. That is fine for many businesses and unacceptable for some. Know which you are before anything is built.
+
+**What does it cost per use?** Models charge by the word, in and out. For a task that runs a thousand times a day, a few cents each is real money. Part of building these systems well is [making them cheaper to run](/work/markomax), by caching what has been done before rather than regenerating it.
+
+## Start with one task
+
+Pick one task that passes the test. Run the model beside the person for two weeks, comparing its drafts to theirs. If the drafts are good, switch the order: the model drafts, the person approves. If they are not, you have lost two weeks and learned something true about your business, which is cheaper than most lessons.
+
+If you want a second opinion on where AI fits in your week, [describe the work to me](/contact). Sometimes the honest answer is that it does not, and I will say so.

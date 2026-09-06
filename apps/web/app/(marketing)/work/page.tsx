@@ -10,8 +10,9 @@ import { PROJECTS, TAG_ORDER } from "@/content/projects";
 export const metadata: Metadata = {
   title: "Work",
   description:
-    "Systems I have built and run: a client's website and portal, the MarkoMax publishing platform, payments and infrastructure work at Global Virtual Opportunities, and my own products SheetX and Booth to MRR. Each with the technical detail.",
+    "Systems I have built and run: a CPA site and client portal, the MarkoMax publishing platform, payments and infrastructure work, and my own product SheetX.",
   alternates: { canonical: LINKS.work },
+  openGraph: { type: "website", url: LINKS.work },
 };
 
 const GROUP_INTRO: Record<(typeof TAG_ORDER)[number], string> = {

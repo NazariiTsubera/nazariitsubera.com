@@ -6,6 +6,7 @@ export const LINKS = {
   business: "/business",
   engineering: "/engineering",
   work: "/work",
+  writing: "/writing",
   about: "/about",
   contact: "/contact",
   storefront: "/storefront",
@@ -22,5 +23,6 @@ export const NAV = [
   { href: LINKS.business, label: "For business" },
   { href: LINKS.engineering, label: "Engineering" },
   { href: LINKS.work, label: "Work" },
+  { href: LINKS.writing, label: "Writing" },
   { href: LINKS.about, label: "About" },
 ] as const;

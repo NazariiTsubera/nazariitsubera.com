@@ -1,0 +1,37 @@
+Every background job system has a retry policy, and most teams are afraid of theirs. The fear is reasonable. A job that publishes a post, sends an email or charges a card will, sooner or later, be run twice: the worker died after the side effect and before the acknowledgement, the network dropped the reply, the queue redelivered. If running it twice does something twice, retries are dangerous and you will turn them down until they are useless.
+
+The fix is a property, not a setting. A job is **idempotent** when running it once and running it five times leave the world in the same state. Here is how I make jobs idempotent on a platform that [publishes around ten thousand posts a day](/work/markomax), and why everything else about reliability follows from it.
+
+## Accept at-least-once delivery
+
+Start by giving up on exactly-once. Between a queue, a worker and an external API there is no protocol that guarantees a side effect happens exactly one time, because the failure can always land between the effect and the record of it. What you can have is at-least-once delivery plus jobs that do not mind. Design for that and the whole system becomes simpler, because you stop trying to prevent duplicates and start making them harmless.
+
+## Give every job a natural key
+
+An idempotency key is a stable identifier for the thing the job is trying to do, not for the attempt. For a publish job it is the post id plus the destination channel. For a charge it is the invoice id. For an email it is the recipient plus the reason plus the day. If two attempts carry the same key, they are the same job, however many times the queue delivers it.
+
+The key has to be derived from the work, never generated per attempt. A random UUID per enqueue is exactly the wrong thing: it makes every redelivery look new.
+
+## Check before you act, and record what you did
+
+With a key, the job's first step is a lookup: has this key already succeeded? If so, return success without doing anything. If not, do the work, then record the key together with whatever the external system gave back, such as the post id on the network or the charge id from the processor.
+
+The order matters in the failure case. If the worker dies after the external call and before the record is written, the next attempt will call again. So where the external API supports its own idempotency key, pass yours through. Most payment processors and many publishing APIs do, and it closes the last gap.
+
+## Heartbeats and stale jobs
+
+A retry policy only helps if something notices the job needs retrying. Workers die silently: a deploy, an out-of-memory kill, a host reboot. The job they were holding is neither done nor failed, it is just gone.
+
+Every worker on my systems heartbeats while it works, writing a timestamp against the job it holds. A sweeper looks for jobs whose heartbeat is older than a threshold and returns them to the queue. Because the job is idempotent, this is safe even when the original worker is still alive and merely slow: the duplicate attempt finds the key already recorded and stops.
+
+## Poison jobs
+
+Some jobs will never succeed. The content violates a network's policy, the account was disconnected, the input is malformed. Retrying forever wastes capacity and hides the problem. Cap attempts, and after the cap move the job to a dead-letter store with its error, where a person or a dashboard can see it. A failed job that is visible is a support ticket. A failed job that is retrying silently is an outage waiting to be noticed.
+
+## Test it by running it twice
+
+The test that matters is simple: enqueue a job, let it complete, enqueue the identical job again, and assert that the external system saw one call and the world did not change. Add a second test that kills the worker between the side effect and the record, then runs the job again. If both pass, you can turn retries up with confidence, and turn them up you should.
+
+## Why this comes first
+
+Idempotency is not one reliability feature among many. It is the one that makes the others safe. Retries, heartbeats, stale-job recovery and horizontal scaling all rely on the same job sometimes running more than once. Make that harmless and the rest is bookkeeping.

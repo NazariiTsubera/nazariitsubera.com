@@ -1,0 +1,35 @@
+"Boring" is the highest compliment a deployment can get. It means nobody watched it, nobody was paged, and nobody could tell you afterwards which machines it touched because it did not matter. Getting there across [a hundred and forty Linux servers that had grown up by hand](/work/infrastructure) took four decisions, and none of them were exotic.
+
+## Decide that servers are not special
+
+Every server built by hand is a snowflake: slightly different packages, a config edited in place three years ago, a cron job someone added during an incident. Snowflakes are fine until one melts. Then you find out what was on it by trying to rebuild it from memory.
+
+The first decision is a rule: no server holds anything you cannot recreate from a repository. Configuration lives in code. Data lives in a store built for data. The machine itself is disposable. Everything else follows from taking that rule seriously.
+
+## Configuration as code, in one place
+
+**Ansible** became the source of truth. Every role a server can play is a playbook, every setting is a variable in Git, and a server's entire configuration can be applied from scratch in one run. A change to production is a commit with a diff and a review, not a shell session nobody recorded.
+
+Centralising configuration in Git also gave us something we had never had: a history. When a service misbehaved, "what changed" had an answer.
+
+## Run it from CI, not from laptops
+
+A playbook that runs from an engineer's laptop is only slightly better than a shell session. It depends on that laptop's version of Ansible, that engineer's credentials, and that engineer being awake. The playbooks run from CI: a merge to the branch applies the change, with the run logged and repeatable. Anyone can see what was applied, when, and by which commit.
+
+This is also what made the deployment boring. The process is the same every time because a machine performs it every time.
+
+## Move the state off the boxes
+
+A server is only safely disposable if losing it loses nothing. Persistent state moved to **Ceph**, so the data a service depends on outlives the machine serving it and any node can serve any object. Services sit behind **high-availability load balancing**, so a node can be drained for a rebuild, or simply die, without users seeing an error.
+
+Together these turn "rebuild the server" from a weekend into a routine. Drain, reprovision from the playbook, rejoin the pool.
+
+## One place to look
+
+The first five minutes of an incident used to be spent finding the right machine and opening a shell on it. Logs and metrics from the whole fleet now flow to **OpenObserve**. One search across every server, one set of dashboards, alerts from the same data. Incidents got shorter not because failures stopped, but because finding them stopped taking half the time.
+
+## What boring buys you
+
+The engineers who spent their weeks keeping servers alive got their weeks back for the product. Deployments happen during the day. Rebuilding a machine is nobody's emergency. And the fleet is now the kind that can move, which is why the next step, containerising workloads and moving toward Kubernetes, is a project rather than a fantasy.
+
+None of this required new technology. It required deciding that machines are replaceable and then building until they were.

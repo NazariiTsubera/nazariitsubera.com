@@ -6,14 +6,16 @@ import { env } from "@nazariitsubera/core/env";
 import { STEP_ICONS } from "@/components/marketing/Icons";
 import { Band, CenteredHead, GRID, H2, Label, PageIntro, Section } from "@/components/marketing/Section";
 import { LINKS } from "@/components/marketing/links";
+import { formatPhone } from "@/lib/format";
 
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Websites for market vendors",
   description:
-    "A real website for your booth, built the same day, on your own domain. $299 to set up, $59 a month, cancel any time. San Antonio markets.",
+    "A real website for your booth, built the same day, on your own domain. I come to San Antonio markets, we talk for ten minutes, and you get a link before you pack up.",
   alternates: { canonical: LINKS.storefront },
+  openGraph: { type: "website", url: LINKS.storefront },
 };
 
 const INCLUDED = [
@@ -33,12 +35,18 @@ const STEPS = [
 
 export default async function StorefrontPage() {
   const { SITE_ROOT_DOMAIN: rootDomain, OPERATOR_PHONE, OPERATOR_NAME } = env();
-  const portfolio = await prisma.vendor.findMany({
-    where: { showInPortfolio: true, status: "won", publishedVersionId: { not: null } },
-    orderBy: { createdAt: "desc" },
-    take: 12,
-    include: { market: true },
-  });
+  // The portfolio is decoration. If the database is unreachable the offer page still renders.
+  const portfolio = await prisma.vendor
+    .findMany({
+      where: { showInPortfolio: true, status: "won", publishedVersionId: { not: null } },
+      orderBy: { createdAt: "desc" },
+      take: 12,
+      include: { market: true },
+    })
+    .catch((error: unknown) => {
+      console.error("storefront portfolio unavailable", error instanceof Error ? error.message : error);
+      return [];
+    });
 
   return (
     <>
@@ -59,11 +67,11 @@ export default async function StorefrontPage() {
 
       <Band tone="dark" className={GRID.even}>
         <div className="rv">
-          <div className="l mb-5 text-dark-label">The price</div>
-          <p className="n text-[clamp(28px,4vw,44px)] leading-[1.06] tracking-[-0.026em]">$299 to set up, then $59 a month.</p>
+          <div className="l mb-5 text-dark-label">What you get</div>
+          <p className="n text-[clamp(28px,4vw,44px)] leading-[1.06] tracking-[-0.026em]">A real site, on your own address.</p>
           <p className="mt-5 max-w-[40ch] text-dark-muted">
-            Less than one weekend&rsquo;s booth fee. Cancel any time and the site comes down. Texas sales tax is added at
-            checkout.
+            Not a page on someone else&rsquo;s platform. Your name, your products, your phone number, built from a
+            ten-minute conversation at your booth.
           </p>
         </div>
         <ul className="rv">
@@ -127,7 +135,7 @@ export default async function StorefrontPage() {
               Call or text {OPERATOR_NAME} <span className="arw">&rarr;</span>
             </a>
           </div>
-          <span className="l text-muted">{OPERATOR_PHONE}</span>
+          <span className="l text-muted">{formatPhone(OPERATOR_PHONE)}</span>
         </div>
       </Band>
     </>

@@ -6,7 +6,15 @@ const ROOTS = [process.env.SITE_ROOT_DOMAIN ?? "nazariitsubera.com", "localhost"
 
 /** Hostname routing. Vendor hosts are rewritten to the internal /sites route; app hosts pass through. */
 export function proxy(request: NextRequest) {
-  const route = routeHost(request.headers.get("host"), ROOTS);
+  const host = request.headers.get("host") ?? "";
+  // One canonical host for the marketing site. Only the real root domain redirects; on
+  // localhost, www is a convenient way to reach the app on the wildcard.
+  if (host === `www.${ROOTS[0]}` && ROOTS[0] !== "localhost") {
+    const url = request.nextUrl.clone();
+    url.host = ROOTS[0];
+    return NextResponse.redirect(url, 308);
+  }
+  const route = routeHost(host, ROOTS);
   if (route.kind === "app") return NextResponse.next();
 
   const url = request.nextUrl.clone();

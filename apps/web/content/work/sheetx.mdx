@@ -1,10 +1,14 @@
-{/* Nazarii: first draft from the résumé and the site. Worth adding: who uses it, a concrete conflict example, and the quota numbers you design around. */}
+{/* Nazarii: worth adding: who uses it, a concrete conflict example, and the quota numbers you design around. */}
 
 ## The idea
 
 A lot of small businesses already run on a spreadsheet, and the spreadsheet is fine. What they lack is a way for software to read and write it safely while people keep editing it as before. SheetX makes a Google Sheet behave like a database with a real API, without taking the sheet away from the people who live in it.
 
+## What using it looks like
+
 <Figure src="sheetx-2.png" />
+
+A project holds resources, and each resource is a sheet exposed as a REST endpoint. Filtering, field selection and sorting are query parameters, so `?select=name,category&sort=-name` does what it says. A resource can be public or locked behind an API key, and the data tab lets you run the same query you would send from code and watch the rows come back.
 
 ## The hard part
 
@@ -16,6 +20,8 @@ SheetX is built around a **bidirectional synchronisation engine** for exactly th
 - **diff3 reconciliation.** When the sheet and the API disagree, the two versions are merged against their common ancestor, the same way version control merges code. Conflicting edits merge instead of overwriting each other.
 
 <Figure src="sheetx-3.png" />
+
+Every reconciliation is logged. The activity tab shows the scheduled syncs a few minutes apart, most of them ending in “no changes” because nothing moved, and the ones that carried changes. When the two sides disagree, the log is where you find out how it was resolved.
 
 ## Writes that survive the real world
 

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { IBM_Plex_Mono, IBM_Plex_Sans, Newsreader } from "next/font/google";
 
 import "./globals.css";
@@ -33,15 +33,16 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://nazariitsubera.com"),
   title: { default: TITLE, template: "%s — Nazarii Tsubera" },
   description: DESCRIPTION,
-  openGraph: {
-    type: "website",
-    siteName: "Nazarii Tsubera",
-    title: TITLE,
-    description: DESCRIPTION,
-    url: "/",
-  },
+  authors: [{ name: "Nazarii Tsubera", url: "https://nazariitsubera.com" }],
+  creator: "Nazarii Tsubera",
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1 } },
+  // No title or description here: each page's own flows into its social card. The root only
+  // sets what is the same everywhere.
+  openGraph: { type: "website", siteName: "Nazarii Tsubera", locale: "en_US" },
   twitter: { card: "summary_large_image" },
 };
+
+export const viewport: Viewport = { themeColor: "#f3f4f3" };
 
 const person = {
   "@context": "https://schema.org",
@@ -49,6 +50,7 @@ const person = {
   name: "Nazarii Tsubera",
   url: "https://nazariitsubera.com/",
   jobTitle: "Backend and infrastructure engineer",
+  image: "https://nazariitsubera.com/portrait.png",
   email: "hello@nazariitsubera.com",
   telephone: "+1-210-980-6600",
   address: { "@type": "PostalAddress", addressLocality: "San Antonio", addressRegion: "TX", addressCountry: "US" },
@@ -59,6 +61,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en" className={`${newsreader.variable} ${plexSans.variable} ${plexMono.variable}`}>
       <body>
+        <link rel="alternate" type="application/rss+xml" title="Nazarii Tsubera — Writing" href="/feed.xml" />
         {children}
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(person) }} />
       </body>

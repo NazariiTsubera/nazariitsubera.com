@@ -1,4 +1,4 @@
-{/* Nazarii: first draft from the résumé. Worth adding: how replies are kept on-brand, where a human steps in, and what the MCP server exposes to whom. */}
+{/* Nazarii: worth adding: how replies are kept on-brand, where a human steps in, and what the MCP server exposes to whom. */}
 
 ## The problem
 
@@ -12,12 +12,16 @@ A **public MCP server**. The Model Context Protocol is a standard way to expose 
 
 An **auto-reply system built on Mastra and LangGraph**. Incoming comments and messages flow through an agent graph that decides what a message is, whether it deserves a reply, and what that reply should say. It handles more than seventy thousand social messages a day.
 
+## How a reply happens
+
+Each connected page has its own configuration, and it can be switched on or off per page. When someone comments, two things go out: a short public reply on the comment itself, and a private message to the commenter. Both are templates with the commenter’s name filled in, and the private message can carry a button, “Learn more” or “Book a call”, pointing wherever the business wants the conversation to go. The page shows how many replies it has sent, how many are waiting in the queue, and when the last one went out, so the owner can see it working without reading a log.
+
 ## What matters at that volume
 
 At seventy thousand messages a day the hard problems are not about writing good sentences. They are about behaving well under load:
 
-- Deduplicating the same message arriving twice from a network's webhooks.
-- Staying inside each network's rate limits without letting a backlog build up.
+- Deduplicating the same message arriving twice from a network’s webhooks.
+- Staying inside each network’s rate limits without letting a backlog build up.
 - Knowing which messages a model should never answer on its own.
 
 Building the graph so those decisions are explicit steps, rather than hopes buried in a prompt, is what makes the system something a business can trust with its own voice.

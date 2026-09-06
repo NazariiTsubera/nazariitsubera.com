@@ -8,8 +8,9 @@ import { LINKS } from "@/components/marketing/links";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Nazarii Tsubera is a backend and infrastructure engineer in San Antonio, Texas, a computer science student at UTSA, and the builder of SheetX. One person from the first conversation to finished software.",
+    "Nazarii Tsubera: backend and infrastructure engineer in San Antonio, computer science student at UTSA, and builder of SheetX. One person, start to finish.",
   alternates: { canonical: LINKS.about },
+  openGraph: { type: "website", url: LINKS.about },
 };
 
 const FACTS = [

@@ -9,8 +9,8 @@ Design: `docs/superpowers/specs/2026-09-05-booth-to-mrr-engine-design.md`.
 Plans: `docs/superpowers/plans/`. Decisions: `docs/decisions/`.
 
 ## Layout
-- `apps/web`: Next.js App Router. Marketing pages under `app/(marketing)` (one shared shell, copy
-  in `content/`, see ADR-0004), `/console`, API route handlers, vendor-site serving by hostname.
+- `apps/web`: Next.js App Router. Marketing pages under `app/(marketing)` (one shared shell; copy,
+  work articles and essays in `content/`, see ADR-0004), `/console`, API route handlers, vendor-site serving by hostname.
   Port 3000.
 - `apps/worker`: Node process run with `tsx`. BullMQ processors and the repeatable expiry sweep.
 - `packages/core` (`@nazariitsubera/core`): every domain module, shipped as TypeScript source with

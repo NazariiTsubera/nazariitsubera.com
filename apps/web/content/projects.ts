@@ -16,6 +16,8 @@ export type Project = {
   summary: string;
   period: string;
   stack?: string;
+  /** Shorter title for the browser tab, search snippet and social card when the display title runs long. */
+  metaTitle?: string;
   /** Shown on the landing page. */
   featured?: boolean;
   /** Screenshots. The first is the hero on the article and the card image everywhere else. */
@@ -65,6 +67,7 @@ export const PROJECTS: Project[] = [
   {
     slug: "markomax",
     title: "MarkoMax: from a post composer to ten thousand posts a day",
+    metaTitle: "MarkoMax: ten thousand posts a day",
     tag: "Global Virtual Opportunities",
     summary:
       "Re-architecting a basic composer into a social-media orchestration platform serving more than two thousand users.",
@@ -92,6 +95,7 @@ export const PROJECTS: Project[] = [
   {
     slug: "social-auto-reply",
     title: "Answering seventy thousand social messages a day",
+    metaTitle: "Auto-replying to 70,000 social messages a day",
     tag: "Global Virtual Opportunities",
     summary: "A public MCP server and an agent-based auto-reply system for Instagram, Facebook and LinkedIn comments and DMs.",
     period: "2025 — present",
@@ -110,6 +114,7 @@ export const PROJECTS: Project[] = [
   {
     slug: "payments-monolith",
     title: "Testing and migrating a legacy payments monolith",
+    metaTitle: "Testing a legacy payments monolith",
     tag: "Global Virtual Opportunities",
     summary:
       "Integration tests against real dependencies, four parallel CI forks, and a PHP 7.4 to 8.4 migration with no big-bang release.",
@@ -120,6 +125,7 @@ export const PROJECTS: Project[] = [
   {
     slug: "infrastructure",
     title: "Modernising a hundred and forty Linux servers",
+    metaTitle: "Modernising 140 Linux servers",
     tag: "Global Virtual Opportunities",
     summary: "Ansible as the source of truth, playbooks run from CI, state moved into Ceph, and one place to look when something breaks.",
     period: "2025 — present",
@@ -129,6 +135,7 @@ export const PROJECTS: Project[] = [
   {
     slug: "sms-dunning",
     title: "The SMS sequence that halved failed payments",
+    metaTitle: "SMS dunning that halved failed payments",
     tag: "Global Virtual Opportunities",
     summary: "Four messages, escalating with the risk of losing the account, that took failed payments from 10.7% to 5.2% for a 15,000-user CRM.",
     period: "2025",
@@ -170,6 +177,7 @@ export const PROJECTS: Project[] = [
   {
     slug: "sheetx",
     title: "SheetX: a spreadsheet that behaves like a database",
+    metaTitle: "SheetX: a spreadsheet as a database",
     tag: "My own",
     summary: "Turns a Google Sheet into a real API, and keeps both sides in step when people and software edit at the same time.",
     period: "2025 — present",
@@ -204,6 +212,7 @@ export const PROJECTS: Project[] = [
   {
     slug: "booth-to-mrr",
     title: "A website for a market vendor in twenty minutes",
+    metaTitle: "A vendor website in twenty minutes",
     tag: "My own",
     summary:
       "An operator console and pipeline that turn a recorded booth conversation and a few photos into a live, static site on a subdomain.",

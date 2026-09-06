@@ -24,7 +24,11 @@ direct email and phone; the page still works with the form unavailable.
 
 Copy is data (`apps/web/content/`), components render it. Each project in `content/projects.ts` has
 a long-form article in `content/work/<slug>.mdx` (via `@next/mdx`), statically generated at
-`/work/<slug>` and listed in the sitemap; the `/work` index groups them by who they were for. The design is a language, not a fixed
+`/work/<slug>` and listed in the sitemap; the `/work` index groups them by who they were for.
+Essays live the same way under `content/writing.ts` and `content/writing/<slug>.mdx`, served at
+`/writing/<slug>` with an RSS feed at `/feed.xml`. Every page sets its own title, description,
+canonical and `og:url`; articles add BlogPosting or TechArticle and BreadcrumbList structured data.
+`www` redirects to the apex. `pnpm smoke:marketing` walks the sitemap and checks all of it. The design is a language, not a fixed
 composition: sections were kept, removed or reshaped by what a visitor needs. Sections whose
 content does not exist yet (reviews, writing) are not rendered; nothing on the live site is a
 placeholder except the four work screenshots, which show a labelled frame until the file exists.

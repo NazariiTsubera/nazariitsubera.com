@@ -10,6 +10,7 @@ export const metadata: Metadata = {
   description:
     "Tell me where the friction is in your week and I’ll tell you what’s possible, in plain language, at no cost. Email, phone, or the form. A personal reply from me.",
   alternates: { canonical: LINKS.contact },
+  openGraph: { type: "website", url: LINKS.contact },
 };
 
 const DIRECT: { label: string; text: string; href?: string }[] = [

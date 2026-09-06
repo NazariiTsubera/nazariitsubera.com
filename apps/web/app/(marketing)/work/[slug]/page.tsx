@@ -8,6 +8,7 @@ import { Shot } from "@/components/marketing/WorkGrid";
 import { LINKS, SITE_URL } from "@/components/marketing/links";
 import { PROJECTS, findProject } from "@/content/projects";
 import { ARTICLES } from "@/content/work";
+import { JsonLd, breadcrumbs } from "@/lib/seo";
 
 type Params = { params: Promise<{ slug: string }> };
 
@@ -20,11 +21,19 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const project = findProject((await params).slug);
   if (!project) return {};
+  const path = `${LINKS.work}/${project.slug}`;
+  const hero = project.shots?.[0];
   return {
-    title: project.title,
+    title: project.metaTitle ?? project.title,
     description: project.summary,
-    alternates: { canonical: `${LINKS.work}/${project.slug}` },
-    openGraph: { type: "article", publishedTime: project.published, authors: ["Nazarii Tsubera"] },
+    alternates: { canonical: path },
+    openGraph: {
+      type: "article",
+      url: path,
+      publishedTime: project.published,
+      authors: ["Nazarii Tsubera"],
+      ...(hero ? { images: [{ url: `/work/${hero.file}`, width: hero.width, height: hero.height, alt: hero.alt }] } : {}),
+    },
   };
 }
 
@@ -39,15 +48,25 @@ export default async function WorkArticlePage({ params }: Params) {
   const next = PROJECTS[(index + 1) % PROJECTS.length];
   const external = project.href && !project.href.startsWith("/") ? new URL(project.href) : null;
 
+  const url = `${SITE_URL}${LINKS.work}/${project.slug}`;
+  const author = { "@type": "Person", name: "Nazarii Tsubera", url: SITE_URL };
   const schema = {
     "@context": "https://schema.org",
     "@type": "TechArticle",
     headline: project.title,
     description: project.summary,
     datePublished: project.published,
-    url: `${SITE_URL}${LINKS.work}/${project.slug}`,
-    author: { "@type": "Person", name: "Nazarii Tsubera", url: SITE_URL },
+    dateModified: project.published,
+    url,
+    mainEntityOfPage: url,
+    author,
+    publisher: author,
+    ...(project.shots?.[0] ? { image: `${SITE_URL}/work/${project.shots[0].file}` } : {}),
   };
+  const crumbs = breadcrumbs([
+    { name: "Work", path: LINKS.work },
+    { name: project.metaTitle ?? project.title, path: `${LINKS.work}/${project.slug}` },
+  ]);
 
   return (
     <>
@@ -107,7 +126,8 @@ export default async function WorkArticlePage({ params }: Params) {
           note="Or reach me directly on LinkedIn."
         />
       )}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      <JsonLd data={schema} />
+      <JsonLd data={crumbs} />
     </>
   );
 }

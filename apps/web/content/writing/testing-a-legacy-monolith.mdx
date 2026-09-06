@@ -1,0 +1,37 @@
+A legacy monolith is a codebase that earns money and that nobody fully remembers. The two facts are related: it kept running while the people who understood it moved on. Changing it is frightening because you cannot tell what depends on what, and the temptation is to leave it alone until you can't, when the runtime goes out of support or a security fix forces your hand.
+
+This is how I put a safety net under [a payments monolith](/work/payments-monolith) so it could be moved from PHP 7.4 to 8.4 in small, verified steps, and how the suite stayed fast enough to run on every change.
+
+## Why mocks lie here
+
+The usual advice for testing is to mock your dependencies. For a well-factored codebase that works. For a legacy monolith it is worse than nothing, because the interesting behaviour is in the interaction with the database: the query that relies on a MySQL quirk, the transaction that was never quite right, the column that means two different things depending on a flag. A mock reproduces your understanding of the dependency. The whole problem is that your understanding is incomplete.
+
+So the tests run against real dependencies. A real database, the real schema, real data shapes. Anything else gives you green tests and production surprises.
+
+## Characterisation tests first
+
+Before changing a line, write tests that capture what the system does today, whether or not that behaviour was ever intended. Call the endpoint, record the response, assert it stays the same. Run the job, snapshot the rows it writes. These are characterisation tests: they do not say the behaviour is right, they say it is what it is.
+
+They feel unsatisfying to write, and they are the most valuable tests in the suite. When you upgrade the runtime and a characterisation test fails, you have found a behaviour change you did not know about, at your desk instead of in a customer's statement.
+
+## Real dependencies without the slowness
+
+Real dependencies are slow if you are careless about them. Two decisions kept the suite fast enough to run on every push.
+
+**Testcontainers** start the database in a container for the test run, from the same image production uses. No shared test server drifting from production, no "works on my machine". The container exists for the run and is thrown away.
+
+**tmpfs for the database's storage.** The container's data directory is mounted in memory. Creating a fresh database, loading the schema and tearing it down costs almost nothing when no disk is involved, so every test can have its own clean state instead of sharing one and hoping the order does not matter.
+
+## Parallel forks that stay isolated
+
+A suite that grows will get slow again unless it runs in parallel, and parallel tests against one database are a source of flaky failures nobody can reproduce. The suite runs across four CI workers, and each worker owns its own database instance. No two tests ever touch the same rows. Wall-clock time stays roughly a quarter of the serial time as the suite grows, and a failure means a bug, not a collision.
+
+## What the net lets you do
+
+With characterisation tests over the paths that matter and a suite that runs in minutes, the migration itself became unremarkable. Upgrade the runtime in a branch, run the suite, fix what broke, ship a slice behind a gradual rollout, watch, repeat. PHP 7.4 to 8.4 with no big-bang release and no weekend.
+
+The same net now makes the next step possible: containerising the platform and moving its workloads toward Kubernetes, one verified slice at a time.
+
+## Where to start on yours
+
+Pick the path that would hurt most if it broke. For a payments system that is the charge and the refund. Write characterisation tests for exactly that path, against a real database in a container. Do not aim for coverage. Aim for the one test that would have caught the last incident. Then add the next one.

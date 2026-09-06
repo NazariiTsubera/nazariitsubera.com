@@ -21,11 +21,15 @@ for (const path of pages) {
   else if (titles.has(title)) problems.push(`duplicate title "${title}"`);
   if (title) titles.add(title);
   if (!/rel="canonical"/.test(html)) problems.push("no canonical");
-  if (!/name="description"/.test(html)) problems.push("no description");
+  const description = html.match(/name="description" content="([^"]*)"/)?.[1];
+  if (!description) problems.push("no description");
+  else if (description.length < 70 || description.length > 165) problems.push(`description ${description.length} chars`);
+  if (title && title.length > 70) problems.push(`title ${title.length} chars`);
+  if (!/property="og:url"/.test(html)) problems.push("no og:url");
   console.log(problems.length ? `FAIL ${path}: ${problems.join(", ")}` : `ok   ${path}`);
   failed ||= problems.length > 0;
 }
-for (const path of ["/robots.txt", "/opengraph-image"]) {
+for (const path of ["/robots.txt", "/opengraph-image", "/feed.xml", "/apple-icon"]) {
   const status = (await fetch(base + path)).status;
   console.log(status === 200 ? `ok   ${path}` : `FAIL ${path}: status ${status}`);
   failed ||= status !== 200;

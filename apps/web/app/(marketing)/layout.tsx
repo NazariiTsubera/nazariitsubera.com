@@ -6,10 +6,13 @@ import { SiteHeader } from "@/components/marketing/SiteHeader";
 export default function MarketingLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
+      <a href="#main" className="skip">
+        Skip to content
+      </a>
       <SiteHeader />
       <RevealRoot>
         <div className="mx-auto max-w-frame px-gutter">
-          <main>{children}</main>
+          <main id="main">{children}</main>
         </div>
         <SiteFooter />
       </RevealRoot>
