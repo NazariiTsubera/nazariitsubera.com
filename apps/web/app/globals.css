@@ -76,8 +76,8 @@
 
 @layer components {
   /* The type voices of the design. Newsreader at its regular weight for display: the light cut
-     read faint on the pale ground. Spaced Plex Mono for labels and metadata only; anything a
-     visitor is meant to click is set in `.go`, plain sans at reading size. */
+     read faint on the pale ground. Spaced Plex Mono for labels, and, a step heavier and larger,
+     for everything a visitor is meant to click (`.go` and the buttons). */
   .n {
     @apply font-serif font-normal;
   }
@@ -87,8 +87,9 @@
     letter-spacing: 0.14em;
   }
   .go {
-    @apply font-sans text-[15px] font-medium;
-    letter-spacing: 0;
+    @apply font-mono font-medium uppercase;
+    font-size: 12.5px;
+    letter-spacing: 0.12em;
   }
 
   /* A `ch` measure is a wide-screen nicety: it exists so a heading fits the narrow column of a
@@ -216,8 +217,8 @@
   .cta,
   .cta-ghost,
   .inkbtn {
-    @apply inline-flex items-center justify-center gap-2.5 border text-center font-sans font-medium;
-    letter-spacing: 0;
+    @apply inline-flex items-center justify-center gap-2.5 border text-center font-mono font-medium;
+    letter-spacing: 0.025em;
     transition:
       background 0.3s ease,
       color 0.3s ease,
@@ -227,10 +228,10 @@
   }
   .cta,
   .cta-ghost {
-    @apply min-h-[52px] px-6 py-3 text-[15px] sm:min-h-14 sm:px-7;
+    @apply min-h-[52px] px-6 py-3 text-[14px] sm:min-h-14 sm:px-7;
   }
   .inkbtn {
-    @apply min-h-11 px-[18px] py-2 text-[14px];
+    @apply min-h-11 px-[18px] py-2 text-[13px];
   }
 
   .cta {

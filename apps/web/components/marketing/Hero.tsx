@@ -10,13 +10,10 @@ export function Hero() {
     <section className="grid grid-cols-1 items-center gap-[clamp(30px,5vw,64px)] border-t border-ink/[.14] pb-page-bottom pt-page-top wide:grid-cols-[minmax(0,1fr)_minmax(0,340px)]">
       <div className="rv">
         <Label className="mb-5">San Antonio, Texas &mdash; automation, custom software, applied AI</Label>
-        <H1 measure={19} className="mb-6">
-          I automate the work your business still does by hand.
+        <H1 measure={14} className="mb-6">
+          I build software that runs itself.
         </H1>
-        <p className="mb-[18px] max-w-[46ch] text-[19px] leading-[1.6] text-body">
-          Invoices that send themselves. Schedules that fill themselves. Reports that arrive without anyone building them.
-        </p>
-        <p className="mb-8 max-w-[46ch] text-body">
+        <p className="mb-8 max-w-[46ch] text-[19px] leading-[1.6] text-body">
           I&rsquo;m Nazarii Tsubera, a backend and infrastructure engineer at Global Virtual Opportunities and a computer
           science student at UTSA. I take on a small number of client projects directly.
         </p>
@@ -29,7 +26,7 @@ export function Hero() {
           </Link>
         </div>
         {/* gap-y-6 keeps the 44px touch targets of two wrapped rows from overlapping. */}
-        <div className="mt-7 flex flex-wrap items-baseline gap-x-[22px] gap-y-6">
+        <div className="mt-7 flex flex-wrap items-center gap-x-[22px] gap-y-6">
           <a href={LINKS.github} target="_blank" rel="noopener" className="go navlink tap inline-flex items-center gap-2 text-body">
             <GitHubIcon />
             GitHub
@@ -38,7 +35,7 @@ export function Hero() {
             <LinkedInIcon />
             LinkedIn
           </a>
-          <Link href={LINKS.engineering} className="go navlink tap text-accent">
+          <Link href={LINKS.engineering} className="go navlink tap inline-flex items-center text-accent">
             R&eacute;sum&eacute; &amp; engineering
           </Link>
         </div>

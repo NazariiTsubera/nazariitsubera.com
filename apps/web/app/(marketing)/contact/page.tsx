@@ -47,7 +47,7 @@ export default function ContactPage() {
               </div>
             ))}
           </dl>
-          <div className="mt-7 flex flex-wrap gap-x-[22px] gap-y-4">
+          <div className="mt-7 flex flex-wrap items-center gap-x-[22px] gap-y-4">
             <a href={LINKS.linkedin} target="_blank" rel="noopener" className="go navlink tap inline-flex items-center gap-2 text-body">
               <LinkedInIcon /> LinkedIn
             </a>

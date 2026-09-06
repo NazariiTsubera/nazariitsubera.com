@@ -31,7 +31,7 @@ export default async function Image() {
           San Antonio, Texas
         </div>
         <div style={{ fontSize: 64, lineHeight: 1.05, letterSpacing: "-0.02em", marginTop: 28 }}>
-          I automate the work your business still does by hand.
+          I build software that runs itself.
         </div>
         <div style={{ display: "flex", alignItems: "baseline", marginTop: 40, fontSize: 30 }}>
           nt<span style={{ color: "#1a5490" }}>.</span>

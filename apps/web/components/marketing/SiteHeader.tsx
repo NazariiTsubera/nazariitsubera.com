@@ -92,7 +92,7 @@ export function SiteHeader() {
                 href={item.href}
                 onClick={close}
                 aria-current={pathname === item.href ? "page" : undefined}
-                className={`go flex min-h-[54px] items-center border-b border-ink/[.10] text-[17px] ${
+                className={`go flex min-h-[54px] items-center border-b border-ink/[.10] text-[14px] ${
                   pathname === item.href ? "text-accent" : "text-ink"
                 }`}
               >
