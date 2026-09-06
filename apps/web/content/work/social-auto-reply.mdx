@@ -1,0 +1,23 @@
+{/* Nazarii: first draft from the résumé. Worth adding: how replies are kept on-brand, where a human steps in, and what the MCP server exposes to whom. */}
+
+## The problem
+
+Businesses that post at volume get replies at volume. Comments and direct messages arrive across Instagram, Facebook and LinkedIn all day, and most of them deserve an answer. Nobody has the hours to give one by hand.
+
+## What I built
+
+Two things that work together.
+
+A **public MCP server**. The Model Context Protocol is a standard way to expose tools and data to a language model, so the model can act rather than just talk. The server gives models a well-defined surface onto the platform instead of a pile of ad-hoc integrations.
+
+An **auto-reply system built on Mastra and LangGraph**. Incoming comments and messages flow through an agent graph that decides what a message is, whether it deserves a reply, and what that reply should say. It handles more than seventy thousand social messages a day.
+
+## What matters at that volume
+
+At seventy thousand messages a day the hard problems are not about writing good sentences. They are about behaving well under load:
+
+- Deduplicating the same message arriving twice from a network's webhooks.
+- Staying inside each network's rate limits without letting a backlog build up.
+- Knowing which messages a model should never answer on its own.
+
+Building the graph so those decisions are explicit steps, rather than hopes buried in a prompt, is what makes the system something a business can trust with its own voice.

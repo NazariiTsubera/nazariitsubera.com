@@ -20,18 +20,21 @@ export const EXPERIENCE = {
 export const SIDE_PROJECTS = [
   {
     title: "SheetX",
+    slug: "sheetx",
     stack: "Google Sheets API · diff3 reconciliation",
     href: "https://sheetx.co/",
     body: "A bidirectional sync engine for concurrent human and API edits, using stable row identity and diff3 reconciliation to merge conflicting state without silently overwriting changes. Durable, eventually consistent writes: bursts collapse into batched Google API jobs, and quota-limited jobs re-enqueue until reconciliation completes.",
   },
   {
     title: "OpenRenderer",
+    slug: "openrenderer",
     stack: "C++ · OpenGL · CMake · GLSL",
     href: "https://github.com/NazariiTsubera/OpenRenderer",
     body: "A modular rendering engine with configurable render passes, shader and material abstractions, GPU buffer and texture management, and experimental ray-marching shaders.",
   },
   {
     title: "Circuit X",
+    slug: "circuit-x",
     stack: "C++ · SFML · ImGui · Eigen",
     href: "https://github.com/NazariiTsubera/circuitx",
     body: "A real-time circuit simulator with a Backward-Euler differential solver and a Modified Nodal Analysis pipeline that turns drawn schematics into solvable node trees.",

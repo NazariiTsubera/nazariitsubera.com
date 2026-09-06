@@ -1,0 +1,27 @@
+{/* Nazarii: first draft from the résumé. Worth adding: what the composer looked like before, the limit that forced the rewrite, and what changed for the people using it day to day. */}
+
+## Where it started
+
+MarkoMax began as a basic post composer: write a post, pick the accounts, schedule it. That is fine for one person and a handful of accounts. It is not fine for two thousand people whose businesses depend on posts going out on time, every day, with media attached.
+
+## What it became
+
+I re-architected it into a social-media orchestration platform. It now serves more than two thousand users and produces around ten thousand posts a day, running on a three-node Docker Swarm backed by PostgreSQL, Redis and Ceph.
+
+Three nodes rather than one means a machine can fail without the platform failing. PostgreSQL holds the truth, Redis holds the work in flight, and Ceph holds the media so that any node can serve any file.
+
+## Ten thousand posts a day without a queue backing up
+
+Publishing is not a single step. Media has to be processed, captions generated, files uploaded to each network, and the result confirmed. All of that runs as asynchronous pipelines, and a few decisions keep them honest:
+
+- **Status streamed over SSE.** The interface shows what is happening to a post as it happens, without polling the server.
+- **Idempotent job handling.** A job can be retried without producing a duplicate post. This sounds small and is the difference between a retry policy you trust and one you are afraid of.
+- **Heartbeats and stale-job detection.** Every worker reports in while it works. When a worker dies mid-job, the job is noticed and recovered automatically instead of sitting in limbo until someone complains.
+
+## Making AI generation cheaper
+
+Generating post content from source video is expensive if you do it from scratch every time, and most requests are near-duplicates of something already rendered. The fix was to chunk the source video, embed the fragments, and cache them by cosine similarity over those embeddings. A request that closely matches a prior render is served from that render instead of being regenerated. Per-post generation cost fell as a result.
+
+## What I would point at
+
+If you only look at one thing, look at how failure is handled. The platform assumes workers will die, networks will flake, and the same request will arrive twice. Everything interesting follows from designing for that instead of hoping it will not happen.

@@ -1,0 +1,23 @@
+{/* Nazarii: this describes what is built today. Update it as vendors go live, and add what you learn at the first markets. */}
+
+## The moment it is built for
+
+A vendor at a weekend market says yes. Twenty minutes later, before they have packed up, they are looking at their own website on their phone: their products, their words, a number people can tap to text them. That moment is the whole product. Everything else exists to make it reliable.
+
+## What happens in those twenty minutes
+
+I record a short conversation at the booth and take photos of the work. From there a pipeline takes over:
+
+1. **Transcription and content.** The recording is transcribed and turned into structured content: name, what they make, how to order. Only facts from the conversation are used, and a guard checks the finished page against them so nothing is invented.
+2. **Photos.** Product photos are normalised, backgrounds removed, and cut into responsive sizes with all metadata stripped.
+3. **Authoring.** A model writes the page itself, from a design brief that fixes the rules and leaves the design open. No two vendors get the same template.
+4. **The gate.** The page must pass HTML lint, the fabrication guard, and headless Chromium with accessibility checks at three widths in light and dark mode. It gets two chances to repair itself; if it still fails, a curated template renders the same content as the floor.
+5. **Publishing.** The result is a single static HTML page with no JavaScript, served on the vendor's own subdomain with a seven-day preview.
+
+## Why static and why a gate
+
+The page has to load instantly on a cheap phone with poor signal, in the middle of a market. Static HTML with inline CSS and no scripts does that. A model authoring each page gives every vendor a design of their own, and the gate turns "the model usually gets it right" into a property the system guarantees.
+
+## Where it stands
+
+The console, pipeline, gate and hosting are built and run end to end. I am taking it to San Antonio markets now, and payments are next. If you sell at a market, [this is the offer](/storefront).

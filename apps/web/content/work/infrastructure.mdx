@@ -1,0 +1,21 @@
+{/* Nazarii: first draft from the résumé. Worth adding: what a server looked like before Ansible, an outage the new setup prevented or shortened, and the OpenObserve dashboards you actually use. */}
+
+## The shape of the problem
+
+More than a hundred and forty Linux servers, built up over years, each configured by whoever needed it at the time. Every one was slightly different, which meant every incident started with archaeology.
+
+## Configuration as code
+
+The fix for drift is to stop configuring servers by hand. I drove the move to **Ansible** as infrastructure-as-code, with configuration centralised in Git and playbooks run from CI rather than from someone's laptop. A change to a server is now a reviewed commit, and a server can be rebuilt from scratch to the same state.
+
+## State out of the machines
+
+A server is only safely replaceable if it holds nothing irreplaceable. External state moved onto **Ceph**, so the data a service depends on outlives the machine running it. Combined with **high-availability load balancing**, a node can be drained, rebuilt or lost without the service noticing.
+
+## One place to look
+
+Logs and metrics across the fleet go to **OpenObserve**. The value is less about dashboards than about the first five minutes of an incident: one place to search, across every machine, instead of a shell on each.
+
+## Why it matters for the product
+
+None of this is visible to a user, which is the point. Deployments became routine, incidents became shorter, and the engineers who used to spend their week keeping servers alive got to spend it on the platform instead.

@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 
 import { LINKS, SITE_URL } from "@/components/marketing/links";
+import { PROJECTS } from "@/content/projects";
 
 const PAGES: { path: string; priority: number }[] = [
   { path: LINKS.home, priority: 1 },
@@ -14,5 +15,12 @@ const PAGES: { path: string; priority: number }[] = [
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();
-  return PAGES.map((page) => ({ url: `${SITE_URL}${page.path}`, lastModified, priority: page.priority }));
+  return [
+    ...PAGES.map((page) => ({ url: `${SITE_URL}${page.path}`, lastModified, priority: page.priority })),
+    ...PROJECTS.map((project) => ({
+      url: `${SITE_URL}${LINKS.work}/${project.slug}`,
+      lastModified: new Date(project.published),
+      priority: 0.6,
+    })),
+  ];
 }

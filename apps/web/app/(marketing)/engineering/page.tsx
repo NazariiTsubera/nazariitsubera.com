@@ -74,9 +74,9 @@ export default function EngineeringPage() {
           {SIDE_PROJECTS.map((project) => (
             <article key={project.title} className="border-t border-ink/[.14] py-6">
               <div className="mb-2 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
-                <a href={project.href} target="_blank" rel="noopener" className="n navlink text-[22px] tracking-[-0.02em]">
+                <Link href={`${LINKS.work}/${project.slug}`} className="n navlink text-[22px] tracking-[-0.02em]">
                   {project.title}
-                </a>
+                </Link>
                 <span className="font-mono text-[13px] text-muted">{project.stack}</span>
               </div>
               <p className="max-w-[62ch] text-body">{project.body}</p>
@@ -84,7 +84,7 @@ export default function EngineeringPage() {
           ))}
           <p className="pt-6">
             <Link href={LINKS.work} className="l navlink text-accent">
-              Selected work with screenshots <span className="arw">&rarr;</span>
+              All work, with the detail <span className="arw">&rarr;</span>
             </Link>
           </p>
         </div>

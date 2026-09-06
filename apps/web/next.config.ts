@@ -1,5 +1,6 @@
 import { existsSync } from "node:fs";
 import path from "node:path";
+import createMDX from "@next/mdx";
 import type { NextConfig } from "next";
 
 // One .env at the repository root serves every workspace. Next only reads its own directory,
@@ -24,4 +25,7 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+// Work articles are MDX files under content/work, imported by the /work/[slug] route.
+const withMDX = createMDX({});
+
+export default withMDX(nextConfig);

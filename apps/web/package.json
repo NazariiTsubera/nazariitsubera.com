@@ -10,7 +10,10 @@
     "fonts": "node scripts/copy-fonts.mjs"
   },
   "dependencies": {
+    "@mdx-js/loader": "^3.1.1",
+    "@mdx-js/react": "^3.1.1",
     "@nazariitsubera/core": "workspace:*",
+    "@next/mdx": "^16.3.4",
     "better-auth": "^1.7.0",
     "next": "^16.2.10",
     "react": "^19.1.0",
@@ -18,6 +21,7 @@
     "zod": "^4.0.0"
   },
   "devDependencies": {
+    "@types/mdx": "^2.0.14",
     "@types/node": "^22.13.0",
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.0",

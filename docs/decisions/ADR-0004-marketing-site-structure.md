@@ -22,7 +22,9 @@ in `app/sitemap.ts`. The pages are `/` (landing), `/business`, `/engineering`, `
 Calls to action lead to `/contact`, which carries the HubSpot lead form (ADR-0001) next to the
 direct email and phone; the page still works with the form unavailable.
 
-Copy is data (`apps/web/content/`), components render it. The design is a language, not a fixed
+Copy is data (`apps/web/content/`), components render it. Each project in `content/projects.ts` has
+a long-form article in `content/work/<slug>.mdx` (via `@next/mdx`), statically generated at
+`/work/<slug>` and listed in the sitemap; the `/work` index groups them by who they were for. The design is a language, not a fixed
 composition: sections were kept, removed or reshaped by what a visitor needs. Sections whose
 content does not exist yet (reviews, writing) are not rendered; nothing on the live site is a
 placeholder except the four work screenshots, which show a labelled frame until the file exists.

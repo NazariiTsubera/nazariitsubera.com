@@ -31,14 +31,14 @@ export default function HomePage() {
         <div className="rv mb-3.5 flex flex-wrap items-baseline justify-between gap-[18px]">
           <H2 id="work">Selected work</H2>
           <Link href={LINKS.work} className="l navlink text-accent">
-            All work &amp; technical detail <span className="arw">&rarr;</span>
+            All work <span className="arw">&rarr;</span>
           </Link>
         </div>
         <p className="rv mb-7 max-w-[54ch] text-body">
-          Four systems currently in use &mdash; one for a local client, two at Global Virtual Opportunities, and one of my
-          own.
+          A few of the systems I&rsquo;ve built and run &mdash; for a client, at Global Virtual Opportunities, and on my
+          own. Each has a write-up with the technical detail.
         </p>
-        <WorkGrid projects={PROJECTS} />
+        <WorkGrid projects={PROJECTS.filter((project) => project.featured)} />
       </Section>
       <AboutTeaser />
       <CtaBand />

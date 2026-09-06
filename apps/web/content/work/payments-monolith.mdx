@@ -1,0 +1,22 @@
+{/* Nazarii: first draft from the résumé. Worth adding: how long the migration took, the nastiest incompatibility you hit, and how the team split the work. */}
+
+## The starting point
+
+A payments platform that had been running, and earning, for years on PHP 7.4. Nobody wanted to touch it, which is exactly the situation in which you have to. An unsupported runtime is a liability, and every month it gets harder to move.
+
+## Tests you can believe
+
+Before changing anything, I built integration-test infrastructure around the monolith. The tests run against real dependencies rather than mocks, using Vitest and Testcontainers, so a passing suite means the code actually works with the database it will meet in production.
+
+Real dependencies are slow if you are careless. Two decisions kept the suite fast enough to run on every change:
+
+- **tmpfs-backed database state.** Each test gets an isolated database that lives in memory, so setup and teardown cost almost nothing.
+- **Four parallel CI forks.** The suite is split across four workers with isolation preserved, so wall-clock time stays short as the suite grows.
+
+## Characterisation before change
+
+The migration itself ran on characterisation tests: tests that capture what the system does today, whether or not that behaviour was ever intended. They are the safety net for changing a codebase nobody fully remembers. With them in place, PHP 7.4 to 8.4 became a gradual rollout instead of a big-bang release, with each step checked against the recorded behaviour.
+
+## Leading it
+
+I led a team of four engineers through this, ran the code reviews, and ran the hiring loops that grew the team. The next phase is under way: containerising the platform and moving its workloads toward Kubernetes, on the same principle of small, verified steps.

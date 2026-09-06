@@ -205,3 +205,91 @@
     color: #ffffff;
   }
 }
+
+@layer components {
+  /* Long-form articles rendered from MDX. Element selectors, because the body is authored Markdown. */
+  .article {
+    max-width: 68ch;
+    font-size: 17px;
+    line-height: 1.75;
+    @apply text-body;
+  }
+  .article > * + * {
+    margin-top: 1.1em;
+  }
+  .article h2,
+  .article h3 {
+    @apply n text-ink;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+  .article h2 {
+    font-size: clamp(24px, 2.4vw, 30px);
+    margin-top: 2.1em;
+  }
+  .article h3 {
+    font-size: 22px;
+    margin-top: 1.7em;
+  }
+  .article a {
+    @apply text-accent;
+    text-decoration: underline;
+    text-decoration-color: rgba(26, 84, 144, 0.35);
+    text-underline-offset: 3px;
+  }
+  .article a:hover {
+    text-decoration-color: currentColor;
+  }
+  .article strong {
+    @apply font-medium text-ink;
+  }
+  .article ul,
+  .article ol {
+    padding-left: 1.3em;
+  }
+  .article ul {
+    list-style: disc;
+  }
+  .article ol {
+    list-style: decimal;
+  }
+  .article li + li {
+    margin-top: 0.45em;
+  }
+  .article blockquote {
+    @apply n italic text-quote;
+    border-left: 2px solid #1a5490;
+    padding-left: 1.2em;
+    font-size: 20px;
+    line-height: 1.45;
+  }
+  .article code {
+    @apply bg-band font-mono;
+    font-size: 0.88em;
+    padding: 0.1em 0.35em;
+  }
+  .article pre {
+    @apply bg-ink text-on-dark;
+    padding: 1.2em 1.4em;
+    overflow-x: auto;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .article pre code {
+    background: none;
+    padding: 0;
+    font-size: inherit;
+  }
+  .article hr {
+    border: 0;
+    border-top: 1px solid rgba(22, 26, 26, 0.14);
+    margin: 2.5em 0;
+  }
+  .article img {
+    border: 1px solid rgba(22, 26, 26, 0.16);
+  }
+  .article figcaption {
+    @apply l text-muted;
+    margin-top: 0.8em;
+  }
+}

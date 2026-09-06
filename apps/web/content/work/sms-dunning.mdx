@@ -1,0 +1,20 @@
+{/* Nazarii: first draft from the résumé. Worth adding: the copy of the four messages, which variants won, and anything the tenure or region data surprised you with. */}
+
+## The problem
+
+An affiliate CRM with fifteen thousand paying users, and a failed-payment rate of 10.7%. Most failures are not people leaving. They are expired cards, a bank declining a charge, a limit hit at the wrong moment. Left alone, each one becomes a lost account. Handled well, most of them recover.
+
+## Four messages, not one
+
+I designed a four-attempt SMS dunning sequence. The important design decision is that the messages are not four copies of the same reminder:
+
+- **Severity scales with account-deletion proximity.** The first message is a friendly nudge. By the fourth, the call to action states plainly how close the account is to being removed. The tone matches the stakes.
+- **Magic-link payment updates.** Every message carries a link that takes the user straight to updating their payment method, already signed in. No password reset, no hunting through settings. The fewer steps between the message and the fix, the more people finish.
+
+## Measuring it properly
+
+Every click-through is tracked by attempt, variant, tenure and region. That turns the sequence from a guess into an experiment: which message people act on, whether long-standing users respond differently from new ones, and where the copy needs to change.
+
+## The result
+
+Failed payments fell from **10.7% to 5.2%**. Roughly half the revenue that was leaking out through payment failures stopped leaking, with no change to the product and no extra work for anyone on the team.

@@ -1,0 +1,20 @@
+{/* Nazarii: worth adding: a screenshot or two, why you started it, and what you learned about GPU memory management the hard way. */}
+
+## What it is
+
+OpenRenderer is a rendering engine written in C++ on OpenGL, built with CMake, with shaders in GLSL. It is a side project in the most literal sense: a way to understand how a renderer is put together by putting one together.
+
+## How it is structured
+
+The engine is modular by design:
+
+- **Configurable render passes.** A frame is a sequence of passes, and the sequence is data, so a new technique is a new pass rather than a rewrite of the loop.
+- **Shader and material abstractions.** Materials describe what a surface looks like; shaders describe how to draw it. Keeping them apart keeps both reusable.
+- **GPU buffer and texture management.** Vertex data, uniforms and textures are owned and tracked explicitly, because a renderer that leaks GPU memory is a renderer that works for exactly one demo.
+- **Experimental ray-marching shaders.** Scenes described as distance functions and rendered by marching rays through them, alongside the conventional rasterised path.
+
+## Why it is here
+
+It is the project where I learned to think about the systems under the surface: memory that has to be managed by hand, work that has to be ordered exactly, and the difference between something that renders once and something that keeps rendering. That habit carried straight into the backend and infrastructure work on this page.
+
+The code is on [GitHub](https://github.com/NazariiTsubera/OpenRenderer).

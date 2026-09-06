@@ -97,15 +97,25 @@ When an architecture, schema, API, auth, billing, pipeline, or template conventi
 changes, add an ADR under `docs/decisions/` following the existing `ADR-NNNN-title.md` pattern.
 
 ## Deployment
-Railway, service `nazariitsubera.com`. Build `pnpm install --frozen-lockfile && pnpm --filter web build`,
-start `pnpm --filter web start`, pre-deploy `pnpm --filter @nazariitsubera/core db:migrate:deploy`.
-Custom domains `nazariitsubera.com` and `*.nazariitsubera.com` are attached to it. DNS is on
-Cloudflare, proxied, SSL mode Full.
+Railway project `nazariitsubera.com` (link it with `railway link -p nazariitsubera.com`). Two services
+deploy from GitHub `NazariiTsubera/nazariitsubera.com`, branch `main`, plus managed Postgres and Redis.
 
-The `worker` service runs from the same repo with start `pnpm --filter worker start` and no
-public networking.
+- `nazariitsubera.com` (web): configured by `railway.json`. Railpack builds with
+  `pnpm --filter web build`, runs `prisma migrate deploy` as the pre-deploy command, starts
+  `pnpm --filter web start`, and health-checks `/api/health`. Custom domains `nazariitsubera.com`
+  and `*.nazariitsubera.com` are attached. DNS is on Cloudflare, proxied, SSL mode Full.
+- `worker`: configured by `railway.worker.json` (set as the service's config-as-code path), which
+  builds `apps/worker/Dockerfile`. The image is the Playwright image matching the `playwright`
+  version in `packages/core`, because the gate needs Chromium. No public networking.
 
-Required variables on both services: `DATABASE_URL` (reference `${{Postgres.DATABASE_URL}}`),
-`REDIS_URL` (`${{Redis.REDIS_URL}}`), `BETTER_AUTH_SECRET`, `BETTER_AUTH_URL`,
-`SITE_ROOT_DOMAIN`, `NEXT_PUBLIC_APP_URL`, `OPERATOR_NAME`, `OPERATOR_PHONE`, `PREVIEW_DAYS`,
-`PROVIDERS_MODE=real`, `ASSETS_PUBLIC_URL`, and the `R2_*` credentials.
+Variables on both services: `DATABASE_URL` (`${{Postgres.DATABASE_URL}}`), `REDIS_URL`
+(`${{Redis.REDIS_URL}}`), `BETTER_AUTH_SECRET`, `BETTER_AUTH_URL`, `SITE_ROOT_DOMAIN`,
+`NEXT_PUBLIC_APP_URL`, `OPERATOR_NAME`, `OPERATOR_PHONE`, `PREVIEW_DAYS`, `PROVIDERS_MODE`,
+`STORAGE_DIR`, `ASSETS_PUBLIC_URL`, and the `R2_*` credentials. The web service also carries
+`HUBSPOT_PORTAL_ID` and `HUBSPOT_FORM_GUID`; the worker carries `WORKER_CONCURRENCY`.
+
+`PROVIDERS_MODE=real` needs the R2 credentials plus `ANTHROPIC_API_KEY`, `TRANSCRIPTION_KEY`,
+`BG_REMOVAL_URL` and `BG_REMOVAL_KEY`. Until they are set, production runs `fake`: the site and
+console work, but uploads live on the web service's ephemeral disk and the pipeline uses stubs.
+
+`pnpm smoke:marketing https://nazariitsubera.com` checks the live marketing pages after a deploy.

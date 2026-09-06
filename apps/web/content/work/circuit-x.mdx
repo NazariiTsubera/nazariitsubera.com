@@ -1,0 +1,17 @@
+{/* Nazarii: worth adding: a GIF of a circuit being drawn and solved, and which components it supports. */}
+
+## What it is
+
+Circuit X is a real-time circuit simulator. You draw a schematic and watch it behave. It is written in C++ with SFML for the window and graphics, ImGui for the interface, and Eigen for the linear algebra.
+
+## From a drawing to something solvable
+
+A drawn circuit is a picture. To simulate it, the picture has to become a system of equations. Circuit X does this with a **Modified Nodal Analysis** pipeline: the schematic is converted into a tree of nodes, each node gets an unknown voltage, and every component contributes its own equation about the currents flowing through it. The result is a matrix that Eigen can solve.
+
+## Simulating in time
+
+Capacitors and inductors make the equations differential: their behaviour depends on how things are changing, not only on their current value. Circuit X integrates them with a **Backward-Euler solver**. It is an implicit method, which makes it stable on the stiff systems that circuits produce, so the simulation does not blow up when you connect two components that fight each other.
+
+## Why it is here
+
+It is a small project that touches the whole stack of a numerical application: a user interface, a data model, a mathematical transformation, and a solver that has to stay stable in real time. The code is on [GitHub](https://github.com/NazariiTsubera/circuitx).

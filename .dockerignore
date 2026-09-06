@@ -1,0 +1,11 @@
+.git
+node_modules
+**/node_modules
+**/.next
+**/out
+.storage
+**/.storage
+docs
+.claude
+*.md
+!packages/core/**/*.md
