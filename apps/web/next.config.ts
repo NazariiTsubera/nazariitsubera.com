@@ -10,6 +10,18 @@ if (existsSync(rootEnv)) process.loadEnvFile(rootEnv);
 const nextConfig: NextConfig = {
   transpilePackages: ["@nazariitsubera/core"],
   serverExternalPackages: ["@prisma/client", "prisma"],
+  async headers() {
+    return [
+      {
+        // Fonts are copied from a pinned package version and never edited in place.
+        source: "/fonts/:file*",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
+          { key: "Access-Control-Allow-Origin", value: "*" },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;

@@ -17,7 +17,7 @@
 - Every table carries `vendorId`. `SiteVersion` rows are immutable. Publish swaps `Vendor.publishedVersionId` in a transaction.
 - Vendor pages are served with `Content-Security-Policy: script-src 'none'`, `X-Content-Type-Options: nosniff`, and `Cache-Control: public, max-age=0, s-maxage=60, stale-while-revalidate=300`. Previews add `X-Robots-Tag: noindex`.
 - The template never renders the banner or robots tag; `finalizePage` injects both between marker comments and is idempotent.
-- Reserved subdomains: `www app api admin console img mail static claim storefront dev staging _sites _assets`.
+- Reserved subdomains: `www app api admin console img mail static claim storefront dev staging sites assets`.
 - Core stays free of `next`. Host routing lives in `@nazariitsubera/core/hosting` with no Node imports so the proxy can use it on any runtime.
 - Work on branch `booth-to-mrr/02-serving-and-publish`. Commit at every task boundary. Do not push.
 - Every commit message ends with `Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>`.
@@ -73,10 +73,10 @@
 
 ### Task 6: Next proxy, `_sites` route, fonts route, health with DB
 
-**Files:** `apps/web/proxy.ts`, `apps/web/app/_sites/[slug]/[[...path]]/route.ts`, `apps/web/app/_assets/fonts/[file]/route.ts`, `apps/web/app/api/health/route.ts`.
+**Files:** `apps/web/proxy.ts`, `apps/web/app/sites/[slug]/[[...path]]/route.ts`, `apps/web/app/assets/fonts/[file]/route.ts`, `apps/web/app/api/health/route.ts`.
 
-- [ ] Step 1: `proxy.ts` exports `proxy(request)`: `routeHost` with roots `[SITE_ROOT_DOMAIN, "localhost"]`; app hosts pass through; site hosts rewrite to `/_sites/{slug}{path}`; domains to `/_sites/_domain/{host}{path}`. Matcher excludes `_next/`, `_assets/`, `_sites/`, `icon.svg`, `favicon.ico`.
-- [ ] Step 2: `_sites` route: GET builds the path from params, calls `serveSite` with `prismaSiteStore` and env-derived ctx (`claimBaseUrl = NEXT_PUBLIC_APP_URL/claim`), returns the result verbatim; `_domain` returns 404.
+- [ ] Step 1: `proxy.ts` exports `proxy(request)`: `routeHost` with roots `[SITE_ROOT_DOMAIN, "localhost"]`; app hosts pass through; site hosts rewrite to `/sites/{slug}{path}`; domains to `/sites/_domain/{host}{path}`. Matcher excludes `_next/`, `assets/`, `sites/`, `icon.svg`, `favicon.ico`. The route folders must NOT start with an underscore: Next treats `_name` folders as private and excludes them from routing. The route additionally 404s when the Host header is an app host, so `/sites/<slug>` on the apex serves nothing.
+- [ ] Step 2: `sites` route: GET builds the path from params, calls `serveSite` with `prismaSiteStore` and env-derived ctx (`claimBaseUrl = NEXT_PUBLIC_APP_URL/claim`), returns the result verbatim; `_domain` returns 404.
 - [ ] Step 3: fonts route serves only files declared by themes, `font/woff2`, immutable cache.
 - [ ] Step 4: health runs `SELECT 1` and reports `db: true`, 503 otherwise.
 - [ ] Step 5: build, start, verify: health shows db true; unknown vendor host returns 404 with CSP and noindex; font returns 200 immutable.
@@ -86,13 +86,13 @@
 
 **Files:** `packages/core/scripts/publish-fixture.ts`, fixture README.
 
-- [ ] Step 1: script upserts the vendor by `slugify(businessName)` (unique suffix if taken), renders with `assetsBaseUrl: "/_assets"`, `siteUrl` and `claimUrl` from env, finalizes with preview flags, publishes as `template`, prints live and local preview URLs with the token.
+- [ ] Step 1: script upserts the vendor by `slugify(businessName)` (unique suffix if taken), renders with `assetsBaseUrl: "/assets"`, `siteUrl` and `claimUrl` from env, finalizes with preview flags, publishes as `template`, prints live and local preview URLs with the token.
 - [ ] Step 2: run it, start the app, and curl `Host: pearl-street-pottery.localhost`: 200 with noindex, CSP, cache header; body has two `nt:banner` markers, `Expires in 7 days`, the robots meta, no `<script`; the token URL 302s to `/`; robots.txt disallows.
 - [ ] Step 3: commit `feat(core): add publish-fixture CLI to put a hand-built site live`.
 
 ### Task 8: Docs, design deviations, Railway steps
 
-- [ ] Step 1: design doc: R2 holds only `uploads/` and `assets/`; fonts served by web at `/_assets/fonts`; `SiteVersion.html` replaces `htmlKey`; serving reads HTML from the row; Railway service is named `nazariitsubera.com`.
+- [ ] Step 1: design doc: R2 holds only `uploads/` and `assets/`; fonts served by web at `/assets/fonts`; `SiteVersion.html` replaces `htmlKey`; serving reads HTML from the row; Railway service is named `nazariitsubera.com`.
 - [ ] Step 2: AGENTS.md commands (`docker compose up -d`, `pnpm test:integration`) and deployment (Postgres attached, `DATABASE_URL` reference, `SITE_ROOT_DOMAIN`, `NEXT_PUBLIC_APP_URL`, `OPERATOR_NAME`, `OPERATOR_PHONE`, `PREVIEW_DAYS`, pre-deploy `pnpm --filter @nazariitsubera/core db:migrate:deploy`); README adds `docker compose up -d`.
 - [ ] Step 3: `pnpm install --frozen-lockfile && pnpm lint && pnpm typecheck && pnpm test && pnpm test:integration && pnpm build`; commit `docs: record serving deviations and Railway database steps`.
 

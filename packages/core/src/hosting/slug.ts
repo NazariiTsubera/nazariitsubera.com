@@ -1,6 +1,6 @@
 export const RESERVED_SLUGS: ReadonlySet<string> = new Set([
   "www", "app", "api", "admin", "console", "img", "mail", "static", "claim", "storefront",
-  "dev", "staging", "_sites", "_assets",
+  "dev", "staging", "sites", "assets",
 ]);
 
 /** Lowercase ASCII, hyphen separated, at most 40 characters, never reserved, never empty. */
