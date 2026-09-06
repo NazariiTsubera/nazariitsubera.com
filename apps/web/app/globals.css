@@ -283,7 +283,7 @@
   @media (hover: hover) and (pointer: fine) {
     .path:hover .chip,
     .svc:hover .chip {
-      @apply border-accent/30 bg-accent text-paper;
+      @apply border-accent/40 bg-accent/[.14] text-accent;
     }
   }
 
@@ -301,11 +301,19 @@
     grid-template-columns: auto minmax(0, 1fr);
     gap: 6px 16px;
     align-items: start;
-    padding: 20px 0;
-    border-top: 1px solid var(--rule-strong);
-    transition:
-      padding-left 0.45s cubic-bezier(0.2, 0.7, 0.2, 1),
-      background 0.45s ease;
+    padding: 20px 16px;
+    margin: 0 -16px;
+    transition: background 0.45s ease;
+  }
+  /* The hairline stays on the column's own edges while the hover fill bleeds 16px past them. */
+  .svc::after {
+    content: "";
+    position: absolute;
+    left: 16px;
+    right: 16px;
+    top: 0;
+    height: 1px;
+    background: var(--rule-strong);
   }
   .svc-go {
     grid-column: 2;
@@ -322,7 +330,7 @@
     .svc {
       grid-template-columns: auto minmax(0, 1fr) auto;
       gap: 6px 22px;
-      padding: 24px 0;
+      padding: 24px 16px;
     }
     .svc-go {
       grid-column: auto;
@@ -374,11 +382,10 @@
       transform: translateY(-1px);
     }
     .svc:hover {
-      padding-left: 16px;
       background: rgba(26, 84, 144, 0.05);
     }
     .svc:hover .arw {
-      transform: translateX(10px);
+      transform: translateX(6px);
     }
     .svc:hover .svc-i {
       @apply text-accent;

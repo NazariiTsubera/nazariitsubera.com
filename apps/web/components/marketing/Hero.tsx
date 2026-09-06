@@ -9,7 +9,7 @@ export function Hero() {
   return (
     <section className="grid grid-cols-1 items-center gap-[clamp(30px,5vw,64px)] border-t border-ink/[.14] pb-page-bottom pt-page-top wide:grid-cols-[minmax(0,1fr)_minmax(0,340px)]">
       <div className="rv">
-        <Label className="mb-5">San Antonio, Texas &mdash; automation, custom software, applied AI</Label>
+        <Label className="mb-5">Backend &amp; infrastructure engineer &mdash; San Antonio, Texas</Label>
         <H1 measure={14} className="mb-6">
           I build software that runs itself.
         </H1>
