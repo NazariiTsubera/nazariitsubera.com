@@ -416,7 +416,6 @@ Expected: `HTTP/2 200` and an `x-railway-request-id` header.
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({
-  esbuild: { jsx: "automatic" },
   test: {
     name: "core",
     environment: "node",
