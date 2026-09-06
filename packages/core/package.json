@@ -17,7 +17,8 @@
     "./markets": "./src/markets/index.ts",
     "./vendors": "./src/vendors/index.ts",
     "./assets": "./src/assets/index.ts",
-    "./captures": "./src/captures/index.ts"
+    "./captures": "./src/captures/index.ts",
+    "./jobs": "./src/jobs/index.ts"
   },
   "scripts": {
     "typecheck": "tsc --noEmit -p tsconfig.json",
@@ -48,6 +49,8 @@
     "@fontsource-variable/work-sans": "^5.3.0",
     "@prisma/client": "^6.19.0",
     "better-auth": "^1.7.0",
+    "bullmq": "^6.3.0",
+    "ioredis": "^6.0.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "zod": "^4.0.0"
