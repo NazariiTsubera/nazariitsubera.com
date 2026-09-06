@@ -38,7 +38,7 @@ export function Shot({
       <span className="l text-muted">Screenshot pending: work/{project.file}</span>
     </div>
   );
-  return <div className={frame ? "shot border border-ink/[.16]" : "border border-ink/[.16]"}>{image}</div>;
+  return <div className={frame ? "shot border border-ink/[.14]" : "border border-ink/[.14]"}>{image}</div>;
 }
 
 /** Compact grid for the landing page; every card opens its article. */

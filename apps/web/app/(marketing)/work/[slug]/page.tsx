@@ -52,7 +52,7 @@ export default async function WorkArticlePage({ params }: Params) {
   return (
     <>
       <header className="rv border-t border-ink/[.14] pb-[clamp(30px,4vw,48px)] pt-page-top">
-        <Label className="mb-6">
+        <Label mark={false} className="mb-6">
           <Link href={LINKS.work} className="navlink tap">
             Work
           </Link>{" "}

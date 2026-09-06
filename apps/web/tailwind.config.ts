@@ -20,12 +20,17 @@ const config: Config = {
     },
     extend: {
       colors: {
+        // Four grounds, each a step the eye can actually see: cards sit above the page, the
+        // page sits above the band, and the ink band closes a run of sections. The old
+        // paper/band pair differed by 9/255 and read as one uninterrupted sheet.
         paper: "#f3f4f3",
-        band: "#eaece9",
+        raised: "#fbfcfb",
+        band: "#e2e6e2",
         ink: "#171a1a",
         body: "#4a4f4e",
-        muted: "#636866",
-        faint: "#9aa09c",
+        // Darkened with the band: 4.9:1 on #e2e6e2, so the 11.5px labels stay AA.
+        muted: "#5c625f",
+        faint: "#868c88",
         quote: "#7d8380",
         accent: "#1a5490",
         "accent-deep": "#143f6d",

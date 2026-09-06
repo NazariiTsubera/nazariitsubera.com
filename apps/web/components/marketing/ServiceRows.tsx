@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { SERVICES } from "@/content/services";
 
+import { SERVICE_ICONS } from "./Icons";
 import { GRID, H2, Label } from "./Section";
 import { LINKS } from "./links";
 
@@ -22,7 +23,7 @@ export function ServiceRows() {
       <div className="min-w-0">
         {SERVICES.map((service) => (
           <Link key={service.id} href={`${LINKS.business}#${service.id}`} className="svc rv">
-            <span className="l svc-i text-muted">{service.n}</span>
+            <span className="chip chip-sm svc-i">{SERVICE_ICONS[service.id]}</span>
             <span>
               <span className="n mb-2 block text-[22px] leading-[1.2] tracking-[-0.02em] text-ink">{service.title}</span>
               <span className="mb-2 block max-w-[52ch] text-body">{service.summary}</span>
@@ -31,7 +32,7 @@ export function ServiceRows() {
             <span className="svc-go arw l text-accent">&rarr;</span>
           </Link>
         ))}
-        <div className="rv mt-7 flex flex-col gap-5 border border-accent/30 bg-accent/5 px-[clamp(20px,5vw,26px)] py-6 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-x-[26px]">
+        <div className="rv mt-7 flex flex-col gap-5 border border-accent/25 bg-accent/[.06] px-[clamp(20px,5vw,26px)] py-6 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-x-[26px]">
           <div>
             <h3 className="n mb-1.5 text-xl tracking-[-0.02em]">Not sure which one you need?</h3>
             <p className="max-w-[44ch] text-body">

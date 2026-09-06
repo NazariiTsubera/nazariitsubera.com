@@ -38,12 +38,44 @@ export function Band({
   children: ReactNode;
 }) {
   const fill =
-    tone === "dark" ? "bg-ink text-on-dark shadow-[0_0_0_100vmax_#171a1a]" : "bg-band shadow-[0_0_0_100vmax_#eaece9]";
+    tone === "dark"
+      ? "bg-ink text-on-dark shadow-[0_0_0_100vmax_var(--ink-bg)]"
+      : "bg-band shadow-[0_0_0_100vmax_var(--band-bg)]";
   return <section className={`band py-band ${fill} ${className}`}>{children}</section>;
 }
 
-export function Label({ className = "", children }: { className?: string; children: ReactNode }) {
-  return <div className={`l text-muted ${className}`}>{children}</div>;
+/**
+ * A section's eyebrow. The accent rule in front of it is the one non-text mark most sections
+ * had, and it gives each opening a spot of colour instead of another line of grey type.
+ */
+export function Label({
+  mark = true,
+  className = "",
+  children,
+}: {
+  mark?: boolean;
+  className?: string;
+  children: ReactNode;
+}) {
+  return (
+    <div className={`l text-muted ${mark ? "flex items-center gap-2.5" : ""} ${className}`}>
+      {mark ? <span aria-hidden className="h-px w-6 flex-none bg-accent" /> : null}
+      {children}
+    </div>
+  );
+}
+
+/** A section opening that sits in the middle of the column rather than against its left edge. */
+export function CenteredHead({ label, title, children }: { label: string; title: ReactNode; children?: ReactNode }) {
+  return (
+    <div className="rv mx-auto mb-[clamp(32px,4vw,48px)] max-w-[46ch] text-center">
+      <Label className="mb-5 justify-center">{label}</Label>
+      <H2 measure={26} className="mx-auto">
+        {title}
+      </H2>
+      {children ? <p className="mt-4 text-body">{children}</p> : null}
+    </div>
+  );
 }
 
 /**

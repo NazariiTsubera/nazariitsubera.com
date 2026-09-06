@@ -66,7 +66,7 @@ export default function BusinessPage() {
           </div>
           <div className="rv min-w-0">
             <p className="mb-6 max-w-[60ch] text-lg leading-[1.65] text-body">{item.detail}</p>
-            <Label className="mb-3">For example</Label>
+            <Label mark={false} className="mb-3">For example</Label>
             <ul className="max-w-[60ch]">
               {item.examples.map((example) => (
                 <li key={example} className="border-t border-ink/[.14] py-3 text-body">
