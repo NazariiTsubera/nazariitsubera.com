@@ -37,7 +37,7 @@ direction enforceable.
 | Repository layout | pnpm workspace: `apps/web`, `apps/worker`, `packages/core`. One core package with modules, consumed as TypeScript source with no build step. | Two runtime apps with different dependency profiles share one domain layer. A package boundary enforces the direction; a single core package keeps compilation trivial. |
 | Code style | `service + repository` modules, thin route handlers, Zod contracts, TDD with vitest, slim readable code. Dependencies are added only when a task needs them. | Small surface area and readability. The operator's SheetX project is a style reference only; nothing is copied from it. |
 | Hosting | Railway. Two services from one image: `web` and `worker`. Managed Postgres and Redis. | Worker does heavy image and model work and must never share a process with the one serving vendor sites. |
-| Object storage | Cloudflare R2, public bucket on `img.nazariitsubera.com` | Photos and built sites. No egress cost. DNS is already on Cloudflare. |
+| Object storage | Cloudflare R2, public bucket on `img.nazariitsubera.com` | Photos (Plan 3). No egress cost. DNS is already on Cloudflare. Built HTML lives on the site version row in Postgres. |
 | DNS and TLS | Cloudflare DNS, proxied, SSL mode Full. Apex and `*.nazariitsubera.com` are Railway custom domains on `web`. | Already live and verified. |
 | API | Next.js route handlers and server actions calling `@nazariitsubera/core` services | No separate API service. One client, one deploy. |
 | Queue | BullMQ on Redis. A Postgres `Job` row is the durable record, created before enqueue. | Operator's choice, standard and well understood. Postgres holds the truth, Redis holds work in flight. |
@@ -107,11 +107,11 @@ adapter are the only parts that change per target.
 
 | Component | Where | Notes |
 |---|---|---|
-| `web` | Railway service, root `/`, build `pnpm install && pnpm --filter web build`, start `pnpm --filter web start` | Next.js in `apps/web`: marketing pages, console, admin, route handlers, vendor-site serving. Owns custom domains `nazariitsubera.com` and `*.nazariitsubera.com`. Pre-deploy runs `pnpm --filter core db:migrate:deploy`. Watch paths `apps/web/**`, `packages/**`. |
+| `nazariitsubera.com` (the web service) | Railway service, root `/`, build `pnpm install --frozen-lockfile && pnpm --filter web build`, start `pnpm --filter web start` | Next.js in `apps/web`: marketing pages, console, admin, route handlers, vendor-site serving. Owns custom domains `nazariitsubera.com` and `*.nazariitsubera.com`. Pre-deploy runs `pnpm --filter core db:migrate:deploy`. Watch paths `apps/web/**`, `packages/**`. |
 | `worker` | Railway service, root `/`, built from `apps/worker/Dockerfile` on the Playwright base image, start `pnpm --filter worker start` | Node in `apps/worker`, run with `tsx`: BullMQ workers for pipeline jobs and the repeatable expiry sweep. Ships Chromium for the gate. No public networking. Watch paths `apps/worker/**`, `packages/**`. |
 | Postgres | Railway managed | All domain data, Better Auth tables, durable job records, events. |
 | Redis | Railway managed | BullMQ only. Required at boot in both processes; a missing `REDIS_URL` fails fast in production. |
-| R2 | Cloudflare | Bucket with prefixes `uploads/`, `assets/`, `sites/`, `fonts/`. Public read on `img.nazariitsubera.com` for `assets/` and `fonts/`. |
+| R2 | Cloudflare | Bucket with prefixes `uploads/` and `assets/` for photos (Plan 3). Public read on `img.nazariitsubera.com`. Built HTML lives on the `SiteVersion` row, not R2; theme fonts are copied into the web app's `public/fonts` at build time. |
 | Cloudflare | DNS and proxy | Already configured. `www` redirects to apex at the edge. |
 | Anthropic API | External | Content generation, `claude-opus-5`, structured output. |
 | Transcription provider | External, behind adapter | See open decision 2. |
@@ -286,7 +286,7 @@ SiteVersion
   contentJson jsonb                 schema in section 6
   authoredBy enum: model | template
   themeId?                          set when authoredBy is template
-  htmlKey                           R2 key of the published HTML, flags already injected
+  html                              the published HTML, flags already injected
   gateReport jsonb                  section 7.2 report for the published HTML
   screenshotKeys jsonb              { w360, w768, w1280 } R2 keys from the gate
   renderFlags jsonb                 { preview: boolean, noindex: boolean }
@@ -527,14 +527,14 @@ Other job types reuse the same steps:
    claim page. Claiming after expiry still works and revives the site.
 4. `?p={previewToken}` present: if the token matches and no operator session cookie is present,
    record one `preview_opened` event per token, then redirect to the clean URL.
-5. `/`: return the HTML body from R2, cached in memory by `htmlKey` because versions are
-   immutable. Headers: `Cache-Control: public, max-age=0, s-maxage=60,
+5. `/`: return the HTML from the published version row, cached in memory for 30 seconds by
+   slug. Headers: `Cache-Control: public, max-age=0, s-maxage=60,
    stale-while-revalidate=300`, `Content-Security-Policy: script-src 'none'`, and
    `X-Robots-Tag: noindex` while `renderFlags.noindex` is true.
 6. `/robots.txt`: `Disallow: /` while a preview, `Allow: /` once won.
 7. Anything else: 404.
 
-Images and fonts are referenced by absolute URL on `img.nazariitsubera.com` under
+Photos are referenced by absolute URL on `img.nazariitsubera.com` under
 content-hashed keys with `Cache-Control: public, max-age=31536000, immutable`. HTML never
 references anything under a mutable key, so a publish can never break a live page.
 

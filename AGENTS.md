@@ -16,8 +16,11 @@ Plans: `docs/superpowers/plans/`. Decisions: `docs/decisions/`.
   one `exports` entry per module. No build step.
 
 ## Commands
+- `docker compose up -d` starts local Postgres and Redis
 - `pnpm install`, `pnpm dev`, `pnpm build`
-- `pnpm lint`, `pnpm typecheck`, `pnpm test`
+- `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm test:integration`
+- `pnpm --filter @nazariitsubera/core db:migrate -- --name <name>` creates a migration
+- `pnpm --filter @nazariitsubera/core publish:fixture` puts the demo vendor live locally
 - `pnpm --filter @nazariitsubera/core render:fixture [--theme <id>]` renders the demo vendor to
   `packages/core/out/`; serve it with the `template-preview` entry in `.claude/launch.json`.
 
@@ -25,6 +28,8 @@ Plans: `docs/superpowers/plans/`. Decisions: `docs/decisions/`.
 - Dependency direction is `apps -> core`, never the reverse, never app to app. ESLint enforces it.
 - Browser code imports only `@nazariitsubera/core/contracts`. Every other core module is server-only.
 - Only `packages/core/src/template` renders React to a string.
+- Vendor hostnames are routed by `apps/web/proxy.ts` into `app/sites/[slug]`, which calls
+  `serveSite`. Route folders must not start with an underscore: Next treats those as private.
 - Domain modules follow `service + repository`: route handlers parse, authenticate, call a
   service, return. Services own business rules and transactions. Repositories own queries.
 - Zod schemas live next to their domain; types are inferred from them. No duplicate DTOs.
@@ -65,6 +70,10 @@ When an architecture, schema, API, auth, billing, pipeline, or template conventi
 changes, add an ADR under `docs/decisions/` following the existing `ADR-NNNN-title.md` pattern.
 
 ## Deployment
-Railway. `web` builds with `pnpm install --frozen-lockfile && pnpm --filter web build` and
-starts with `pnpm --filter web start`. Custom domains `nazariitsubera.com` and
-`*.nazariitsubera.com` are attached to `web`. DNS is on Cloudflare, proxied, SSL mode Full.
+Railway, service `nazariitsubera.com`. Build `pnpm install --frozen-lockfile && pnpm --filter web build`,
+start `pnpm --filter web start`, pre-deploy `pnpm --filter @nazariitsubera/core db:migrate:deploy`.
+Custom domains `nazariitsubera.com` and `*.nazariitsubera.com` are attached to it. DNS is on
+Cloudflare, proxied, SSL mode Full.
+
+Required variables: `DATABASE_URL` (reference `${{Postgres.DATABASE_URL}}`), `SITE_ROOT_DOMAIN`,
+`NEXT_PUBLIC_APP_URL`, `OPERATOR_NAME`, `OPERATOR_PHONE`, `PREVIEW_DAYS`.

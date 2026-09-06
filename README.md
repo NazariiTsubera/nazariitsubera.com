@@ -9,6 +9,7 @@ Personal consulting site and the Booth to MRR vendor-website engine, in one pnpm
 ## Run locally
 
 ```sh
+docker compose up -d
 pnpm install
 pnpm dev
 ```
@@ -21,6 +22,7 @@ Open http://localhost:3000.
 pnpm lint
 pnpm typecheck
 pnpm test
+pnpm test:integration
 pnpm build
 ```
 
