@@ -10,9 +10,10 @@ export function proxy(request: NextRequest) {
   // One canonical host for the marketing site. Only the real root domain redirects; on
   // localhost, www is a convenient way to reach the app on the wildcard.
   if (host === `www.${ROOTS[0]}` && ROOTS[0] !== "localhost") {
-    const url = request.nextUrl.clone();
-    url.host = ROOTS[0];
-    return NextResponse.redirect(url, 308);
+    // Built from the public origin, not the request URL: inside the container the request
+    // carries the internal port, and setting `host` alone would keep it.
+    const { pathname, search } = request.nextUrl;
+    return NextResponse.redirect(new URL(pathname + search, `https://${ROOTS[0]}`), 308);
   }
   const route = routeHost(host, ROOTS);
   if (route.kind === "app") return NextResponse.next();
