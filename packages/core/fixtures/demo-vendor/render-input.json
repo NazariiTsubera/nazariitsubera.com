@@ -1,0 +1,46 @@
+{
+  "content": {
+    "schemaVersion": 1,
+    "businessName": "Pearl Street Pottery",
+    "tagline": "Small-batch stoneware from San Antonio",
+    "heroHeadline": "Mugs made for slow mornings",
+    "heroSub": "Wheel-thrown stoneware, glazed by hand in a home studio off Broadway. Find us at the Pearl every Saturday.",
+    "about": "Maria started throwing pots in a community studio and never stopped. Every piece is thrown, trimmed, and glazed by hand, so no two mugs are quite the same. Most weekends you will find her at the Pearl Farmers Market with a table full of new work.",
+    "tone": "warm",
+    "heroAssetId": "scene-1",
+    "personAssetId": "person-1",
+    "products": [
+      { "assetId": "product-1", "name": "Speckled mug", "blurb": "Twelve ounces with a comfortable, wide handle.", "priceHint": null, "checkoutUrl": null, "source": null },
+      { "assetId": "product-2", "name": "Serving bowl", "blurb": "Wide and shallow, made for a table full of people.", "priceHint": "$48", "checkoutUrl": "https://square.link/u/demo-bowl", "source": null },
+      { "assetId": "product-3", "name": "Bud vase", "blurb": "Holds one stem and a lot of attention.", "priceHint": null, "checkoutUrl": null, "source": null },
+      { "assetId": "product-4", "name": "Pour-over set", "blurb": "Dripper and carafe, glazed to match.", "priceHint": "$72", "checkoutUrl": null, "source": null },
+      { "assetId": "product-5", "name": "Salt cellar", "blurb": null, "priceHint": null, "checkoutUrl": null, "source": null },
+      { "assetId": "product-6", "name": "Dinner plate", "blurb": "Ten inches, stackable, quietly speckled.", "priceHint": null, "checkoutUrl": null, "source": null }
+    ],
+    "visit": {
+      "markets": [
+        { "name": "Pearl Farmers Market", "mapsUrl": "https://maps.google.com/?q=Pearl+Farmers+Market+San+Antonio", "scheduleNote": "Saturdays, 9am to 1pm" }
+      ],
+      "note": "Look for the blue tent near the fountain."
+    },
+    "contact": { "phone": "+12105550123", "instagramHandle": "pearlstreetpottery", "ctaLabel": "Call or text" }
+  },
+  "themeId": "market",
+  "assets": {
+    "scene-1": { "id": "scene-1", "kind": "scene", "alt": "The Pearl Street Pottery booth at the market", "variants": { "w480": "images/scene-1-w480.svg", "w960": "images/scene-1-w960.svg", "w1440": "images/scene-1-w1440.svg" }, "width": 1440, "height": 810 },
+    "person-1": { "id": "person-1", "kind": "person", "alt": "Maria at the wheel", "variants": { "w480": "images/person-1-w480.svg", "w960": "images/person-1-w960.svg", "w1440": "images/person-1-w1440.svg" }, "width": 1152, "height": 1440 },
+    "product-1": { "id": "product-1", "kind": "product", "alt": "Speckled mug", "variants": { "w480": "images/product-1-w480.svg", "w960": "images/product-1-w960.svg", "w1440": "images/product-1-w1440.svg" }, "width": 1440, "height": 1440 },
+    "product-2": { "id": "product-2", "kind": "product", "alt": "Serving bowl", "variants": { "w480": "images/product-2-w480.svg", "w960": "images/product-2-w960.svg", "w1440": "images/product-2-w1440.svg" }, "width": 1440, "height": 1440 },
+    "product-3": { "id": "product-3", "kind": "product", "alt": "Bud vase", "variants": { "w480": "images/product-3-w480.svg", "w960": "images/product-3-w960.svg", "w1440": "images/product-3-w1440.svg" }, "width": 1440, "height": 1440 },
+    "product-4": { "id": "product-4", "kind": "product", "alt": "Pour-over set", "variants": { "w480": "images/product-4-w480.svg", "w960": "images/product-4-w960.svg", "w1440": "images/product-4-w1440.svg" }, "width": 1440, "height": 1440 },
+    "product-5": { "id": "product-5", "kind": "product", "alt": "Salt cellar", "variants": { "w480": "images/product-5-w480.svg", "w960": "images/product-5-w960.svg", "w1440": "images/product-5-w1440.svg" }, "width": 1440, "height": 1440 },
+    "product-6": { "id": "product-6", "kind": "product", "alt": "Dinner plate", "variants": { "w480": "images/product-6-w480.svg", "w960": "images/product-6-w960.svg", "w1440": "images/product-6-w1440.svg" }, "width": 1440, "height": 1440 }
+  },
+  "context": {
+    "siteUrl": "https://pearl-street-pottery.nazariitsubera.com",
+    "claimUrl": "https://nazariitsubera.com/claim/pearl-street-pottery",
+    "assetsBaseUrl": ".",
+    "operatorName": "Nazarii Tsubera",
+    "operatorUrl": "https://nazariitsubera.com"
+  }
+}

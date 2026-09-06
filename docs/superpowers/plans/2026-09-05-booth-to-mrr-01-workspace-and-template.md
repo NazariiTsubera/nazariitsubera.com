@@ -1504,7 +1504,7 @@ describe("renderSite", () => {
   it("renders one card per product with a three-width srcset and explicit dimensions", () => {
     const { html } = renderSite(input);
     expect(html.match(/class="card"/g)).toHaveLength(input.content.products.length);
-    expect(html).toContain('srcset="images/product-1-w480.svg 480w, images/product-1-w960.svg 960w, images/product-1-w1440.svg 1440w"');
+    expect(html).toContain('srcSet="images/product-1-w480.svg 480w, images/product-1-w960.svg 960w, images/product-1-w1440.svg 1440w"');
     expect(html).toContain('width="1440" height="1440"');
   });
 
@@ -1523,7 +1523,7 @@ describe("renderSite", () => {
   it("loads the hero eagerly and everything else lazily", () => {
     const { html } = renderSite(input);
     expect(html).toContain('loading="eager"');
-    expect(html).toContain('fetchpriority="high"');
+    expect(html).toContain('fetchPriority="high"');
     expect(html.match(/loading="lazy"/g)).toHaveLength(input.content.products.length + 1);
   });
 
@@ -1889,7 +1889,7 @@ export { buildStylesheet } from "./styles";
 Run: `pnpm --filter @nazariitsubera/core test -- template`
 Expected: `Test Files  3 passed` (styles, format, render), `Tests  23 passed`, and a line `Snapshots  1 written`. The render file has 17 tests: eleven single cases and the six per-theme cases. A new file `packages/core/src/template/__snapshots__/render.test.tsx.snap` exists.
 
-If the `loading="lazy"` count fails, count the images: six products plus one person portrait is seven lazy images, and the hero is the only eager one. If the `srcset` assertion fails, check that React emitted the attribute as lowercase `srcset`; it does in static markup.
+If the `loading="lazy"` count fails, count the images: six products plus one person portrait is seven lazy images, and the hero is the only eager one. React emits `srcSet` and `fetchPriority` in camelCase in static markup; HTML attribute names are case-insensitive, so this is valid and the assertions match that casing.
 
 - [ ] **Step 6: Lint, typecheck, commit**
 
