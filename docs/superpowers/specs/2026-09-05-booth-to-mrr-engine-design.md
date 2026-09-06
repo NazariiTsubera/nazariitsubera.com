@@ -734,9 +734,10 @@ Three lanes. Every task is test-first: write the failing test, make it pass, com
    cutouts, content, then the design step, the gate with Chromium in the worker image, and repair.
 6. Polish: regenerate and reprocess flows, extend, events timeline, preview-opened tracking,
    content JSON editor, theme override, portfolio toggle, mark won by hand.
-7. Backlog, not scheduled: purchase flow (storefront page, claim page, Stripe checkout, tax,
-   webhooks, portal, republish on won). Until it lands, the operator marks vendors won from the
-   console and invoices outside the system. Sections 11 and 14.12 describe the eventual design.
+7. Backlog, not scheduled: the purchase flow (claim page, Stripe checkout, tax, webhooks,
+   portal, republish on won). Until it lands, the operator marks vendors won from the console and
+   invoices outside the system. Sections 11 and 14.12 describe the eventual design. The public
+   `/storefront` page and portfolio grid are built; only payment is missing.
 
 Steps 2 and 3 together let the first vendors be served by hand-written content before the
 pipeline exists, which is the brief's own rule: do the first five by hand, automate what hurts.

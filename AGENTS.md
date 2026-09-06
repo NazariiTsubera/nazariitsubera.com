@@ -23,7 +23,8 @@ Plans: `docs/superpowers/plans/`. Decisions: `docs/decisions/`.
 - `pnpm --filter @nazariitsubera/core seed:operator` creates the one console account
 - `pnpm --filter @nazariitsubera/core seed:markets` loads the San Antonio markets
 - `pnpm --filter @nazariitsubera/core publish:fixture` puts the demo vendor live locally
-- `bash scripts/console-smoke.sh` exercises the console end to end over HTTP
+- `bash scripts/console-smoke.sh` exercises the console end to end over HTTP, including a real
+  generation (needs both `pnpm dev:web` and `pnpm dev:worker` running)
 - `pnpm --filter @nazariitsubera/core render:fixture [--theme <id>]` renders the demo vendor to
   `packages/core/out/`; serve it with the `template-preview` entry in `.claude/launch.json`.
 
@@ -44,6 +45,13 @@ Plans: `docs/superpowers/plans/`. Decisions: `docs/decisions/`.
   job row and skips any step whose artifact already exists, so a regenerate only redoes what
   changed. Derived images are content addressed by the asset's sha256.
 - Every derived image has all metadata stripped, GPS included.
+- Job types reuse one orchestration and only choose which artifacts are rebuilt: `reprocess_assets`
+  forces image work, `regenerate_design` keeps the content, `edit_design` applies one instruction
+  to the published page, `republish` keeps both.
+- Local storage resolves `STORAGE_DIR` against the workspace root, not the process cwd, because
+  web and worker run from different directories and must share one folder.
+- Files under `packages/core/src/template` carry a JSX runtime pragma so the worker's transform
+  does not depend on which tsconfig `tsx` happens to resolve.
 - Domain modules follow `service + repository`: route handlers parse, authenticate, call a
   service, return. Services own business rules and transactions. Repositories own queries.
 - Zod schemas live next to their domain; types are inferred from them. No duplicate DTOs.

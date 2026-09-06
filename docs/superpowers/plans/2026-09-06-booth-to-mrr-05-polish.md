@@ -57,3 +57,22 @@ The offer, the price, what is included, and a grid of won vendors with `showInPo
 ### Task 4: Docs and final verification
 
 - [ ] AGENTS.md, README, design build-order update, full verification, merge.
+
+
+## Findings during execution
+
+Running the console against the real pipeline surfaced two defects that no unit test would have
+caught, because both are about processes rather than functions:
+
+- `STORAGE_DIR` was a relative path resolved against each process's working directory, so the web
+  app wrote uploads under `apps/web/.storage` and the worker looked for them under
+  `apps/worker/.storage`. Now resolved against the workspace root.
+- `tsx` applies one esbuild transform configuration to everything it loads, resolved from the
+  tsconfig it finds at the current directory. From `apps/worker` that did not cover
+  `packages/core`, so the template's JSX was compiled with the classic runtime and every render
+  threw "React is not defined". Fixed in both directions: the worker's tsconfig sets `jsx`
+  explicitly, and the template files carry a JSX runtime pragma so they no longer depend on the
+  consumer's configuration.
+
+A stale worker process from an earlier run also kept consuming jobs with an older processor,
+which is worth remembering when a change appears not to take effect.
