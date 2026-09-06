@@ -10,6 +10,8 @@ I re-architected it into a social-media orchestration platform. It now serves mo
 
 Three nodes rather than one means a machine can fail without the platform failing. PostgreSQL holds the truth, Redis holds the work in flight, and Ceph holds the media so that any node can serve any file.
 
+<Figure src="markomax-2.png" />
+
 ## Ten thousand posts a day without a queue backing up
 
 Publishing is not a single step. Media has to be processed, captions generated, files uploaded to each network, and the result confirmed. All of that runs as asynchronous pipelines, and a few decisions keep them honest:

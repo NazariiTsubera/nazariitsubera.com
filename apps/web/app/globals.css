@@ -543,6 +543,10 @@
     border-top: 1px solid var(--rule);
     margin: 2.5em 0;
   }
+  .article figure {
+    margin-top: 2.2em;
+    margin-bottom: 2.2em;
+  }
   .article img {
     border: 1px solid var(--rule-strong);
   }

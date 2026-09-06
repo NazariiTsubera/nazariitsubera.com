@@ -1,44 +1,36 @@
-import { existsSync } from "node:fs";
-import path from "node:path";
-
 import Image from "next/image";
 import Link from "next/link";
 
-import type { Project } from "@/content/projects";
+import type { Project, Shot as ShotData } from "@/content/projects";
 
 import { GRID } from "./Section";
 import { LINKS } from "./links";
 
-/** Screenshots are 3230x1626. Until a file lands in public/work, a labelled frame holds its place. */
+/** One screenshot from content/projects.ts, in a hairline frame. */
 export function Shot({
-  project,
+  shot,
   sizes,
   priority = false,
   frame = true,
 }: {
-  project: Project;
+  shot: ShotData;
   sizes: string;
   priority?: boolean;
   frame?: boolean;
 }) {
-  if (!project.file) return null;
-  const present = existsSync(path.join(process.cwd(), "public", "work", project.file));
-  const image = present ? (
-    <Image
-      src={`/work/${project.file}`}
-      alt={project.alt ?? project.title}
-      width={3230}
-      height={1626}
-      sizes={sizes}
-      priority={priority}
-      className="h-auto w-full"
-    />
-  ) : (
-    <div className="flex aspect-[3230/1626] items-center justify-center bg-band px-4 text-center">
-      <span className="l text-muted">Screenshot pending: work/{project.file}</span>
+  return (
+    <div className={frame ? "shot border border-ink/[.14]" : "border border-ink/[.14]"}>
+      <Image
+        src={`/work/${shot.file}`}
+        alt={shot.alt}
+        width={shot.width}
+        height={shot.height}
+        sizes={sizes}
+        priority={priority}
+        className="h-auto w-full"
+      />
     </div>
   );
-  return <div className={frame ? "shot border border-ink/[.14]" : "border border-ink/[.14]"}>{image}</div>;
 }
 
 /** Compact grid for the landing page; every card opens its article. */
@@ -47,7 +39,7 @@ export function WorkGrid({ projects }: { projects: Project[] }) {
     <div className={GRID.cards2}>
       {projects.map((project) => (
         <Link key={project.slug} href={`${LINKS.work}/${project.slug}`} className="rv group block">
-          <Shot project={project} sizes="(min-width: 640px) 50vw, 100vw" />
+          {project.shots?.[0] ? <Shot shot={project.shots[0]} sizes="(min-width: 640px) 50vw, 100vw" /> : null}
           <div className="pt-4">
             {/* The tag wraps to its own line rather than being clipped: "Global Virtual
                 Opportunities" does not fit beside a title on a 320px screen. */}

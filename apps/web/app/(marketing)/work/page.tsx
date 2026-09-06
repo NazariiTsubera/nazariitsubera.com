@@ -49,7 +49,7 @@ export default function WorkPage() {
                   href={`${LINKS.work}/${project.slug}`}
                   className="path rv flex flex-col gap-3 border border-ink/[.18] p-[clamp(18px,4vw,22px)]"
                 >
-                  {project.file ? <Shot project={project} sizes="(min-width: 860px) 33vw, 100vw" frame={false} /> : null}
+                  {project.shots?.[0] ? <Shot shot={project.shots[0]} sizes="(min-width: 860px) 33vw, 100vw" frame={false} /> : null}
                   <span className="l text-muted">{project.period}</span>
                   <span className="n text-[clamp(22px,4.5vw,24px)] leading-[1.15] tracking-[-0.02em] text-ink">{project.title}</span>
                   <p className="text-body">{project.summary}</p>

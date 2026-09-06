@@ -76,9 +76,9 @@ export default async function WorkArticlePage({ params }: Params) {
         </div>
       </header>
 
-      {project.file ? (
+      {project.shots?.[0] ? (
         <div className="rv mb-[clamp(30px,4vw,48px)]">
-          <Shot project={project} sizes="(min-width: 1120px) 1024px, 100vw" priority />
+          <Shot shot={project.shots[0]} sizes="(min-width: 1120px) 1024px, 100vw" priority />
         </div>
       ) : null}
 
