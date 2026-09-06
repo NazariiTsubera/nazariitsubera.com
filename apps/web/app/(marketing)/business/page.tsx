@@ -1,0 +1,104 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+
+import { CtaBand } from "@/components/marketing/CtaBand";
+import { Faq } from "@/components/marketing/Faq";
+import { Process } from "@/components/marketing/Process";
+import { H2, Label, PageIntro, Section } from "@/components/marketing/Section";
+import { LINKS, SITE_URL } from "@/components/marketing/links";
+import { SERVICES } from "@/content/services";
+
+export const metadata: Metadata = {
+  title: "Automation and custom software for San Antonio businesses",
+  description:
+    "I automate the work your business still does by hand: invoicing, scheduling, reminders, reporting, and the tools you keep improvising. Fixed-price projects, plain language, one point of contact in San Antonio.",
+  alternates: { canonical: LINKS.business },
+};
+
+const service = {
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  name: "Nazarii Tsubera — automation and custom software",
+  url: `${SITE_URL}${LINKS.business}`,
+  telephone: "+1-210-980-6600",
+  email: "nazartsubera@gmail.com",
+  areaServed: { "@type": "City", name: "San Antonio" },
+  founder: { "@type": "Person", name: "Nazarii Tsubera" },
+  serviceType: ["Business process automation", "Custom software development", "Applied AI"],
+};
+
+export default function BusinessPage() {
+  return (
+    <>
+      <PageIntro
+        label="For your business"
+        title="Automation and custom software for businesses that run on people."
+        actions={
+          <>
+            <Link href={LINKS.contact} className="cta">
+              Tell me what’s done by hand <span className="arw">&rarr;</span>
+            </Link>
+            <a href="#faq" className="cta-ghost">
+              Common questions
+            </a>
+          </>
+        }
+      >
+        <p>
+          You know which parts of your week should be automatic. You just don&rsquo;t have time to work out how, or
+          patience for people who talk over your head. Tell me about the work in plain words and I&rsquo;ll tell you what
+          is possible, what it would cost, and whether it is worth doing at all.
+        </p>
+      </PageIntro>
+
+      {SERVICES.map((item) => (
+        <Section
+          key={item.id}
+          id={item.id}
+          className="grid grid-cols-1 items-start gap-[clamp(24px,4vw,52px)] min-[860px]:grid-cols-[minmax(240px,1fr)_minmax(0,1.9fr)]"
+        >
+          <div className="rv">
+            <Label className="mb-5">{item.n}</Label>
+            <H2 className="mb-4 max-w-[16ch]">{item.title}</H2>
+            <p className="font-mono text-[13px] text-muted">{item.tags}</p>
+          </div>
+          <div className="rv min-w-0">
+            <p className="mb-6 max-w-[60ch] text-lg leading-[1.65] text-body">{item.detail}</p>
+            <Label className="mb-3">For example</Label>
+            <ul className="max-w-[60ch]">
+              {item.examples.map((example) => (
+                <li key={example} className="border-t border-ink/[.14] py-3 text-body">
+                  {example}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </Section>
+      ))}
+
+      <Process />
+
+      <Section className="rv">
+        <Link
+          href={LINKS.storefront}
+          className="path flex flex-wrap items-center justify-between gap-x-8 gap-y-4 border border-ink/[.18] px-[30px] py-8"
+        >
+          <div>
+            <span className="l mb-3 block text-accent">Market vendors</span>
+            <span className="n block text-[26px] leading-[1.14] tracking-[-0.02em]">A real website for your booth, live the same day.</span>
+            <p className="mt-3 max-w-[52ch] text-body">
+              If you sell at San Antonio markets, this is the one thing I offer at a fixed, published price.
+            </p>
+          </div>
+          <span className="l text-ink">
+            See how it works <span className="arw">&rarr;</span>
+          </span>
+        </Link>
+      </Section>
+
+      <Faq />
+      <CtaBand />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(service) }} />
+    </>
+  );
+}

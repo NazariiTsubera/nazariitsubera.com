@@ -9,8 +9,9 @@ Design: `docs/superpowers/specs/2026-09-05-booth-to-mrr-engine-design.md`.
 Plans: `docs/superpowers/plans/`. Decisions: `docs/decisions/`.
 
 ## Layout
-- `apps/web`: Next.js App Router. Marketing pages, `/console`, API route handlers, vendor-site
-  serving by hostname. Port 3000.
+- `apps/web`: Next.js App Router. Marketing pages under `app/(marketing)` (one shared shell, copy
+  in `content/`, see ADR-0004), `/console`, API route handlers, vendor-site serving by hostname.
+  Port 3000.
 - `apps/worker`: Node process run with `tsx`. BullMQ processors and the repeatable expiry sweep.
 - `packages/core` (`@nazariitsubera/core`): every domain module, shipped as TypeScript source with
   one `exports` entry per module. No build step.
@@ -23,6 +24,8 @@ Plans: `docs/superpowers/plans/`. Decisions: `docs/decisions/`.
 - `pnpm --filter @nazariitsubera/core seed:operator` creates the one console account
 - `pnpm --filter @nazariitsubera/core seed:markets` loads the San Antonio markets
 - `pnpm --filter @nazariitsubera/core publish:fixture` puts the demo vendor live locally
+- `pnpm smoke:marketing [base-url]` checks every marketing page returns 200 with one `h1`, a unique
+  title, a description and a canonical (needs `pnpm dev:web`)
 - `bash scripts/console-smoke.sh` exercises the console end to end over HTTP, including a real
   generation (needs both `pnpm dev:web` and `pnpm dev:worker` running)
 - `pnpm --filter @nazariitsubera/core render:fixture [--theme <id>]` renders the demo vendor to
