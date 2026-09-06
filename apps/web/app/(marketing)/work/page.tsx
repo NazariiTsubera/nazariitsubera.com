@@ -50,12 +50,10 @@ export default function WorkPage() {
                   className="path rv flex flex-col gap-[13px] border border-ink/[.18] p-[22px]"
                 >
                   {project.file ? <Shot project={project} sizes="(min-width: 860px) 33vw, 100vw" frame={false} /> : null}
-                  <span className="l flex items-baseline justify-between gap-3 text-muted">
-                    <span>{project.period}</span>
-                    {project.stack ? <span className="truncate font-mono normal-case tracking-normal">{project.stack}</span> : null}
-                  </span>
+                  <span className="l text-muted">{project.period}</span>
                   <span className="n text-[24px] leading-[1.15] tracking-[-0.02em] text-ink">{project.title}</span>
                   <p className="text-body">{project.summary}</p>
+                  {project.stack ? <span className="font-mono text-[13px] text-muted">{project.stack}</span> : null}
                   <span className="l mt-auto pt-1.5 text-ink">
                     Read <span className="arw">&rarr;</span>
                   </span>
