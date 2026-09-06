@@ -16,6 +16,13 @@
     --header-h: 60px;
     --rule: rgba(22, 26, 26, 0.14);
     --rule-strong: rgba(22, 26, 26, 0.18);
+
+    /* The four grounds, mirroring the Tailwind colours. The full-bleed band paints itself with
+       a 100vmax spread, so it needs the value here rather than as a utility. */
+    --paper: #f3f4f3;
+    --raised: #fbfcfb;
+    --band-bg: #e2e6e2;
+    --ink-bg: #171a1a;
   }
 
   @media (min-width: 768px) {
@@ -167,12 +174,17 @@
     transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
   }
 
-  /* Bordered cards that reveal a blue rule on hover. */
+  /* Cards. A fill lighter than the ground, a real edge and a resting shadow, so a card reads
+     as an object sitting on the page rather than an outline drawn on it. */
   .path {
     position: relative;
+    background: var(--raised);
+    border: 1px solid rgba(22, 26, 26, 0.11);
+    box-shadow: 0 1px 2px rgba(22, 26, 26, 0.04);
     transition:
-      background 0.45s ease,
-      border-color 0.45s ease;
+      transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1),
+      border-color 0.45s ease,
+      box-shadow 0.35s ease;
   }
   .path::before {
     content: "";
@@ -243,6 +255,31 @@
     }
   }
 
+  /* The mark a card or row opens with. The page was pure typography; this gives the eye
+     somewhere to land before it starts reading. */
+  .chip {
+    @apply inline-flex flex-none items-center justify-center border border-accent/[.16] bg-accent/[.07] text-accent;
+    width: 42px;
+    height: 42px;
+    transition:
+      background 0.45s ease,
+      border-color 0.45s ease,
+      color 0.45s ease;
+  }
+  .chip-sm {
+    width: 34px;
+    height: 34px;
+  }
+  .band .chip {
+    background: rgba(26, 84, 144, 0.09);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .path:hover .chip,
+    .svc:hover .chip {
+      @apply border-accent/30 bg-accent text-paper;
+    }
+  }
+
   /* Full-bleed band inside the centred column. The root must have overflow-x: clip. */
   .band {
     position: relative;
@@ -256,7 +293,7 @@
     display: grid;
     grid-template-columns: auto minmax(0, 1fr);
     gap: 6px 16px;
-    align-items: baseline;
+    align-items: start;
     padding: 20px 0;
     border-top: 1px solid var(--rule-strong);
     transition:
@@ -266,6 +303,10 @@
   .svc-go {
     grid-column: 2;
     justify-self: end;
+  }
+  /* Sits the glyph on the title's own line rather than above it. */
+  .svc > .chip {
+    margin-top: 2px;
   }
   .svc-i {
     transition: color 0.45s ease;
@@ -299,8 +340,9 @@
       transform: scaleX(1);
     }
     .path:hover {
-      background: #e9ebe9;
-      border-color: rgba(22, 26, 26, 0.34);
+      border-color: rgba(22, 26, 26, 0.2);
+      box-shadow: 0 22px 44px -28px rgba(22, 26, 26, 0.5);
+      transform: translateY(-2px);
     }
     .path:hover .arw {
       transform: translateX(10px);
@@ -341,7 +383,10 @@
 
   /* Touch feedback, since there is no hover to give it. */
   @media (hover: none) {
-    .path:active,
+    .path:active {
+      box-shadow: 0 1px 2px rgba(22, 26, 26, 0.04);
+      transform: translateY(1px);
+    }
     .svc:active {
       background: rgba(26, 84, 144, 0.06);
     }

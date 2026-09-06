@@ -3,7 +3,8 @@ import type { Metadata } from "next";
 import { prisma } from "@nazariitsubera/core/db";
 import { env } from "@nazariitsubera/core/env";
 
-import { Band, GRID, H2, Label, PageIntro, Section } from "@/components/marketing/Section";
+import { STEP_ICONS } from "@/components/marketing/Icons";
+import { Band, CenteredHead, GRID, H2, Label, PageIntro, Section } from "@/components/marketing/Section";
 import { LINKS } from "@/components/marketing/links";
 
 export const dynamic = "force-dynamic";
@@ -75,16 +76,14 @@ export default async function StorefrontPage() {
       </Band>
 
       <Section>
-        <Label className="rv mb-5">How it works</Label>
-        <H2 measure={24} className="rv mb-[34px]">
-          Ten minutes at your booth.
-        </H2>
+        <CenteredHead label="How it works" title="Ten minutes at your booth." />
         <ol className={GRID.cards3}>
           {STEPS.map((step) => (
-            <li key={step.n} className="rv border-t-2 border-accent pt-4">
-              <div className="l mb-3 text-accent">{step.n}</div>
+            <li key={step.n} className="rv flex flex-col items-center px-2 text-center">
+              <span className="chip mb-5">{STEP_ICONS[step.n]}</span>
+              <div className="l mb-2.5 text-accent">{step.n}</div>
               <h3 className="n mb-2.5 text-[21px] leading-[1.2] tracking-[-0.02em]">{step.title}</h3>
-              <p className="text-body">{step.body}</p>
+              <p className="max-w-[34ch] text-body">{step.body}</p>
             </li>
           ))}
         </ol>

@@ -1,10 +1,12 @@
 import Link from "next/link";
 
+import { PATH_ICONS } from "./Icons";
 import { GRID, Label } from "./Section";
 import { LINKS } from "./links";
 
 const PATHS = [
   {
+    icon: PATH_ICONS.business,
     href: LINKS.business,
     label: "For your business",
     title: "Something in your week is done by hand",
@@ -12,6 +14,7 @@ const PATHS = [
     cta: "See how I help",
   },
   {
+    icon: PATH_ICONS.engineering,
     href: LINKS.engineering,
     label: "Engineering & résumé",
     title: "Distributed systems, infrastructure, applied AI",
@@ -29,8 +32,9 @@ export function Paths() {
           <Link
             key={path.href}
             href={path.href}
-            className="path rv flex flex-col gap-3 border border-ink/[.18] px-[clamp(20px,5vw,30px)] py-7"
+            className="path rv flex flex-col gap-3 px-[clamp(20px,5vw,30px)] py-7"
           >
+            <span className="chip mb-2">{path.icon}</span>
             <span className="l text-accent">{path.label}</span>
             <span className="n text-[clamp(23px,4.5vw,26px)] leading-[1.14] tracking-[-0.02em]">{path.title}</span>
             <p className="text-body">{path.body}</p>
