@@ -69,7 +69,7 @@
 
 **Interfaces:** `siteRepository { findVendorBySlug, slugTaken, createVendor, recordEvent }`; `prismaSiteStore: SiteStore`; `siteService { publishSite(input) -> SiteVersion, expirePreviews(now) -> { expired, churned }, extendPreview(vendorId, days, now) -> Date, unpublish(vendorId) }`; `previewDaysLeft(expiresAt, now)`. `publishSite` runs in one transaction: next version number, create row, swap pointer, set `preview_live` and start the clock on first publish unless won, record `preview_published`, then invalidate the cache. The integration setup refuses to run unless `TEST_DATABASE_URL` ends in `_test` and copies it into `DATABASE_URL`. `scripts/integration-test.sh` sources `.env`, brings Postgres up, migrates the test database, runs the lane.
 
-- [ ] Step 1: lane plumbing. - [ ] Step 2: failing integration test (versions and pointer; serve through the Prisma store and first-open tracking; expiry then extend; unpublish). - [ ] Step 3: implement. Run `pnpm test:integration`: 4 passed; `pnpm test` still green. - [ ] Step 4: commit `feat(core): add sites repository and service with publish, expiry, and integration lane`.
+- [ ] Step 1: lane plumbing. - [ ] Step 2: failing integration test (versions and pointer; serve through the Prisma store and first-open tracking; expiry then extend; unpublish). - [ ] Step 3: implement. Run `pnpm test:integration`: 4 passed. The unit config must exclude `src/**/*.integration.test.ts`, since it also matches `*.test.ts`; then `pnpm test` stays green. - [ ] Step 4: commit `feat(core): add sites repository and service with publish, expiry, and integration lane`.
 
 ### Task 6: Next proxy, `_sites` route, fonts route, health with DB
 
