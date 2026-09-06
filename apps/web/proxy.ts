@@ -15,6 +15,8 @@ export function proxy(request: NextRequest) {
   return NextResponse.rewrite(url);
 }
 
+// /api/health is exempt: the platform probes it with its own Host header, which must not be
+// routed as a vendor site.
 export const config = {
-  matcher: ["/((?!_next/|fonts/|media/|sites/|icon\\.svg|favicon\\.ico).*)"],
+  matcher: ["/((?!_next/|fonts/|media/|sites/|api/health|icon\\.svg|favicon\\.ico).*)"],
 };
