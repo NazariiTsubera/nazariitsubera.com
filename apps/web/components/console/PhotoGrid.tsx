@@ -71,13 +71,13 @@ export function PhotoGrid({ vendorId, assets }: { vendorId: string; assets: Asse
   return (
     <section className="flex flex-col gap-3">
       <div className="flex items-baseline justify-between">
-        <h2 className="font-serif text-xl">Photos</h2>
-        <span className="text-sm text-mono">
+        <h2 className="ui-h2">Photos</h2>
+        <span className="ui-note">
           {counts.scene} wide · {counts.product} products · {counts.person} person
         </span>
       </div>
 
-      <label className="min-h-14 rounded-lg border border-dashed border-ink/30 bg-white px-4 py-4 text-center text-base font-medium">
+      <label className="ui-btn ui-btn-lg cursor-pointer border border-dashed border-ink/30 bg-white">
         {busy ? (progress ?? "Uploading…") : "Add photos"}
         <input
           type="file"
@@ -88,11 +88,11 @@ export function PhotoGrid({ vendorId, assets }: { vendorId: string; assets: Asse
           className="sr-only"
         />
       </label>
-      {error ? <p className="text-sm text-magenta-ink">{error}</p> : null}
+      {error ? <p className="ui-error">{error}</p> : null}
 
       <ul className="grid grid-cols-2 gap-3">
         {assets.map((asset, index) => (
-          <li key={asset.id} className="flex flex-col gap-2 rounded-lg border border-ink/15 bg-white p-2">
+          <li key={asset.id} className="ui-card flex flex-col gap-2 p-2">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={asset.previewUrl}
@@ -106,8 +106,8 @@ export function PhotoGrid({ vendorId, assets }: { vendorId: string; assets: Asse
                   key={kind}
                   type="button"
                   onClick={() => act({ action: "kind", id: asset.id, kind })}
-                  className={`min-h-9 flex-1 rounded text-xs capitalize ${
-                    asset.kind === kind ? "bg-ink text-on-dark" : "bg-ink/10"
+                  className={`ui-btn ui-btn-sm flex-1 capitalize ${
+                    asset.kind === kind ? "ui-btn-primary" : "ui-btn-quiet"
                   }`}
                 >
                   {kind}
@@ -118,22 +118,23 @@ export function PhotoGrid({ vendorId, assets }: { vendorId: string; assets: Asse
               <button
                 type="button"
                 onClick={() => act({ action: "hero", id: asset.id })}
-                className={`min-h-9 flex-1 rounded text-xs ${asset.isHero ? "bg-eyebrow text-white" : "bg-ink/10"}`}
+                className={`ui-btn ui-btn-sm flex-1 ${asset.isHero ? "ui-btn-accent" : "ui-btn-quiet"}`}
               >
                 {asset.isHero ? "Hero" : "Set hero"}
               </button>
-              <button type="button" onClick={() => move(asset.id, -1)} disabled={index === 0} className="min-h-9 w-9 rounded bg-ink/10 text-xs disabled:opacity-40">
+              <button type="button" onClick={() => move(asset.id, -1)} disabled={index === 0} aria-label="Move earlier" className="ui-btn ui-btn-sm ui-btn-quiet w-10 px-0">
                 ↑
               </button>
               <button
                 type="button"
                 onClick={() => move(asset.id, 1)}
                 disabled={index === assets.length - 1}
-                className="min-h-9 w-9 rounded bg-ink/10 text-xs disabled:opacity-40"
+                aria-label="Move later"
+                className="ui-btn ui-btn-sm ui-btn-quiet w-10 px-0"
               >
                 ↓
               </button>
-              <button type="button" onClick={() => act({ action: "remove", id: asset.id })} className="min-h-9 w-9 rounded bg-ink/10 text-xs">
+              <button type="button" onClick={() => act({ action: "remove", id: asset.id })} aria-label="Remove photo" className="ui-btn ui-btn-sm ui-btn-quiet w-10 px-0">
                 ✕
               </button>
             </div>

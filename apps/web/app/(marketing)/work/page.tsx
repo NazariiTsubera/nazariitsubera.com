@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { CtaBand } from "@/components/marketing/CtaBand";
-import { H2, Label, PageIntro, Section } from "@/components/marketing/Section";
+import { GRID, H2, Label, PageIntro, Section } from "@/components/marketing/Section";
 import { Shot } from "@/components/marketing/WorkGrid";
 import { LINKS } from "@/components/marketing/links";
 import { PROJECTS, TAG_ORDER } from "@/content/projects";
@@ -35,26 +35,26 @@ export default function WorkPage() {
         return (
           <Section
             key={tag}
-            className="grid grid-cols-1 items-start gap-[clamp(24px,4vw,52px)] min-[860px]:grid-cols-[minmax(240px,1fr)_minmax(0,1.9fr)]"
+            className={GRID.side}
           >
             <div className="rv">
               <Label className="mb-5">{tag === "My own" ? "My own products" : tag === "Client" ? "For a client" : "At work"}</Label>
-              <H2 className="max-w-[16ch]">{tag}</H2>
+              <H2 measure={16}>{tag}</H2>
               <p className="mt-4 max-w-[34ch] text-body">{GROUP_INTRO[tag]}</p>
             </div>
-            <div className="grid min-w-0 grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-[clamp(18px,2.5vw,26px)]">
+            <div className={`min-w-0 ${GRID.cards2}`}>
               {group.map((project) => (
                 <Link
                   key={project.slug}
                   href={`${LINKS.work}/${project.slug}`}
-                  className="path rv flex flex-col gap-[13px] border border-ink/[.18] p-[22px]"
+                  className="path rv flex flex-col gap-3 border border-ink/[.18] p-[clamp(18px,4vw,22px)]"
                 >
                   {project.file ? <Shot project={project} sizes="(min-width: 860px) 33vw, 100vw" frame={false} /> : null}
                   <span className="l text-muted">{project.period}</span>
-                  <span className="n text-[24px] leading-[1.15] tracking-[-0.02em] text-ink">{project.title}</span>
+                  <span className="n text-[clamp(22px,4.5vw,24px)] leading-[1.15] tracking-[-0.02em] text-ink">{project.title}</span>
                   <p className="text-body">{project.summary}</p>
                   {project.stack ? <span className="font-mono text-[13px] text-muted">{project.stack}</span> : null}
-                  <span className="l mt-auto pt-1.5 text-ink">
+                  <span className="l mt-auto pt-2 text-ink">
                     Read <span className="arw">&rarr;</span>
                   </span>
                 </Link>

@@ -14,8 +14,8 @@ export function GatePanel({ report, authoredBy }: { report: GateSummary; authore
 
   return (
     <section className="flex flex-col gap-2">
-      <h2 className="font-serif text-xl">Checks</h2>
-      <p className="text-sm text-mono">
+      <h2 className="ui-h2">Checks</h2>
+      <p className="ui-note">
         {written} · gate {state}
         {report.browserRan ? "" : " (browser checks unavailable)"} · about {Math.round(report.eagerBytes / 1024)}KB first load
       </p>

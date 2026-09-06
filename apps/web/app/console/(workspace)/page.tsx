@@ -23,9 +23,9 @@ export default async function ConsoleHome() {
 
   if (vendors.length === 0) {
     return (
-      <main className="p-6">
-        <p className="text-mono">No captures yet.</p>
-        <Link href="/console/new" className="mt-4 inline-block underline">
+      <main className="flex flex-col items-start gap-4 p-6">
+        <p className="ui-note">No captures yet.</p>
+        <Link href="/console/new" className="ui-btn ui-btn-primary">
           Start the first one
         </Link>
       </main>
@@ -37,10 +37,10 @@ export default async function ConsoleHome() {
       {vendors.map((vendor) => {
         const daysLeft = previewDaysLeft(vendor.previewExpiresAt, now);
         return (
-          <Link key={vendor.id} href={`/console/${vendor.id}`} className="flex flex-col gap-1 px-4 py-4 active:bg-ink/5">
+          <Link key={vendor.id} href={`/console/${vendor.id}`} className="flex min-h-[76px] flex-col justify-center gap-1 px-4 py-4 active:bg-ink/5">
             <div className="flex items-baseline justify-between gap-3">
               <span className="font-serif text-lg leading-tight">{vendor.businessName}</span>
-              <span className="shrink-0 text-xs uppercase tracking-wide text-mono">
+              <span className="shrink-0 font-mono text-xs uppercase tracking-wide text-mono">
                 {STATUS_LABEL[vendor.status] ?? vendor.status}
               </span>
             </div>

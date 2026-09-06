@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 import { ContactForm } from "@/components/marketing/ContactForm";
 import { GitHubIcon, LinkedInIcon } from "@/components/marketing/Icons";
-import { Label, PageIntro, Section } from "@/components/marketing/Section";
+import { GRID, Label, PageIntro, Section } from "@/components/marketing/Section";
 import { LINKS } from "@/components/marketing/links";
 
 export const metadata: Metadata = {
@@ -28,7 +28,7 @@ export default function ContactPage() {
         </p>
       </PageIntro>
 
-      <Section className="grid grid-cols-1 items-start gap-[clamp(28px,4vw,52px)] min-[860px]:grid-cols-[minmax(240px,1fr)_minmax(0,1.9fr)]">
+      <Section className={GRID.side}>
         <div className="rv">
           <Label className="mb-5">Directly</Label>
           <dl>
@@ -37,7 +37,7 @@ export default function ContactPage() {
                 <dt className="l mb-1 text-muted">{row.label}</dt>
                 <dd className="m-0 text-body">
                   {row.href ? (
-                    <a href={row.href} className="navlink text-ink">
+                    <a href={row.href} className="navlink tap text-ink">
                       {row.text}
                     </a>
                   ) : (
@@ -47,11 +47,11 @@ export default function ContactPage() {
               </div>
             ))}
           </dl>
-          <div className="mt-6 flex flex-wrap gap-x-[22px] gap-y-2.5">
-            <a href={LINKS.linkedin} target="_blank" rel="noopener" className="l navlink inline-flex items-center gap-2 text-body">
+          <div className="mt-7 flex flex-wrap gap-x-[22px] gap-y-4">
+            <a href={LINKS.linkedin} target="_blank" rel="noopener" className="l navlink tap inline-flex items-center gap-2 text-body">
               <LinkedInIcon /> LinkedIn
             </a>
-            <a href={LINKS.github} target="_blank" rel="noopener" className="l navlink inline-flex items-center gap-2 text-body">
+            <a href={LINKS.github} target="_blank" rel="noopener" className="l navlink tap inline-flex items-center gap-2 text-body">
               <GitHubIcon /> GitHub
             </a>
           </div>

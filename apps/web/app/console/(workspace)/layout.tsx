@@ -17,18 +17,17 @@ export default async function ConsoleLayout({ children }: { children: React.Reac
 
   return (
     <div className="min-h-dvh bg-cream text-ink">
-      <header className="sticky top-0 z-10 flex items-center justify-between border-b border-ink/10 bg-cream/95 px-4 py-3 backdrop-blur">
-        <Link href="/console" className="font-serif text-lg">
-          Console
-        </Link>
-        <Link
-          href="/console/new"
-          className="min-h-11 rounded-lg bg-ink px-4 py-2 text-sm font-medium text-on-dark"
-        >
-          New capture
-        </Link>
+      <header className="sticky top-0 z-20 border-b border-ink/10 bg-cream/90 backdrop-blur">
+        <div className="mx-auto flex h-14 max-w-console items-center justify-between gap-3 px-4">
+          <Link href="/console" className="flex h-full items-center font-serif text-lg">
+            Console
+          </Link>
+          <Link href="/console/new" className="ui-btn ui-btn-primary">
+            New capture
+          </Link>
+        </div>
       </header>
-      {children}
+      <div className="mx-auto max-w-console">{children}</div>
     </div>
   );
 }

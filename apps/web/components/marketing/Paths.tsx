@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { Label } from "./Section";
+import { GRID, Label } from "./Section";
 import { LINKS } from "./links";
 
 const PATHS = [
@@ -22,15 +22,19 @@ const PATHS = [
 
 export function Paths() {
   return (
-    <section className="border-t border-ink/[.14] py-[clamp(34px,4.5vw,56px)]">
+    <section className="border-t border-ink/[.14] py-section">
       <Label className="rv mb-6">Where to start</Label>
-      <div className="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-[clamp(18px,2.5vw,26px)]">
+      <div className={GRID.cards2}>
         {PATHS.map((path) => (
-          <Link key={path.href} href={path.href} className="path rv flex flex-col gap-[13px] border border-ink/[.18] px-[30px] py-8">
+          <Link
+            key={path.href}
+            href={path.href}
+            className="path rv flex flex-col gap-3 border border-ink/[.18] px-[clamp(20px,5vw,30px)] py-7"
+          >
             <span className="l text-accent">{path.label}</span>
-            <span className="n text-[26px] leading-[1.14] tracking-[-0.02em]">{path.title}</span>
+            <span className="n text-[clamp(23px,4.5vw,26px)] leading-[1.14] tracking-[-0.02em]">{path.title}</span>
             <p className="text-body">{path.body}</p>
-            <span className="l mt-1.5 text-ink">
+            <span className="l mt-auto pt-2 text-ink">
               {path.cta} <span className="arw">&rarr;</span>
             </span>
           </Link>

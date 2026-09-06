@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import { CtaBand } from "@/components/marketing/CtaBand";
 import { GitHubIcon, LinkedInIcon } from "@/components/marketing/Icons";
-import { H2, Label, PageIntro, Section } from "@/components/marketing/Section";
+import { GRID, H2, Label, PageIntro, Section } from "@/components/marketing/Section";
 import { LINKS } from "@/components/marketing/links";
 import { EDUCATION, EXPERIENCE, SIDE_PROJECTS, SKILLS } from "@/content/resume";
 
@@ -13,8 +13,6 @@ export const metadata: Metadata = {
     "Backend and infrastructure engineer at Global Virtual Opportunities: distributed systems, media pipelines, test infrastructure and the Linux and CI plumbing underneath them. Résumé, experience, projects and skills.",
   alternates: { canonical: LINKS.engineering },
 };
-
-const TwoCol = "grid grid-cols-1 items-start gap-[clamp(24px,4vw,52px)] min-[860px]:grid-cols-[minmax(240px,1fr)_minmax(0,1.9fr)]";
 
 export default function EngineeringPage() {
   return (
@@ -44,10 +42,12 @@ export default function EngineeringPage() {
         </p>
       </PageIntro>
 
-      <Section id="experience" className={TwoCol}>
+      <Section id="experience" className={GRID.side}>
         <div className="rv">
           <Label className="mb-5">Experience</Label>
-          <H2 className="mb-3 max-w-[14ch]">{EXPERIENCE.company}</H2>
+          <H2 measure={14} className="mb-3">
+            {EXPERIENCE.company}
+          </H2>
           <p className="text-body">{EXPERIENCE.role}</p>
           <p className="l mt-3 text-muted">
             {EXPERIENCE.period}
@@ -65,16 +65,16 @@ export default function EngineeringPage() {
         </ul>
       </Section>
 
-      <Section id="projects" className={TwoCol}>
+      <Section id="projects" className={GRID.side}>
         <div className="rv">
           <Label className="mb-5">Projects</Label>
-          <H2 className="max-w-[14ch]">Things I built because I wanted them to exist.</H2>
+          <H2 measure={14}>Things I built because I wanted them to exist.</H2>
         </div>
         <div className="rv min-w-0">
           {SIDE_PROJECTS.map((project) => (
             <article key={project.title} className="border-t border-ink/[.14] py-6">
-              <div className="mb-2 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
-                <Link href={`${LINKS.work}/${project.slug}`} className="n navlink text-[22px] tracking-[-0.02em]">
+              <div className="mb-2 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1.5">
+                <Link href={`${LINKS.work}/${project.slug}`} className="n navlink tap text-[22px] tracking-[-0.02em]">
                   {project.title}
                 </Link>
                 <span className="font-mono text-[13px] text-muted">{project.stack}</span>
@@ -83,21 +83,21 @@ export default function EngineeringPage() {
             </article>
           ))}
           <p className="pt-6">
-            <Link href={LINKS.work} className="l navlink text-accent">
+            <Link href={LINKS.work} className="l navlink tap text-accent">
               All work, with the detail <span className="arw">&rarr;</span>
             </Link>
           </p>
         </div>
       </Section>
 
-      <Section id="skills" className={TwoCol}>
+      <Section id="skills" className={GRID.side}>
         <div className="rv">
           <Label className="mb-5">Skills</Label>
-          <H2 className="max-w-[14ch]">What I reach for.</H2>
+          <H2 measure={14}>What I reach for.</H2>
         </div>
         <dl className="rv min-w-0">
           {SKILLS.map((row) => (
-            <div key={row.group} className="grid grid-cols-[minmax(96px,160px)_1fr] gap-x-5 border-t border-ink/[.14] py-3.5">
+            <div key={row.group} className="grid grid-cols-1 gap-y-1 border-t border-ink/[.14] py-3.5 sm:grid-cols-[minmax(96px,160px)_1fr] sm:gap-x-5 sm:gap-y-0">
               <dt className="l text-muted">{row.group}</dt>
               <dd className="m-0 text-body">{row.items}</dd>
             </div>
@@ -105,20 +105,23 @@ export default function EngineeringPage() {
         </dl>
       </Section>
 
-      <Section id="education" className={TwoCol}>
+      <Section id="education" className={GRID.side}>
         <div className="rv">
           <Label className="mb-5">Education</Label>
-          <H2 className="max-w-[14ch]">Studying full time and shipping anyway.</H2>
+          <H2 measure={14}>Studying full time and shipping anyway.</H2>
         </div>
         <div className="rv min-w-0">
           {EDUCATION.map((entry) => (
-            <div key={entry.school} className="grid grid-cols-[1fr_auto] gap-x-6 border-t border-ink/[.14] py-4">
-              <div>
-                <div className="n text-[21px] tracking-[-0.02em]">{entry.school}</div>
+            <div
+              key={entry.school}
+              className="flex flex-col gap-1 border-t border-ink/[.14] py-4 sm:grid sm:grid-cols-[1fr_auto] sm:gap-x-6"
+            >
+              <div className="order-2 sm:order-none">
+                <div className="n text-[21px] leading-[1.25] tracking-[-0.02em]">{entry.school}</div>
                 <div className="text-body">{entry.degree}</div>
                 {entry.note ? <div className="mt-1 text-sm text-muted">{entry.note}</div> : null}
               </div>
-              <div className="l text-muted">{entry.when}</div>
+              <div className="l order-1 text-muted sm:order-none">{entry.when}</div>
             </div>
           ))}
         </div>

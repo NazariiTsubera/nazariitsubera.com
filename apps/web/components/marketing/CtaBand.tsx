@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { Band, Label } from "./Section";
+import { Band, GRID, Label } from "./Section";
 import { LINKS } from "./links";
 
 export function CtaBand({
@@ -17,16 +17,20 @@ export function CtaBand({
   note?: string;
 }) {
   return (
-    <Band className="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] items-end gap-[clamp(24px,4vw,52px)] !py-[clamp(44px,6vw,76px)]">
+    <Band className={`${GRID.even} wide:items-end`}>
       <div className="rv">
         <Label className="mb-5">{label}</Label>
-        <h2 className="n mb-5 max-w-[16ch] text-[clamp(28px,4vw,44px)] leading-[1.06] tracking-[-0.026em]">{title}</h2>
+        <h2 className="n measure mb-5 text-[clamp(28px,4vw,44px)] leading-[1.06] tracking-[-0.026em] [--measure:16ch]">
+          {title}
+        </h2>
         <p className="max-w-[44ch] text-body">{body}</p>
       </div>
-      <div className="rv flex flex-col items-start gap-3.5">
-        <Link href={action.href} className="cta">
-          {action.text} <span className="arw">&rarr;</span>
-        </Link>
+      <div className="rv flex flex-col gap-3.5">
+        <div className="actions">
+          <Link href={action.href} className="cta">
+            {action.text} <span className="arw">&rarr;</span>
+          </Link>
+        </div>
         <span className="l text-muted">{note}</span>
       </div>
     </Band>

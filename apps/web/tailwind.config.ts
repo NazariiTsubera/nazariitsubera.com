@@ -7,6 +7,17 @@ import type { Config } from "tailwindcss";
 const config: Config = {
   content: ["./app/**/*.{js,ts,jsx,tsx,mdx}", "./components/**/*.{js,ts,jsx,tsx,mdx}"],
   theme: {
+    // Declared in full, in ascending order, so `wide` (the marketing two-column switch) and `xs`
+    // (the point a row of buttons stops being full width) sort correctly against the defaults.
+    screens: {
+      xs: "480px",
+      sm: "640px",
+      md: "768px",
+      wide: "860px",
+      lg: "1024px",
+      xl: "1280px",
+      "2xl": "1536px",
+    },
     extend: {
       colors: {
         paper: "#f3f4f3",
@@ -30,8 +41,8 @@ const config: Config = {
         cream: "#f3f4f3",
         "body-2": "#4a4f4e",
         mono: "#636866",
-        eyebrow: "#1a5490",
         "magenta-ink": "#b3261e",
+        eyebrow: "#1a5490",
         "ink-deep": "#171a1a",
       },
       fontFamily: {
@@ -39,7 +50,17 @@ const config: Config = {
         serif: ["var(--font-newsreader)", "Georgia", "serif"],
         mono: ["var(--font-plex-mono)", "ui-monospace", "monospace"],
       },
-      maxWidth: { frame: "1120px" },
+      // The one spacing scale of the marketing shell; the values live in globals.css so the
+      // sticky header can measure itself against the same numbers.
+      spacing: {
+        gutter: "var(--gutter)",
+        section: "var(--section-y)",
+        band: "var(--band-y)",
+        "page-top": "var(--page-top)",
+        "page-bottom": "var(--page-bottom)",
+        header: "var(--header-h)",
+      },
+      maxWidth: { frame: "1120px", console: "760px" },
       transitionTimingFunction: {
         soft: "cubic-bezier(.2,.7,.2,1)",
         out: "cubic-bezier(.19,1,.22,1)",

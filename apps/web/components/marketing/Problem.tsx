@@ -1,11 +1,11 @@
-import { Band, H2, Label } from "./Section";
+import { Band, GRID, H2, Label } from "./Section";
 
 export function Problem() {
   return (
-    <Band className="grid grid-cols-[repeat(auto-fit,minmax(260px,1fr))] items-start gap-[clamp(24px,4vw,52px)]">
+    <Band className={GRID.even}>
       <div className="rv">
         <Label className="mb-5">The problem</Label>
-        <H2 className="max-w-[16ch]">You already know the work should be automatic.</H2>
+        <H2 measure={16}>You already know the work should be automatic.</H2>
       </div>
       <div className="rv space-y-4">
         <p className="text-body">

@@ -1,22 +1,24 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { H2, Label, Section } from "./Section";
+import { GRID, H2, Label, Section } from "./Section";
 import { LINKS } from "./links";
 
 export function AboutTeaser() {
   return (
-    <Section className="grid grid-cols-[repeat(auto-fit,minmax(260px,1fr))] items-start gap-[clamp(24px,4vw,52px)]">
+    <Section className={GRID.even}>
       <div className="rv">
         <Label className="mb-5">Who you&rsquo;re dealing with</Label>
-        <H2 className="mb-[18px] max-w-[20ch]">One person, start to finish.</H2>
+        <H2 measure={20} className="mb-[18px]">
+          One person, start to finish.
+        </H2>
         <Image
           src="/portrait.png"
           alt="Nazarii Tsubera"
           width={1254}
           height={1254}
           sizes="240px"
-          className="h-auto w-full max-w-[240px]"
+          className="h-auto w-full max-w-[220px] sm:max-w-[240px]"
         />
       </div>
       <div className="rv space-y-4">
@@ -29,7 +31,7 @@ export function AboutTeaser() {
           build and run the platforms behind MarkoMax and LoveFund. I&rsquo;m also a computer science student at UTSA,
           class of 2028.
         </p>
-        <Link href={LINKS.about} className="l navlink inline-block pt-2 text-accent">
+        <Link href={LINKS.about} className="l navlink tap inline-block pt-2 text-accent">
           More about me <span className="arw">&rarr;</span>
         </Link>
       </div>

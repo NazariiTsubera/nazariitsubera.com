@@ -1,13 +1,15 @@
 import { STEPS } from "@/content/services";
 
-import { H2, Label, Section } from "./Section";
+import { GRID, H2, Label, Section } from "./Section";
 
 export function Process() {
   return (
     <Section>
-      <Label className="rv mb-[22px]">How it works</Label>
-      <H2 className="rv mb-[34px] max-w-[24ch]">Simple on your side. All the work on mine.</H2>
-      <div className="grid grid-cols-[repeat(auto-fit,minmax(230px,1fr))] gap-[clamp(20px,3vw,34px)]">
+      <Label className="rv mb-5">How it works</Label>
+      <H2 measure={24} className="rv mb-[34px]">
+        Simple on your side. All the work on mine.
+      </H2>
+      <div className={GRID.cards3}>
         {STEPS.map((step) => (
           <div key={step.n} className="rv border-t-2 border-accent pt-4">
             <div className="l mb-3 text-accent">{step.n}</div>

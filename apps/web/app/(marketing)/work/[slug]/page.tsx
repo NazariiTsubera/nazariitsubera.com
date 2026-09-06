@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { CtaBand } from "@/components/marketing/CtaBand";
-import { Label } from "@/components/marketing/Section";
+import { H1, Label } from "@/components/marketing/Section";
 import { Shot } from "@/components/marketing/WorkGrid";
 import { LINKS, SITE_URL } from "@/components/marketing/links";
 import { PROJECTS, findProject } from "@/content/projects";
@@ -51,23 +51,25 @@ export default async function WorkArticlePage({ params }: Params) {
 
   return (
     <>
-      <header className="rv border-t border-ink/[.14] pb-[clamp(30px,4vw,48px)] pt-[clamp(40px,6vw,74px)]">
+      <header className="rv border-t border-ink/[.14] pb-[clamp(30px,4vw,48px)] pt-page-top">
         <Label className="mb-6">
-          <Link href={LINKS.work} className="navlink">
+          <Link href={LINKS.work} className="navlink tap">
             Work
           </Link>{" "}
           <span className="text-faint">/</span> {project.tag} <span className="text-faint">/</span> {project.period}
         </Label>
-        <h1 className="n mb-6 max-w-[22ch] text-[clamp(32px,4.8vw,54px)] leading-[1.05] tracking-[-0.026em]">{project.title}</h1>
+        <H1 measure={22} className="mb-6">
+          {project.title}
+        </H1>
         <p className="max-w-[58ch] text-lg leading-[1.65] text-body">{project.summary}</p>
-        <div className="mt-7 flex flex-wrap items-baseline gap-x-8 gap-y-3">
+        <div className="mt-7 flex flex-wrap items-baseline gap-x-8 gap-y-4">
           {project.stack ? <span className="font-mono text-[13px] text-muted">{project.stack}</span> : null}
           {external ? (
-            <a href={project.href} target="_blank" rel="noopener" className="l navlink text-accent">
+            <a href={project.href} target="_blank" rel="noopener" className="l navlink tap text-accent">
               Visit {external.hostname} <span className="arw">&rarr;</span>
             </a>
           ) : project.href ? (
-            <Link href={project.href} className="l navlink text-accent">
+            <Link href={project.href} className="l navlink tap text-accent">
               See the offer <span className="arw">&rarr;</span>
             </Link>
           ) : null}
@@ -86,7 +88,10 @@ export default async function WorkArticlePage({ params }: Params) {
 
       <nav aria-label="More work" className="rv border-t border-ink/[.14] py-8">
         <Label className="mb-3">Next</Label>
-        <Link href={`${LINKS.work}/${next.slug}`} className="n navlink text-[clamp(22px,2.4vw,28px)] leading-[1.2] tracking-[-0.02em]">
+        <Link
+          href={`${LINKS.work}/${next.slug}`}
+          className="n navlink inline-block text-[clamp(22px,2.4vw,28px)] leading-[1.25] tracking-[-0.02em]"
+        >
           {next.title} <span className="arw">&rarr;</span>
         </Link>
       </nav>
