@@ -15,3 +15,12 @@ generated as SVG placeholders of the right aspect when no file exists in this di
 Serve the output for a Lighthouse run:
 
     python3 -m http.server 4173 --directory packages/core/out/demo-vendor
+
+Publish it to the local database and open it on a local subdomain:
+
+    docker compose up -d
+    pnpm --filter @nazariitsubera/core publish:fixture
+    pnpm dev
+
+Then open the printed `http://pearl-street-pottery.localhost:3000/?p=...` link. Product images
+are placeholders until Plan 3 adds photo storage; the page, banner, fonts, and headers are real.
