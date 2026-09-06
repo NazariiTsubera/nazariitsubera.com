@@ -7,6 +7,10 @@ export const dynamic = "force-dynamic";
 
 export const metadata = { title: "Console", robots: { index: false, follow: false } };
 
+/**
+ * Guards every console page. The login page deliberately sits outside this route group:
+ * if it were inside, signing out would redirect it to itself forever.
+ */
 export default async function ConsoleLayout({ children }: { children: React.ReactNode }) {
   const operator = await getOperator();
   if (!operator) redirect("/console/login");
