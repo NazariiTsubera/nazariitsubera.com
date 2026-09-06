@@ -1,3 +1,5 @@
+/* @jsxRuntime automatic */
+/* @jsxImportSource react */
 import type { RenderAsset } from "../../contracts/render";
 
 type Props = {

@@ -1,6 +1,7 @@
 import { authorPage, generateContent, repairPage, type ContentInput, type ImagePart } from "../ai";
+import { contentJsonSchema, type ContentJson } from "../contracts/content";
 import type { RenderAsset } from "../contracts/render";
-import { type Asset, type Prisma, prisma } from "../db";
+import { type Asset, type JobType, type Prisma, prisma } from "../db";
 import { env } from "../env";
 import { runGate, toStoredReport, type GateResult } from "../gate";
 import { crop, normalize, productCard, removeBackground, variants, VARIANT_WIDTHS } from "../images";
@@ -16,6 +17,19 @@ const log = createLogger({ module: "pipeline" });
 const MAX_REPAIRS = 2;
 
 export type PipelineResult = { versionId: string; authored: boolean; gatePassed: boolean; repairs: number };
+
+/**
+ * What each job type actually redoes. Everything reuses one orchestration; the type only
+ * decides which artifacts are reused and which are rebuilt.
+ */
+const PLAN: Record<JobType, { forceImages: boolean; reuseContent: boolean; reuseDesign: boolean }> = {
+  generate_site: { forceImages: false, reuseContent: false, reuseDesign: false },
+  reprocess_assets: { forceImages: true, reuseContent: true, reuseDesign: false },
+  regenerate_content: { forceImages: false, reuseContent: false, reuseDesign: false },
+  regenerate_design: { forceImages: false, reuseContent: true, reuseDesign: false },
+  edit_design: { forceImages: false, reuseContent: true, reuseDesign: true },
+  republish: { forceImages: false, reuseContent: true, reuseDesign: true },
+};
 
 type Derived = { variants: Record<string, string>; width: number; height: number };
 
@@ -49,15 +63,27 @@ function mediaType(contentType: string): ImagePart["mediaType"] {
  * before the next begins and is skipped when that artifact already exists, so a regenerate
  * only redoes what actually changed.
  */
-export async function runGenerateSite(jobId: string, vendorId: string): Promise<PipelineResult> {
+export async function runGenerateSite(
+  jobId: string,
+  vendorId: string,
+  type: JobType = "generate_site",
+  options: { instruction?: string } = {},
+): Promise<PipelineResult> {
   const e = env();
   const store = storage();
+  const plan = PLAN[type];
 
   const vendor = await prisma.vendor.findUniqueOrThrow({
     where: { id: vendorId },
-    include: { market: true, assets: { orderBy: { orderIndex: "asc" } }, captures: { orderBy: { createdAt: "desc" }, take: 1 } },
+    include: {
+      market: true,
+      assets: { orderBy: { orderIndex: "asc" } },
+      captures: { orderBy: { createdAt: "desc" }, take: 1 },
+      publishedVersion: true,
+    },
   });
   const capture = vendor.captures[0] ?? null;
+  const published = vendor.publishedVersion;
 
   // 1. Transcribe --------------------------------------------------------------------------
   let transcript = capture?.transcript ?? null;
@@ -79,7 +105,7 @@ export async function runGenerateSite(jobId: string, vendorId: string): Promise<
   // 2-4. Images ----------------------------------------------------------------------------
   const theme = themeForTone("warm");
   const ground = theme.colors.light.ground;
-  const needsWork = vendor.assets.filter((asset) => !asset.derived);
+  const needsWork = plan.forceImages ? vendor.assets : vendor.assets.filter((asset) => !asset.derived);
 
   if (needsWork.length === 0) {
     await skipped(jobId, "images");
@@ -134,7 +160,15 @@ export async function runGenerateSite(jobId: string, vendorId: string): Promise<
     personAssetId: person?.id ?? null,
   };
 
-  const content = await step(jobId, "content", () => generateContent(contentInput));
+  // Reusing content is what makes "same facts, new design" and a hand edit possible.
+  const reusable = plan.reuseContent && published ? contentJsonSchema.safeParse(published.contentJson) : null;
+  let content: ContentJson;
+  if (reusable?.success) {
+    content = reusable.data;
+    await skipped(jobId, "content");
+  } else {
+    content = await step(jobId, "content", () => generateContent(contentInput));
+  }
 
   // 6. Design ------------------------------------------------------------------------------
   const siteUrl = `https://${vendor.slug}.${e.SITE_ROOT_DOMAIN}`;
@@ -150,9 +184,25 @@ export async function runGenerateSite(jobId: string, vendorId: string): Promise<
     context: { siteUrl, operatorName: e.OPERATOR_NAME, operatorUrl: e.NEXT_PUBLIC_APP_URL },
   };
 
-  const design = await step(jobId, "design", () => authorPage(designInput));
-  let html = design.html;
-  let authored = design.authored;
+  let html: string;
+  let authored: boolean;
+
+  if (plan.reuseDesign && published) {
+    // republish keeps the page as it is; edit_design applies one instruction to it.
+    if (type === "edit_design" && options.instruction) {
+      html = await step(jobId, "edit", () =>
+        repairPage(published.html, [{ field: "operator", rule: "instruction", detail: options.instruction! }], []),
+      );
+    } else {
+      html = published.html;
+      await skipped(jobId, "design");
+    }
+    authored = published.authoredBy === "model";
+  } else {
+    const design = await step(jobId, "design", () => authorPage(designInput));
+    html = design.html;
+    authored = design.authored;
+  }
 
   // 7-9. Gate, repair, fallback --------------------------------------------------------------
   let gate: GateResult = await step(jobId, "gate", () => runGate(html, content));

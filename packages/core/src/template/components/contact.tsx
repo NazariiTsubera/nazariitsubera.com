@@ -1,3 +1,5 @@
+/* @jsxRuntime automatic */
+/* @jsxImportSource react */
 import type { ContentJson } from "../../contracts/content";
 import { formatPhone } from "../format";
 

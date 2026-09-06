@@ -1,3 +1,5 @@
+/* @jsxRuntime automatic */
+/* @jsxImportSource react */
 import type { RenderInput } from "../../contracts/render";
 import type { Theme } from "../../themes/types";
 import { About } from "./about";

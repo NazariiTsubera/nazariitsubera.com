@@ -25,7 +25,9 @@ export async function runPipelineJob(data: QueueJobData): Promise<void> {
   await prisma.event.create({ data: { vendorId, type: "generation_started", meta: { jobId, jobType: type } } });
 
   try {
-    const result = await runGenerateSite(jobId, vendorId);
+    const job = await jobRepository.get(jobId);
+    const payload = (job?.payload ?? {}) as { instruction?: string };
+    const result = await runGenerateSite(jobId, vendorId, type, { instruction: payload.instruction });
     await jobRepository.markSucceeded(jobId);
     await prisma.event.create({
       data: { vendorId, type: "generation_succeeded", meta: { jobId, ...result } },

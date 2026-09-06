@@ -144,4 +144,40 @@ describe("runGenerateSite", () => {
     expect(response.headers["Content-Security-Policy"]).toBe("script-src 'none'");
     expect(response.body).toContain(vendor.businessName);
   }, 120_000);
+
+  it("reuses content for a design regenerate and reuses the page for a republish", async () => {
+    const vendor = await seedVendor();
+    const first = await jobRepository.create(vendor.id, "generate_site", {});
+    await runGenerateSite(first.id, vendor.id, "generate_site");
+
+    const original = await prisma.vendor.findUniqueOrThrow({ where: { id: vendor.id }, include: { publishedVersion: true } });
+    const originalContent = JSON.stringify(original.publishedVersion!.contentJson);
+
+    const design = await jobRepository.create(vendor.id, "regenerate_design", {});
+    await runGenerateSite(design.id, vendor.id, "regenerate_design");
+    const designSteps = (await jobRepository.get(design.id))!.steps as unknown as { name: string; status: string }[];
+    expect(designSteps.find((s) => s.name === "content")?.status).toBe("skipped");
+    expect(designSteps.find((s) => s.name === "design")?.status).toBe("succeeded");
+
+    const afterDesign = await prisma.vendor.findUniqueOrThrow({ where: { id: vendor.id }, include: { publishedVersion: true } });
+    expect(JSON.stringify(afterDesign.publishedVersion!.contentJson)).toBe(originalContent);
+
+    const republish = await jobRepository.create(vendor.id, "republish", {});
+    await runGenerateSite(republish.id, vendor.id, "republish");
+    const republishSteps = (await jobRepository.get(republish.id))!.steps as unknown as { name: string; status: string }[];
+    expect(republishSteps.find((s) => s.name === "design")?.status).toBe("skipped");
+
+    expect(await prisma.siteVersion.count({ where: { vendorId: vendor.id } })).toBe(3);
+  }, 180_000);
+
+  it("forces image work for reprocess_assets", async () => {
+    const vendor = await seedVendor();
+    const first = await jobRepository.create(vendor.id, "generate_site", {});
+    await runGenerateSite(first.id, vendor.id, "generate_site");
+
+    const reprocess = await jobRepository.create(vendor.id, "reprocess_assets", {});
+    await runGenerateSite(reprocess.id, vendor.id, "reprocess_assets");
+    const steps = (await jobRepository.get(reprocess.id))!.steps as unknown as { name: string; status: string }[];
+    expect(steps.find((s) => s.name === "images")?.status).toBe("succeeded");
+  }, 180_000);
 });

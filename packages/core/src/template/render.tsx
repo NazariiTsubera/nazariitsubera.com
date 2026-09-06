@@ -1,3 +1,5 @@
+/* @jsxRuntime automatic */
+/* @jsxImportSource react */
 import { renderToStaticMarkup } from "react-dom/server";
 
 import { renderInputSchema, type RenderInput } from "../contracts/render";

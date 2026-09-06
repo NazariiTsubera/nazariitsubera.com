@@ -1,13 +1,18 @@
 import { notFound } from "next/navigation";
 
 import { captureService } from "@nazariitsubera/core/captures";
+import { THEME_IDS } from "@nazariitsubera/core/contracts";
+import { prisma } from "@nazariitsubera/core/db";
 import { env } from "@nazariitsubera/core/env";
 import { storage } from "@nazariitsubera/core/storage";
 import { vendorService } from "@nazariitsubera/core/vendors";
 
+import { GatePanel, type GateSummary } from "@/components/console/GatePanel";
 import { PhotoGrid, type AssetRow } from "@/components/console/PhotoGrid";
 import { Recorder } from "@/components/console/Recorder";
+import { Timeline } from "@/components/console/Timeline";
 import { VendorActions } from "@/components/console/VendorActions";
+import { ContentEditor, RegeneratePanel, SettingsPanel } from "@/components/console/VendorPanels";
 
 export const dynamic = "force-dynamic";
 
@@ -20,6 +25,7 @@ export default async function VendorPage({ params }: Params) {
 
   const e = env();
   const capture = await captureService.latest(vendor.id);
+  const events = await prisma.event.findMany({ where: { vendorId: vendor.id }, orderBy: { createdAt: "desc" }, take: 30 });
   const store = storage();
 
   const assets: AssetRow[] = vendor.assets.map((asset) => ({
@@ -59,6 +65,20 @@ export default async function VendorPage({ params }: Params) {
         phone={vendor.phone}
         hasPublished={Boolean(vendor.publishedVersionId)}
       />
+      <GatePanel
+        report={(vendor.publishedVersion?.gateReport ?? null) as GateSummary}
+        authoredBy={vendor.publishedVersion?.authoredBy ?? null}
+      />
+      <RegeneratePanel vendorId={vendor.id} hasPublished={Boolean(vendor.publishedVersionId)} />
+      <ContentEditor vendorId={vendor.id} content={vendor.publishedVersion?.contentJson ?? null} />
+      <SettingsPanel
+        vendorId={vendor.id}
+        designNotes={vendor.designNotes}
+        themeOverride={vendor.themeOverride}
+        showInPortfolio={vendor.showInPortfolio}
+        themeIds={THEME_IDS}
+      />
+      <Timeline events={events} />
     </main>
   );
 }
